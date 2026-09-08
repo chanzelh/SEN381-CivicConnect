@@ -101,9 +101,13 @@ The project depends on certain assumptions and limitations that will affect how 
 | RISK-006 | Requirements may lose traceability during later project stages. | Requirements, issues, decisions, implementation, tests and evidence may not remain clearly linked. | Med | High | High | Maintain unique requirement IDs and progressively update the RTM with relevant design, issue/PR, implementation and verification evidence. | Team | Open |
 | RISK-007 | Project scope may grow beyond what can realistically be delivered. | New features may be introduced without fully considering their effect on time, resources, quality and complexity. | Med | High | High | Use the PED scope baseline to assess proposed additions and keep optional or future functionality outside the current scope unless a change is properly considered and approved. | Team | Monitoring |
 
+
 ## 9. Engineering Decision Log — Initial
 | Decision ID | Context | Alternatives | Decision | Rationale | Risks |
 |---|---|---|---|---|---|
+| DEC-001 | The team required a controlled platform for version control, collaboration and maintaining evidence of project changes. | GitHub; alternative repository/version-control platforms; manual file sharing. | Use GitHub as the main version-control and collaboration platform for CivicConnect. | GitHub provides branches, issues, pull requests, reviews and project history, supporting both team collaboration and engineering traceability. | Incorrect branch use, merge conflicts or outdated versions may affect project artefacts if the workflow is not followed correctly. |
+| DEC-002 | The team needed a controlled way to make changes to shared project artefacts without directly changing the approved main version. | Direct changes to main; one shared development branch; separate task branches with pull requests. | Use separate task branches and merge changes into main through pull requests after peer review. | This allows members to work independently while ensuring changes are reviewed before becoming part of the main project baseline. | Poor branch management or failure to work from the latest approved version may result in conflicting or outdated changes. |
+| DEC-003 | The team needed a way to organise Milestone work and make responsibilities and progress visible. | Informal task allocation; a separate task list; GitHub Issues and Kanban board. | Use GitHub Issues and the project Kanban board to assign and track project work. | Issues provide clear task ownership and the Kanban board makes the progress of milestone work visible to the team. | If issues and statuses are not kept updated, project progress may be represented incorrectly and tasks could be overlooked. |
 
 ## 10. Process & Team Working Agreement
 
