@@ -87,8 +87,37 @@ The acceptance criteria will help decide if a requirement works as it was meant 
 ## 6. Assumptions & Constraints
 The project depends on certain assumptions and limitations that will affect how the engineering choices are made. The team is made up of exactly three students and needs to complete the project by reaching four official milestones during the SEN381 timeframe. The amount of functionality that can be delivered is limited by the time and resources that are available. The project should use free or low-cost tools and services whenever possible, but it should also recognize any limits and extra costs that might come up outside of teaching. The scope that is already agreed upon needs to be carefully managed, and any new features should not be added in a way that causes the scope to grow uncontrollably. The project also assumes that the right people will be there to give the needed information about what is required and to check if the proposed solution works. It is assumed that users have the computer or network setup needed to use the final system. Security and quality are considered important responsibilities that are taken care of throughout the entire lifecycle. So, decisions about security, quality, how the system is built, and the technology used needed to be made during the whole project, not just left until the end when we’re testing or putting it into use.
 ## 7. Requirements Traceability Matrix (RTM) — Initial
-| Req ID | Design | Issue/PR | Test | Status |
-|---|---|---|---|---|
+| Req ID | Requirement | Design / Component | GitHub Issue / PR | Test | Status |
+|---|---|---|---|---|---|
+| FR-001 | Submit a new service request | Request Submission Module | TBD | TBD | Baselined|
+| FR-002 | Categorize a service request | Request Submission Module | TBD | TBD | Baselined |
+| FR-003 | View current request status | Request Tracking Module | TBD | TBD |Baselined |
+| FR-004 | View previously submitted requests | Request History Module | TBD | TBD | Baselined |
+| FR-005 | Receive feedback on request updates | Notification / Feedback Module | TBD | TBD | Baselined |
+| FR-006 | Staff view relevant requests | Staff Request Management Module | TBD | TBD | Baselined |
+| FR-007 | Search, filter and sort requests | Request Management Module | TBD | TBD | Baselined |
+| FR-008 | Staff view complete request details | Request Management Module | TBD | TBD | Baselined |
+| FR-009 | Accept or assign responsibility | Assignment Module | TBD | TBD | Baselined |
+| FR-010 | Update request status through controlled transitions | Request Workflow Module | TBD | TBD | Baselined |
+| FR-011 | Record actions, comments and resolution information | Request History / Audit Module | TBD | TBD | Baselined |
+| FR-012 | Resolve or close requests | Request Workflow Module | TBD | TBD | Baselined |
+| FR-013 | Provide management with service activity information | Management Dashboard / Reporting Module | TBD | TBD | Baselined |
+| FR-014 | Identify open, overdue, resolved and closed requests | Management Dashboard / Reporting Module | TBD | TBD | Baselined |
+| FR-015 | Provide request information by category, status and other dimensions | Reporting / Analytics Module | TBD | TBD | Baselined |
+| NFR-001 | Authentication | Authentication / Identity Component | TBD | TBD | Baselined |
+| NFR-002 | Role-based authorisation | Authorisation / Access Control | TBD | TBD | Baselined |
+| NFR-003 | Sensitive data protection | Security / Application Layer | TBD | TBD | Baselined |
+| NFR-004 | Secrets management | GitHub / Deployment Configuration | TBD | TBD | Baselined |
+| NFR-005 | Response performance | Application / API Layer | TBD | TBD | Baselined |
+| NFR-006 | Usability | User Interface | TBD | TBD | Baselined |
+| NFR-007 | Reliability | Application / Database Layer | TBD | TBD | Baselined |
+| NFR-008 | Availability | Deployment Infrastructure | TBD | TBD | Baselined |
+| NFR-009 | Auditability | Audit / Request History Module | TBD | TBD | Baselined |
+| NFR-010 | Maintainability | Application Architecture / Codebase | TBD | TBD | Baselined |
+| NFR-011 | Data integrity | Validation / Database Layer | TBD | TBD | Baselined |
+| NFR-012 | Browser compatibility | User Interface | TBD | TBD | Baselined |
+| NFR-013 | Scalability | Application / Infrastructure | TBD | TBD | Baselined |
+| NFR-014 | Recoverability | Database / Backup Infrastructure | TBD | TBD | Baselined |
 
 ## 8. Risk Register — Initial
 | Risk ID | Description | Cause | Probability | Impact | Priority | Mitigation | Owner | Status |
@@ -110,20 +139,36 @@ The project depends on certain assumptions and limitations that will affect how 
 | DEC-003 | The team needed a way to organise Milestone work and make responsibilities and progress visible. | Informal task allocation; a separate task list; GitHub Issues and Kanban board. | Use GitHub Issues and the project Kanban board to assign and track project work. | Issues provide clear task ownership and the Kanban board makes the progress of milestone work visible to the team. | If issues and statuses are not kept updated, project progress may be represented incorrectly and tasks could be overlooked. |
 
 ## 10. Process & Team Working Agreement
+The team's working agreement and process outline has been documented within the official Team Working Agreement: `docs/Decisions/team-working-agreement.md`.
 
 ## 11. GitHub Governance
+The CiviConnect Repository of Group L has been configured with the following controls:
+
+- **Repository:** There is one controlled team repository  (SEN381-CivicConnect), public (for ease of marking for lecturers), and with all three team members added in as collaborators.
+- **Main Branch Protection:** The 'main' branch is protected by making use of a GitHub Ruleset which outlines the requirement of pull requests before merging, each pull requests needs a minimum of 2 approving reviews (self-approval is not permitted). Stale approvals are dismissed automatically when new commits are pushed.
+- **Direct Commits to The Main:** Force pushes to the 'main' branch are blocked and not permitted. Any and all changes must go through a feature branch and Pull Request.
+- **Issues and Project Board:** The Milestone 1 work and tasks are tracked via making use of GitHub issues which are linked to a Kanban style Project Board (Backlog / In Progress / In Review / Done). PRs reference these issues by using "Closes #X" so merged work automatically updates the issues' state so team can track progress.
+- **Secrets:** No credentials, API keys or confidential material have been committed. A `.gitignore` file will also be added during Milstone 2. 
+- **Folder structure:** The project has controlled documentation which is strategically organised under `docs/` within the GitHub repository. (PED, Requirements, Risk, Decisions), following the  suggested structure in Appendix C of the Master Project Brief.
 
 ## 12. AI Usage Register
-| Date | Student | Tool | Task | AI Contribution | Verification | Decision |
-|---|---|---|---|---|---|---|
+All the material that were AI-assisted across the project are recorded in: 
+`docs/PED/ai-usage-register.md`
 
 ## 13. Initial Deployment/Operational Considerations
+The deployment and operational considerations have not yet been formally evaluated in Milestone 1 but will be during Milestone 2. 
+
+At this Milestone the team has noted these initial considerations to be defined to use in later milestones:
+- The team aims to make use of free deployment/hosting platforms where practical.
+- Our backup and recovery capability (referring to NFR-014) will need to be considered once a database/persistence technology has been selected.
+- Deployment decisions will need to account for secure configuration and secrets management since there is a presence of sensitive request/user data
+- These considerations will be revisited during Milestone 2 with concrete and researched decisions, ADRs and environment details (refer to PED_v2.0 if available).
 
 ## 14. Baseline Sign-Off
 | Field | Value |
 |---|---|
-| Scope reviewed | |
-| Requirements/traceability checked | |
-| Risk review completed | |
-| Governance controls checked | |
-| Outcome | |
+| Scope reviewed | YES - scope has been reviewed and approved by all team members via a pull request.|
+| Requirements/traceability checked | YES - 15 FRs and 14 NFRs defined alongside an acceptance criteria to refer to; initial RTM setup as well.|
+| Risk review completed | YES - 7 risks has been identified, discussed and approved by all team members|
+| Governance controls checked | YES - branch protection, pull requests mandatory, Issues and project board created and no self-approvals allowed (minimum 2)|
+| Outcome | ACCEPTED by entire team |
