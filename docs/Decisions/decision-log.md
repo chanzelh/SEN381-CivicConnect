@@ -1,18 +1,20 @@
 # Team Decision Log
-# Version One
 
-**Last updated:** 2026/09/07
+## Version One
+
+**Last Updated:** 2026/09/09  
 **Team:** Group L
 
 ## Purpose
-The intent of this log is for the team to collectively be able to log the records of all siginificant decsions that were made. The logs will include the rational, alternatives considered, trade-offs and the later consequences can then be reviewed and defended.
 
-(NB First decision was to make use of GitHub)
+The purpose of this log is to record significant engineering and project decisions made by the team throughout the CivicConnect project. Each decision records the context in which it was made, relevant constraints, alternatives considered, the reasoning behind the final decision, and any associated trade-offs or risks.
+
+This allows important decisions to be reviewed, justified and traced throughout later milestones. Later consequences will be updated as the project progresses and evidence becomes available.
 
 ## Decision Log
 
 | Decision ID | Context | Constraints | Alternatives Considered | Decision | Rationale | Trade-offs | Risks | Evidence | Later Consequence |
 |---|---|---|---|---|---|---|---|---|---|
-| DEC-001 | | | | | | | | | [update in later milestones] |
-| DEC-002 | | | | | | | | | |
- 
+| DEC-001 | The team required a controlled platform for version control, collaboration and maintaining evidence of project changes. | The project is completed by a three-person team and requires collaboration, traceability and controlled management of changes throughout the milestones. | GitHub; alternative repository/version-control platforms; managing and sharing files manually. | Use GitHub as the main version-control and collaboration platform for CivicConnect. | GitHub provides version control, branches, issues, pull requests, reviews and project history in one environment. These features allow the team to collaborate while maintaining evidence of how project artefacts change over time. | Using GitHub introduces additional process compared with simply sharing files. Team members must understand and consistently follow the agreed workflow. | Incorrect branch use, merge conflicts, outdated local versions or accidental changes could affect project artefacts if the workflow is not followed correctly. | CivicConnect GitHub repository, project issues, branches and pull-request history. | To be reviewed and updated in later milestones. |
+| DEC-002 | The team needed a controlled method for making changes to shared CivicConnect project artefacts without directly changing the approved main version. | Multiple team members may work on different tasks at the same time, and changes need to be reviewed before becoming part of the main project baseline. | Editing directly on the main branch; using one shared development branch; using separate task branches with pull requests. | Use separate branches for assigned tasks and merge changes into main through pull requests after peer review. | Separate branches allow team members to work independently without immediately affecting main. Pull requests provide an opportunity for other team members to review changes and create evidence of what was changed and approved. | The process takes more time than editing main directly and may require merge conflicts or requested changes to be resolved before work can be merged. | Poor branch management or failure to update from the latest approved version may result in conflicting or outdated changes. | GitHub issue branches, pull requests and review history. | To be reviewed and updated in later milestones. |
+| DEC-003 | The team needed a way to organise Milestone work and make responsibility and progress visible. | CivicConnect is completed by a three-person team across multiple milestones, with tasks depending on different team members and requiring review before completion. | Informal task allocation through messages; a separate task list; GitHub Issues and the project Kanban board. | Use GitHub Issues and the project Kanban board to assign and track project work. | Issues provide a clear record of individual tasks and ownership, while the Kanban board allows the team to see which work is outstanding, in progress, under review or completed. This also keeps task evidence connected to the project repository. | Team members must keep issue and project statuses updated for the board to accurately represent project progress. | If issues or statuses are not maintained, the board may not accurately show project progress and tasks could be overlooked. | GitHub Issues and the CivicConnect project Kanban board. | To be reviewed and updated in later milestones. |
