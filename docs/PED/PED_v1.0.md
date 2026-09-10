@@ -8,7 +8,7 @@
 ## 1. Document Control
 | Version | Date | Author(s) | Reviewed By | Status |
 |---|---|---|---|---|
-| 1.0 | | | | Draft |
+| 1.0 | 2026/09/09 | Kaylee, Alyssa, Chanzél | All team members | Finished |
 
 ## 2. Problem Statement & Business Need
 The organization currently manages service requests through a fragmented system comprising email, telephone communications, WhatsApp, spreadsheets, and manual paper-based records. These requests encompass a broad range of operational matters, including facility faults, equipment damage, security concerns, IT support, maintenance requirements, and lost property.
