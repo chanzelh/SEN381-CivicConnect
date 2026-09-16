@@ -11,3 +11,4 @@ Group L: Chanzél, Alyssa, Kaylee
 
 ## Status
 Milestone 1: Engineering Foundation & Requirements Baseline
+Milestone 2: Ongoing
