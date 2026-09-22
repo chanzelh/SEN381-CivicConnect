@@ -32,37 +32,32 @@ The main relationships are shown below.
 The final ERD should represent these relationships and their cardinalities.
 
 ## 2.3 Data Integrity and Validation
+Data validation should be handled across the different layers of CivicConnect rather than relying on one part of the system to catch every error.
 
-Data validation should be distributed across the appropriate layers rather than relying on a single point of validation.
+The user interface should handle basic input validation and give immediate feedback to the requester or staff member. The application layer should handle CivicConnect-specific business rules, such as checking whether a user is authorised to perform an operation and whether a requested status transition is valid. The database should then enforce the basic rules that must always be true, regardless of how the data is accessed.
 
-The user interface should handle basic input validation and provide immediate feedback to the requester or staff member. The application layer should enforce CivicConnect-specific business rules, such as whether a user is authorised to perform an operation and whether a requested status transition is valid. The database should enforce fundamental structural rules that must remain true regardless of how the data is accessed.
+The database can use constraints such as NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY and CHECK to help make sure required information is present and that relationships between records remain valid.
 
-PostgreSQL provides database integrity mechanisms such as NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY and CHECK constraints (PostgreSQL Global Development Group, 2023d). These mechanisms can help ensure that required information is present and that relationships between records remain valid.
-
-This layered approach is preferable because a user-interface check alone cannot guarantee data integrity. Business rules should remain in the application where they can be tested and maintained, while fundamental structural constraints should also be protected at the database level.
+This layered approach is useful because validation in the user interface alone cannot guarantee data integrity. Business rules should be handled in the application where they can be tested and maintained, while the database should provide an additional layer of protection for the underlying data.
 
 ## 2.4 Status Transitions and Transactions
+A request status change should be treated as one business operation. For example, when an authorised staff member changes a request from one valid status to another, the current status should be updated and the related history record should be created as part of the same operation.
 
-The request status transition is treated as a single business operation. For example, when an authorised staff member changes a request from one valid state to another, the current status should be updated and the corresponding history information should be recorded consistently.
+Using a transaction helps prevent partial updates. If the status is changed successfully but the history record fails to save, the system could end up with incomplete information. The transaction should therefore allow the related changes to succeed together or be rolled back if a failure occurs.
 
-A transaction is appropriate when multiple database changes form part of the same operation. The purpose is to prevent a partial update where one change succeeds while another fails. PostgreSQL's transaction-processing facilities support this type of atomic operation (PostgreSQL Global Development Group, 2023a).
+The application layer should first check whether the requested status transition is allowed. If it is valid, the status update and history entry can then be saved together.
 
-The application layer should first determine whether the transition is valid according to CivicConnect's business rules. If it is valid, the required database changes can then be performed as one transaction.
-
-This supports FR-010, which requires controlled status transitions, and NFR-009, which requires changes such as status and assignment updates to be auditable.
-
+This supports FR-010, which requires controlled status transitions, and NFR-009, which requires important changes such as status and assignment updates to be recorded for auditing.
 ## 2.5 Concurrency
+Concurrency also needs to be considered because multiple staff members may be working with service requests at the same time. For example, two staff members could attempt to update the same request at approximately the same time.
 
-Concurrency must also be considered because more than one staff member may work with service requests. Two users could potentially attempt to modify the same request at approximately the same time.
+The persistence design should therefore account for situations where multiple users access or modify the same data. The final concurrency approach should be based on the actual database implementation and expected usage of CivicConnect.
 
-PostgreSQL provides concurrency-control and transaction-isolation mechanisms for managing simultaneous access to data (PostgreSQL Global Development Group, 2023b; PostgreSQL Global Development Group, 2023c). The final concurrency strategy should be selected once the team's persistence implementation and expected usage are sufficiently defined.
-
-The team should avoid selecting the strongest possible isolation level simply because it provides stronger guarantees. Stronger isolation can introduce additional overhead and may require the application to handle transaction failures or retries. The selected approach should therefore be proportionate to CivicConnect's actual usage.
+The team should also avoid automatically choosing the strongest possible isolation level without considering the consequences. Stronger isolation can introduce additional processing overhead and may require the application to deal with transaction failures or retries. The selected approach should therefore provide enough protection for CivicConnect without adding unnecessary complexity.
 
 ## 2.6 Persistence Recommendation
+A relational persistence model is recommended for CivicConnect because the main data has clear relationships and needs consistent links between records. Users, service requests, categories and request history all have structured relationships that fit well within a relational database.
 
-A relational persistence model is recommended for CivicConnect because the core data has clearly defined relationships and requires reliable integrity between records. Users, service requests, categories and request history have structured relationships that are well suited to relational storage.
+The design will combine application-level business rules with database integrity constraints. Operations that involve multiple related changes, such as updating a request status and recording its history, should use transactions to maintain consistency.
 
-The design will use application-level business rules together with database integrity constraints. Important multi-step operations, such as status changes accompanied by history recording, should use transactions to preserve consistency.
-
-This decision directly supports the M1 requirements around request management, controlled status transitions, auditability and data integrity. It should be reflected in the M2 ERD, persistence implementation, relevant ADR and RTM.
+This approach supports the M1 requirements for request management, controlled status transitions, auditability and data integrity. The final design should be reflected in the M2 ERD and then carried through into the persistence implementation and related RTM and ADR entries.
