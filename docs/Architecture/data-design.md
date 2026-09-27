@@ -61,5 +61,3 @@ A relational persistence model is recommended for CivicConnect because the main 
 The design will combine application-level business rules with database integrity constraints. Operations that involve multiple related changes, such as updating a request status and recording its history, should use transactions to maintain consistency.
 
 This approach supports the M1 requirements for request management, controlled status transitions, auditability and data integrity. The final design should be reflected in the M2 ERD and then carried through into the persistence implementation and related RTM and ADR entries.
-## Assumptions/Constraints
-Type here
