@@ -177,3 +177,14 @@ Node.js remains a viable alternative and scored equally in security, deployment 
 Based on the weighted evaluation, .NET currently provides the stronger overall fit for CivicConnect.
 
 The selected technology stack and reasoning will be recorded in the CivicConnect Decision Log as an Architecture Decision Record (ADR).
+## Candidates Considered (2-3 realistic stacks, not a wishlist)
+Type here
+## Evaluation Criteria & Weights (pull straight from Brief Section 18.1)
+Type here
+## Scoring Matrix (table: criteria rows × candidate columns, weighted scores)
+Type here
+## Result (which stack won, by what margin)
+Type here
+## Justification Narrative (why the winner fits YOUR ASRs + team capability + schedule)
+Type here
+NOTE: final decision here needs to be noted in decision log NB
