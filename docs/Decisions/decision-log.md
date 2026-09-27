@@ -1,5 +1,5 @@
 # Team Decision Log
-## Milestone One
+## Milestone One & Two
 
 **Last Updated:** 2026/09/27  
 **Team:** Group L
