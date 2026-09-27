@@ -49,3 +49,5 @@ The decision is mainly influenced by the current scope, the three-person develop
 This does not mean that a distributed architecture has been rejected permanently. If future requirements introduce external consumers, independently scalable services or a need for separate deployment, the architecture can be reconsidered through the project's change-control and ADR process.
 
 The selected architecture should be recorded in an architecture ADR and represented in the M2 architecture diagram. The repository structure should also reflect the logical responsibilities established by the architecture.
+
+This choice directly satisfies NFR-002 (RBAC: enforced centrally rather than duplicated per service), NFR-009 (auditability: a single cross-cutting mechanism can intercept all status changes, per FR-010/FR-011), and NFR-010 (maintainability: layered boundaries achieve separation of concerns without the coordination overhead distributed deployment would add for a 3-person team).
