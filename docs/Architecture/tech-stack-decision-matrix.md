@@ -56,15 +56,15 @@ Security and maintainability also receive significant weighting because they are
 
 | Criterion | Weight | .NET Score | .NET Weighted | Node.js Score | Node.js Weighted |
 |---|---:|---:|---:|---:|---:|
-| Requirements & ASR Fit | 20% | 5 | 1.00 | 4 | 0.80 |
-| Team Capability | 20% | 5 | 1.00 | 3 | 0.60 |
+| Requirements & ASR Fit | 20% | 4 | 0.80 | 4 | 0.80 |
+| Team Capability | 20% | 4 | 0.80 | 5 | 1.00 |
 | Security | 15% | 4 | 0.60 | 4 | 0.60 |
-| Maintainability | 15% | 5 | 0.75 | 4 | 0.60 |
-| Schedule | 10% | 5 | 0.50 | 3 | 0.30 |
+| Maintainability | 15% | 4 | 0.60 | 4 | 0.60 |
+| Schedule | 10% | 4 | 0.40 | 5 | 0.50 |
 | Deployment Compatibility | 10% | 4 | 0.40 | 4 | 0.40 |
 | Cost & Licensing | 5% | 4 | 0.20 | 4 | 0.20 |
 | Ecosystem & Dependency Risk | 5% | 4 | 0.20 | 4 | 0.20 |
-| **Total** | **100%** |  | **4.65 / 5** |  | **3.70 / 5** |
+| **Total** | **100%** |  | **4.00 / 5** |  | **4.30 / 5** |
 
 ---
 
@@ -72,23 +72,23 @@ Security and maintainability also receive significant weighting because they are
 
 ### Requirements & ASR Fit
 
-**.NET – 5/5**
+**.NET – 4/5**
 
-.NET provides a strong fit for the CivicConnect requirements and identified ASRs, including authentication, role-based access, controlled status changes, auditability and separation of responsibilities. It can also support the selected modular layered monolith architecture.
+.NET can support the CivicConnect requirements and identified ASRs, including authentication, role-based access, controlled status changes, auditability and separation of responsibilities. It can also support the selected modular layered monolith architecture.
 
 **Node.js – 4/5**
 
-Node.js can also support the identified requirements and ASRs and can be structured as a modular layered monolith. It remains a strong alternative for the project.
+Node.js can also support the identified requirements and ASRs and can be structured as a modular layered monolith. The current project requirements do not provide a strong reason to favour either stack in this area.
 
 ### Team Capability
 
-**.NET – 5/5**
+**.NET – 4/5**
 
-.NET is already familiar within the project context and has previously been considered in Assignment 2, including the use of the .NET SDK and `dotnet test` for CI and automated testing.
+.NET is a suitable option and has previously been considered within the project, including the use of .NET tooling in Assignment 2.
 
-**Node.js – 3/5**
+**Node.js – 5/5**
 
-Node.js is a realistic alternative, but the current project documentation provides less evidence of its use within the planned CivicConnect development environment.
+Team review identified greater comfort with Node.js, particularly for REST API development and handling requests and responses. This reduces learning and implementation risk for the team.
 
 ### Security
 
@@ -102,23 +102,23 @@ Node.js can also support the required security controls. There is not enough pro
 
 ### Maintainability
 
-**.NET – 5/5**
+**.NET – 4/5**
 
-.NET can support clear separation between application responsibilities and fits well with the selected modular layered monolith architecture.
+.NET can support clear separation between application responsibilities and fits the selected modular layered monolith architecture.
 
 **Node.js – 4/5**
 
-Node.js can also support a modular layered structure. It therefore remains a strong option for maintainability when the application is structured and managed correctly.
+Node.js can also support a modular layered structure and clear separation of responsibilities. The maintainability of either option will depend on how the application is structured and managed.
 
 ### Schedule
 
-**.NET – 5/5**
+**.NET – 4/5**
 
-The available project work already includes consideration of .NET tooling, which reduces the amount of additional technology planning required before development begins.
+.NET is suitable for development within the available project timeframe.
 
-**Node.js – 3/5**
+**Node.js – 5/5**
 
-Node.js could also be implemented within the project timeframe, but less project-specific planning for the Node.js development environment has been documented so far.
+The team's greater comfort with Node.js, particularly for the planned API development, is expected to reduce learning and implementation time within the project schedule.
 
 ### Deployment Compatibility
 
@@ -154,37 +154,18 @@ Node.js also provides suitable development and dependency-management tools. Depe
 
 ## Result
 
-The .NET stack achieved a weighted score of **4.65/5**, while the Node.js stack achieved **3.70/5**, giving .NET a weighted advantage of **0.95 points**.
+Node.js achieved a weighted score of **4.30/5**, compared with **4.00/5** for .NET, giving Node.js a weighted advantage of **0.30 points**.
 
-Both technology stacks are technically viable for CivicConnect. Based on the current evaluation, the selected technology stack is:
+Both technology stacks can support the CivicConnect requirements and selected modular layered monolith architecture. Node.js scored higher mainly because team review identified greater familiarity and comfort with Node.js for the project's REST API development.
 
-**C# / ASP.NET Core with PostgreSQL.**
+Based on the weighted evaluation and team review, the selected technology stack is:
 
-The main factors contributing to the result are requirements and ASR fit, team capability, maintainability and schedule.
+**Node.js with Express and PostgreSQL.**
 
 ---
 
 ## Justification Narrative
 
-The .NET stack was selected because it achieved the strongest overall score against the current CivicConnect evaluation criteria.
+Node.js was selected because both stacks can meet the CivicConnect requirements and ASRs, while team review identified greater comfort with Node.js for REST API development. This reduces learning and implementation risk within the project schedule.
 
-Both .NET and Node.js can support the selected modular layered monolith architecture and the project's security, auditability and maintainability requirements.
-
-Previous CivicConnect research has also considered .NET tooling. Assignment 2 referred to using an agreed .NET SDK version and `dotnet test` as part of the project's CI and automated testing approach.
-
-Node.js remains a viable alternative and scored equally in security, deployment compatibility, cost and licensing, and ecosystem and dependency risk because the current project evidence does not justify claiming a significant advantage for either technology in these areas.
-
-Based on the weighted evaluation, .NET currently provides the stronger overall fit for CivicConnect.
-
-The selected technology stack and reasoning will be recorded in the CivicConnect Decision Log as an Architecture Decision Record (ADR).
-## Candidates Considered (2-3 realistic stacks, not a wishlist)
-Type here
-## Evaluation Criteria & Weights (pull straight from Brief Section 18.1)
-Type here
-## Scoring Matrix (table: criteria rows × candidate columns, weighted scores)
-Type here
-## Result (which stack won, by what margin)
-Type here
-## Justification Narrative (why the winner fits YOUR ASRs + team capability + schedule)
-Type here
-NOTE: final decision here needs to be noted in decision log NB
+The final technology decision will be recorded in the CivicConnect Decision Log as an ADR.
