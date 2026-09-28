@@ -1,7 +1,8 @@
 # Team Decision Log
 ## Milestone One & Two
 
-**Last Updated:** 2026/09/27  
+**Milestone One:** 2026/09/09  
+**Milestone Two:** 2026/09/27  
 **Team:** Group L
 
 ## Purpose
