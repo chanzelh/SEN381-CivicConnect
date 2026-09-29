@@ -1,11 +1,4 @@
 # Architecture Alternatives
-IMPORTANT NOTE:
-architecture-diagram.png will be added under the Architecture folder once it is completed.
-2nd NOTE
-under Wireframes the following PNGs will be necessary to be submitted once completed:
-requester-flow.png
-staff-flow.png
-management-dashboard.png
 ## 1.1 Architecture Problem
 CivicConnect must support several types of users and responsibilities within one service-request system. Requesters need to submit requests, monitor their status and view previous requests, while staff members need to manage, assign and update requests. Management also requires reliable information about service activity, including open, overdue, resolved and closed requests.
 
