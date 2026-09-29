@@ -104,13 +104,13 @@ The team's has gone through all the functional and non-functional requirements t
 Full explanation and reasoning can be found in: `docs/Architecture/asrs-quality-drivers.md`
 
 ## 8. Architecture Alternatives & Selection
-In order for the team to be able to balance distinct workflows against the necessary strict security, maintainability and auditability, the team had to evaluate a modular monolith architecture vs a distributed architecture. The distributed architecture did offer independent deployment and scaling but it did bring heavy network costs and operational and testing overhead which was unfeasibilt for a 3-person team. The team did decide on the modular monolith architecture which would enforce seperation of concerns and centralized auditing through the internal interfaces whilst still keeping the maintenance and deployment simple.
+In order for the team to be able to balance distinct workflows against the necessary strict security, maintainability and auditability, the team had to evaluate a modular monolith architecture vs a distributed architecture. The distributed architecture did offer independent deployment and scaling but it did bring heavy network costs and operational and testing overhead which was unfeasible for a 3-person team. The team did decide on the modular monolith architecture which would enforce seperation of concerns and centralized auditing through the internal interfaces whilst still keeping the maintenance and deployment simple.
 
 Full explanation and reasoning can be found in: `docs/Architecture/architecture-alternatives/md`
 
 ## 9. Architecture Diagrams
 The CivicConnect architecture is represented by the following diagrams that can be found in `docs/Architecture/Diagrams/`:
-- **Modular Layered Monolith Architecture.png:** Showcases the four-layered architecture and the responsibilities assigne to each layer.
+- **Modular Layered Monolith Architecture.png:** Showcases the four-layered architecture and the responsibilities assigned to each layer.
 - **Management Flowchart.png:** The management task sequence from login through dashboard filtering, reviewing the request overview, and read-only request detail (FR-013–FR-015).
 - **Requester Flowchart.png:** The requester's sequence of tasks from the login to giving a new request up until finalising.
 - **Staff Flowchart.png:** The staff task sequence from login through search/filter, assignment, status update, and the resolve-before-close rule
@@ -124,8 +124,12 @@ Node.js scored 4.30/5 against .NET's 4.00/5, with the difference driven primaril
 
 Full scoring, weighting rationale and per-criterion justification are documented in `docs/Architecture/tech-stack-decision-matrix.md`.
 
-## 11. Data Persistance Design
-TO BE UPDATED
+## 11. Data Persistence Design
+CivicConnect will use a relational database with PostgreSQL for data persistence. The main data will include service requests, users, categories and request history. A relational database was selected because these entities have clear relationships and the system needs to maintain consistent links between them.
+
+PostgreSQL also supports constraints and transactions, which will help prevent invalid data and ensure that important changes, such as a status update and its history record, are saved consistently. This approach provides the reliability and auditability required by CivicConnect while remaining suitable for the current project scope.
+
+The full data design, including the alternatives considered, data model, validation, transactions and concurrency considerations, is documented in `docs/Architecture/data-design.md`.
 
 ## 12. UI Design & Wireframes
 Eight wireframes were produced covering the core flows: Login, Submit New Request (including a validation-error state), Requester Dashboard, Requester Request Detail, Staff Dashboard, Staff Request Detail and Actions, and Management Dashboard. Each is traced to specific FRs/NFRs in the wireframe and traceability tables.
@@ -133,12 +137,17 @@ Eight wireframes were produced covering the core flows: Login, Submit New Reques
 Full detail, rationale and the wireframe images themselves are in `docs/Architecture/ui-design.md` and `docs/Architecture/Wireframes/`.
 
 ## 13. API Contracts
-TO BE UPDATED
+CivicConnect will use a REST API at the application boundary to allow the requester, staff and management interfaces to communicate with the application. Initial endpoints will support actions such as creating requests, viewing requests, searching and filtering requests, updating statuses and adding comments or actions.
+
+For communication between internal modules, the system will use in-process interfaces rather than REST. For example, the Request Management module can communicate with the Notification Service through an INotificationService interface. This was selected because CivicConnect is a modular layered monolith and the internal modules do not currently need to be independently deployed. It provides separation between modules without adding unnecessary network communication and complexity, while still leaving room to introduce external REST integrations if the system requires them later.
+
+The full API and integration analysis, including the alternatives considered, endpoint definitions and internal interface approach, is documented in `docs/Architecture/api-contracts.md`.
+
 
 ## 14. Design Principles & Avoidance of Unnecessary Complexity
 The Milestone 2 design choices were guided by the principle below (as evidenced by DC-004 and DEC-005 as well): 
 - **Deliberately rejected complexity:** The distributed system (highlighted in DEC-004) and the HTTP/REST and asynchronous messaging for internal notification integration (highlighted in `api-contracts/md`) were all considered by deliberately rejected due to unnecessary complexity. Each rejection was also supported by the current requirements not needing any of those features/software.
-- **Seperation of concerns over premature distribution:** The modular layered monolith (DEC-004) that was chosen can achieve the clearn boundaries needed such as presentation, application, domain and infrastructure responsibilites. This is done without having to introduce network boundaries that the team does not need currently (NFR-010).
+- **Seperation of concerns over premature distribution:** The modular layered monolith (DEC-004) that was chosen can achieve the clear boundaries needed such as presentation, application, domain and infrastructure responsibilites. This is done without having to introduce network boundaries that the team does not need currently (NFR-010).
 - **Choosing familiarity over theoretical flexibility:** DEC-005 outlines the selection of Node.js over .NET despite both stacks scoring similarly on requirements fit. This decision was because team capability and schedule risk were weighted explicitly.
 
 ## 15. Requirements Traceability Matrix (RTM) — Version Two
