@@ -1,8 +1,14 @@
 # Risk Register
-## Milestone One
+## Version Two — Milestone Two
 
-**Last Updated:** 2026/09/08  
 **Team:** Group L
+
+## Version History
+
+| Version | Date | Change |
+|---|---|---|
+| One — Milestone One | 2026/09/08 | Initial risk register (RISK-001–007). |
+| Two — Milestone Two | 2026/09/29 | Retained the original risks and added design risks RISK-008–012. |
 
 ## Purpose
 
@@ -14,6 +20,8 @@ The risk register will be reviewed and updated throughout the project as new ris
 
 ## Risk Log
 
+RISK-001–007 continue from the Milestone One register. RISK-008–012 were identified while mapping M2 architecture, data and interface decisions. Ratings are provisional until team review.
+
 | Risk ID | Description | Cause | Probability | Impact | Priority | Mitigation | Contingency | Owner | Status |
 |---|---|---|---|---|---|---|---|---|---|
 | RISK-001 | Requirements may be misunderstood, incomplete or interpreted differently during development. | Stakeholder needs may be unclear or team members may have different understandings of what a requirement means. | Med | High | High | Requirements will use clear IDs and measurable acceptance criteria. The team will review important requirements together before implementation to make sure there is a shared understanding of what is expected. Unclear requirements and assumptions will be discussed and documented rather than guessed. | If a requirement is found to be unclear or incorrect, the team will review and update the requirement and its acceptance criteria. Related project documents and completed work will then be checked to determine whether they also need to be updated. | Team | Monitoring |
@@ -23,6 +31,11 @@ The risk register will be reviewed and updated throughout the project as new ris
 | RISK-005 | AI-generated content may introduce incorrect, unsupported or unsuitable information into project work. | AI tools can produce convincing responses that may still be incorrect, incomplete or inappropriate for the CivicConnect project. | Med | High | High | AI will be used as an assistant rather than treated as an authority. Team members will understand and review AI-generated suggestions before accepting them. Important information will be checked against the project requirements, course material and existing project evidence. Relevant AI use and the human verification performed will also be recorded in the AI Usage Register. | If incorrect or unsupported AI-generated content is identified, the affected work will be reviewed and corrected by the team. Related project artefacts will also be checked to make sure the incorrect information has not been repeated or used as the basis for other engineering work. | Team | Monitoring |
 | RISK-006 | Requirements may lose traceability as the project moves from requirements into design, implementation and testing. | Requirements, GitHub issues, decisions, implementation work, tests and verification evidence may be created without maintaining clear links between them. | Med | High | High | Each requirement will keep its unique requirement ID so that it can be referenced consistently throughout the project. The Requirements Traceability Matrix (RTM) will be maintained as the project develops and will link requirements to relevant design, issues or pull requests, implementation and verification evidence as these become available. Evidence that does not yet exist will be recorded honestly rather than assumed. | If traceability gaps are identified, the team will review the affected requirement and determine which links or evidence are missing. The RTM and relevant project artefacts will then be updated so that the requirement can again be traced through the engineering process. | Team | Open |
 | RISK-007 | The project scope may grow beyond what the team can realistically deliver within the available time and resources. | New features or requests may be introduced during development without fully considering their effect on the schedule, complexity, security, testing and documentation required. | Med | High | High | The agreed scope baseline in the PED will be used when deciding whether new functionality belongs in the current project. Features identified as future or optional scope will not automatically be added. Proposed scope changes will first be discussed by the team and their effect on time, resources, quality, security and technical complexity will be considered before they are accepted. | If scope growth begins to negatively affect the project, the added functionality will be reviewed against the agreed scope baseline. Non-essential or unapproved additions will be removed or moved to future or optional scope so that the required CivicConnect functionality and milestone work can be prioritised. | Team | Monitoring |
+| RISK-008 | A request status may change without its history entry being saved. | Status and audit writes might be implemented as separate operations. | Med | High | High | Save valid status changes and their history entries in one PostgreSQL transaction; test rollback when either write fails. | If records disagree, stop further updates to affected requests, reconcile from available evidence and correct the transaction logic before retesting. | Team | Open |
+| RISK-009 | Two staff members may overwrite each other's assignment or status change. | Concurrent edits to the same request may not detect stale data. | Med | High | High | Choose and document a concurrency check for request updates; test two simultaneous changes and make conflicts visible to staff. | Review the affected request and audit history, correct ownership/status with an authorised staff member and reapply the change safely. | Team | Open |
+| RISK-010 | Requesters may miss important feedback after a request update. | The initial in-process notification interface has no final failure rule or delivery mechanism yet. | Med | Med | Med | Define the interface inputs, failure behavior and visible feedback before implementation; test notification failure separately from the request transaction. | Keep the request change traceable, show its current state in the requester UI and retry or manually communicate according to the agreed later notification process. | Team | Open |
+| RISK-011 | Management reports may become slow or show inconsistent overdue counts. | Reporting queries and overdue rules are not yet finalised and may read growing request/history data. | Med | Med | Med | Define one overdue rule; use consistent read queries, suitable indexes and representative data to check response times. | Correct the rule/query, flag affected reports and regenerate them from the stored request records. | Team | Open |
+| RISK-012 | Changes to one feature may unexpectedly affect another module. | A modular monolith can lose its intended boundaries if UI, request workflow, notification and reporting code access each other's data directly. | Med | Med | Med | Document responsibilities and interfaces; review PRs for cross-module dependencies and test affected request flows. | Refactor the dependency through the agreed interface and rerun the affected checks before merging. | Team | Open |
 
 ## Risk Review
 
