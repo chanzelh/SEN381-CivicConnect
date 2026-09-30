@@ -142,10 +142,53 @@ The Milestone 2 design choices were guided by the principle below (as evidenced 
 - **Choosing familiarity over theoretical flexibility:** DEC-005 outlines the selection of Node.js over .NET despite both stacks scoring similarly on requirements fit. This decision was because team capability and schedule risk were weighted explicitly.
 
 ## 15. Requirements Traceability Matrix (RTM) — Version Two
-TO BE UPDATED
+The Design / Component column has been updated to reflect the selected architecture, data design and interfaces. These components describe the planned design. GitHub issue, test and status fields retain their previous values until supporting evidence is available.
+
+| Req ID | Requirement | Design / Component | GitHub Issue / PR | Test | Status |
+|---|---|---|---|---|---|
+| FR-001 | Submit a new service request | Requester UI → Request Management service → Service Request repository | TBD | TBD | Baselined |
+| FR-002 | Categorize a service request | Requester UI → Category lookup → Service Request and Category data | TBD | TBD | Baselined |
+| FR-003 | View current request status | Requester dashboard → authorised Request Management read service → Service Request data | TBD | TBD | Baselined |
+| FR-004 | View previously submitted requests | Requester dashboard → Request History read service → Service Request and Request History data | TBD | TBD | Baselined |
+| FR-005 | Receive feedback on request updates | Request Workflow service → in-process Notification interface → requester feedback. Notification failure handling remains to be finalised. | TBD | TBD | Baselined |
+| FR-006 | Staff view relevant requests | Staff dashboard → server-side Authorisation component → Request Management read service | TBD | TBD | Baselined |
+| FR-007 | Search, filter and sort requests | Staff dashboard → Request Management query service → Service Request and Category data | TBD | TBD | Baselined |
+| FR-008 | Staff view complete request details | Staff detail UI → authorised Request Management read service → Service Request and Request History data | TBD | TBD | Baselined |
+| FR-009 | Accept or assign responsibility | Assignment/Request Workflow service → Service Request assignment and history. Assignment history model remains to be finalised. | TBD | TBD | Baselined |
+| FR-010 | Update request status through controlled transitions | Request Workflow service validates transitions → Service Request update and Request History entry saved in one database transaction | TBD | TBD | Baselined |
+| FR-011 | Record actions, comments and resolution information | Staff detail UI → Request History service → append-only Request History data | TBD | TBD | Baselined |
+| FR-012 | Resolve or close requests | Request Workflow service checks permissions and transitions → Service Request and Request History updated in one database transaction | TBD | TBD | Baselined |
+| FR-013 | Provide management with service activity information | Management dashboard → Reporting read service → Service Request and Category data | TBD | TBD | Baselined |
+| FR-014 | Identify open, overdue, resolved and closed requests | Reporting service → management dashboard. A consistent rule for identifying overdue requests remains to be finalised. | TBD | TBD | Baselined |
+| FR-015 | Provide request information by category, status and other dimensions | Reporting query service → Service Request and Category data → management dashboard | TBD | TBD | Baselined |
+| NFR-001 | Authentication | Authentication/Identity component → protected server routes | TBD | TBD | Baselined |
+| NFR-002 | Role-based authorisation | Central server-side Authorisation component for request and reporting operations | TBD | TBD | Baselined |
+| NFR-003 | Sensitive data protection | API response handling, error handling and logging controls; HTTPS configuration for deployment | TBD | TBD | Baselined |
+| NFR-004 | Secrets management | Runtime/environment configuration and repository controls | TBD | TBD | Baselined |
+| NFR-005 | Response performance | Request Management and Reporting query services; database query and index design | TBD | TBD | Baselined |
+| NFR-006 | Usability | Requester, staff and management UI flows with clear validation feedback | TBD | TBD | Baselined |
+| NFR-007 | Reliability | Request Management service → PostgreSQL transactions → Service Request repository | TBD | TBD | Baselined |
+| NFR-008 | Availability | Application and PostgreSQL hosting arrangement. Deployment details remain to be finalised. | TBD | TBD | Baselined |
+| NFR-009 | Auditability | Request Workflow and Assignment services → Request History saved in the same transaction as key changes | TBD | TBD | Baselined |
+| NFR-010 | Maintainability | Presentation, application and persistence layers; separated identity, request, notification and reporting responsibilities | TBD | TBD | Baselined |
+| NFR-011 | Data integrity | UI validation, application business rules and PostgreSQL constraints and transactions | TBD | TBD | Baselined |
+| NFR-012 | Browser compatibility | Web UI across requester, staff and management views | TBD | TBD | Baselined |
+| NFR-013 | Scalability | Application deployment and indexed request/report queries. Load testing remains pending. | TBD | TBD | Baselined |
+| NFR-014 | Recoverability | PostgreSQL backup and restore process. Backup schedule and deployment environment remain to be finalised. | TBD | TBD | Baselined |
 
 ## 16. Risk Register — Version Two
-TO BE UPDATED
+The Risk Register has been updated for Milestone Two. Existing risks
+RISK-001–007 and their original dates have been retained.
+
+The following risks were identified during the design work:
+- RISK-008: Request status changes may be saved without corresponding history.
+- RISK-009: Concurrent staff updates may overwrite assignment or status changes.
+- RISK-010: Notification failures may prevent requesters from receiving feedback.
+- RISK-011: Reporting may be slow or produce inconsistent overdue counts.
+- RISK-012: Direct data access between modules may create excessive coupling.
+
+See the [Risk Register — Version Two](../Risk/risk-register.md)
+for risk ratings, mitigation actions, contingencies, owners and status.
 
 ## 17. Engineering Decision Log — Version Two
 | Decision ID | Context | Constraints | Alternatives Considered | Decision | Rationale | Trade-offs | Risks | Evidence | Later Consequence |
