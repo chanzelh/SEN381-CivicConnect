@@ -116,13 +116,31 @@ The CivicConnect architecture is represented by the following diagrams that can 
 - **Staff Flowchart.png:** The staff task sequence from login through search/filter, assignment, status update, and the resolve-before-close rule
 
 ## 10. Technology Stack Decision
-The technology stack was selected using a weighted decision matrix evaluating the difference between .NET stack and a Node.js stack.
+The technology stack was evaluated against the technical needs of CivicConnect rather than selecting a stack based mainly on team familiarity. The criteria were weighted according to their importance to the system.
 
-Node.js scored 4.30/5 against .NET's 4.00/5, with the difference driven primarily by team capability and schedule, where team review identified stronger familiarity with Node.js for REST API development.
+| Criterion | Weight | PERN | MERN | React + ASP.NET Core + PostgreSQL |
+|---|---:|---:|---:|---:|
+| Data relationships & integrity | 25% | 5 | 3 | 5 |
+| Request updates & audit history | 20% | 5 | 4 | 5 |
+| Reporting & filtering | 15% | 5 | 4 | 5 |
+| Security integration | 15% | 4 | 4 | 5 |
+| Backend structure & maintainability | 15% | 4 | 4 | 5 |
+| Language & development simplicity | 10% | 5 | 5 | 4 |
+| **Weighted Total** | **100%** | **4.70 / 5** | **3.85 / 5** | **4.90 / 5** |
 
-**Decision:** Node.js with Express and PostgreSQL (DEC-005).
+### Decision
 
-Full scoring, weighting rationale and per-criterion justification are documented in `docs/Architecture/tech-stack-decision-matrix.md`.
+**Selected stack: PERN (PostgreSQL, Express, React and Node.js).**
+
+The evaluation showed that React + ASP.NET Core + PostgreSQL achieved the highest technical score at **4.90/5**, with PERN close behind at **4.70/5**.
+
+Although ASP.NET Core scored slightly higher, the difference was not considered large enough to justify changing the existing technical direction of the project. PERN still meets the main CivicConnect requirements, including relational data handling, request tracking, reporting and audit history.
+
+Changing the backend technology at this stage would also introduce additional implementation and integration work and increase delivery risk. PERN allows the application to use JavaScript across the frontend and backend while PostgreSQL provides the relational data capabilities required by CivicConnect.
+
+The team therefore decided to retain PERN as the most appropriate overall option when both technical suitability and the consequences of changing the current project baseline were considered.
+
+This decision and its supporting evaluation are recorded in the Decision Log.
 
 ## 11. Data Persistence Design
 CivicConnect will use a relational database with PostgreSQL for data persistence. The main data will include service requests, users, categories and request history. A relational database was selected because these entities have clear relationships and the system needs to maintain consistent links between them.
