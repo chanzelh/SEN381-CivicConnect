@@ -1,7 +1,15 @@
 # CivicConnect Requirements
-# Milestone One
+## Version Two — Milestone Two
 
-**Last updated:** 2026/09/08
+**Team:** Group L
+
+## Version History
+
+| Version | Date | Change |
+|---|---|---|
+| One — Milestone One | 2026/09/08 | Initial Functional & Non-Functional Requirements|
+| Two — Milestone Two | 2026/09/29 | No Changes have been made from Milestone 1 |
+
 **See also:** PED Section 5 
 
 ## Functional Requirements
