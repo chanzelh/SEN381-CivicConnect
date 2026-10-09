@@ -309,6 +309,20 @@ If notification processing fails, the request remains successfully updated and t
 
 This behaviour ensures that the notification integration does not compromise the consistency of the core request-management operation.
 
+### 3.10.4 Notification Failure and Recovery Decision
+
+CivicConnect will treat a notification failure separately from the service-request update. Once the request status and its corresponding Request History entry have been committed successfully, a notification failure will not roll back the request update. The request remains in its updated state, and the notification failure must be recorded so that it can be recovered.
+
+For the initial implementation, the notification module will use a bounded retry approach. If notification processing fails because of a temporary problem, the system will retry the operation up to three times, with a short delay between attempts. If all attempts fail, the notification will be marked as failed and the error will be logged with the relevant request reference, notification type and failure details. Sensitive information must not be included in logs.
+
+A failed notification must remain identifiable so that it can be retried later rather than being silently discarded. Authorised staff or a designated administrator should be able to identify failed notifications and initiate a retry. A retry must not create duplicate notifications where the delivery mechanism supports duplicate detection.
+
+The notification retry process must not repeat the service-request status update or create another Request History entry. It must retry only the notification operation associated with the already-committed request change.
+
+This decision keeps request management reliable even when notification delivery is temporarily unavailable. It also provides a clear recovery path without introducing a message broker or a distributed architecture that is unnecessary for the current project scope.
+
+Recovery decision: Commit the request update and history entry first, attempt notification processing, retry temporary failures up to three times, and record persistent failures for later investigation and manual retry. The retry mechanism and failed-notification tracking must be verified during implementation before this behaviour is treated as complete.
+
 ## 3.11 Relationship to Architecture and Design Patterns
 
 The API design supports the selected modular layered monolith architecture.
