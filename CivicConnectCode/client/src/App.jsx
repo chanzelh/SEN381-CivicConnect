@@ -2,7 +2,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+
 import RequesterDashboard from "./pages/RequesterDashboard";
+import NewRequest from "./pages/NewRequest";
+import RequestDetails from "./pages/RequestDetails";
 
 import StaffDashboard from "./pages/StaffDashboard";
 import ManagementDashboard from "./pages/ManagementDashboard";
@@ -12,44 +15,25 @@ function App() {
     <Routes>
 
       /* Authentication */
-      <Route
-        path="/"
-        element={<Navigate to="/login" replace />}
-      />
+      <Route path="/" element={<Navigate to="/login" replace />}/>
 
-      <Route
-        path="/login"
-        element={<Login />}
-      />
+      <Route path="/login" element={<Login />}/>
 
-      <Route
-        path="/signup"
-        element={<Signup />}
-      />
+      <Route path="/signup" element={<Signup />}/>
 
       /* Requester */
-      <Route
-        path="/requester"
-        element={<RequesterDashboard />}
-      />
+      <Route path="/requester" element={<RequesterDashboard />}/>
+      <Route path="/requester/new" element={<NewRequest />}/>
+      <Route path="/requester/:id" element={<RequestDetails />}/>
 
       /* Staff */
-      <Route
-        path="/staff"
-        element={<StaffDashboard />}
-      />
+      <Route path="/staff" element={<StaffDashboard />}/>
 
       /* Management */
-      <Route
-        path="/management"
-        element={<ManagementDashboard />}
-      />
+      <Route path="/management" element={<ManagementDashboard />}/>
 
       /* Invalid URL */
-      <Route
-        path="*"
-        element={<Navigate to="/login" replace />}
-      />
+      <Route path="*" element={<Navigate to="/login" replace />}/>
 
     </Routes>
   );
