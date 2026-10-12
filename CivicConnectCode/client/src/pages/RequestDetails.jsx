@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -6,6 +5,7 @@ import BrandHeader from "../components/Header";
 import Navbar from "../components/Navbar";
 import SectionHeading from "../components/SectionHeading";
 import StatusBadge from "../components/StatusBadge";
+import TechnicalRequestDetails from "../components/TechnicalRequestDetails";
 
 function formatDate(value) {
   if (!value) return "—";
@@ -54,8 +54,7 @@ function RequestDetails() {
 
         if (!response.ok) {
           throw new Error(
-            data.message ||
-              "Could not load request details."
+            data.message || "Could not load request details."
           );
         }
 
@@ -65,8 +64,7 @@ function RequestDetails() {
       } catch (err) {
         if (active) {
           setError(
-            err.message ||
-              "Unable to connect to the server."
+            err.message || "Unable to connect to the server."
           );
         }
       } finally {
@@ -172,6 +170,9 @@ function RequestDetails() {
                   "No description provided."}
               </p>
             </div>
+
+            {/* Technical request details */}
+            <TechnicalRequestDetails request={request} />
 
             <div className="request-details-footer">
               <p>

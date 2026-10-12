@@ -29,15 +29,43 @@ async function apiRequest(url, options = {}) {
     },
   });
 
-  const data = await response.json().catch(() => ({}));
+  const responseText = await response.text();
+  let data = {};
+
+  try {
+    data = responseText ? JSON.parse(responseText) : {};
+  } catch {
+    data = { message: responseText };
+  }
 
   if (!response.ok) {
+    console.error("Management API error:", {
+      url,
+      status: response.status,
+      response: data,
+    });
+
     throw new Error(
-      data.message || `Request failed (HTTP ${response.status}).`
+      data.message || `Request failed with HTTP ${response.status}.`
     );
   }
 
   return data;
+}
+
+function getField(object, ...keys) {
+  for (const key of keys) {
+    if (
+      object &&
+      object[key] !== undefined &&
+      object[key] !== null &&
+      object[key] !== ""
+    ) {
+      return object[key];
+    }
+  }
+
+  return null;
 }
 
 function getDateInputValue(value) {
@@ -49,6 +77,16 @@ function getDateInputValue(value) {
 }
 
 function formatDate(value) {
+  if (!value) return "Not provided";
+
+  const date = new Date(value);
+
+  return Number.isNaN(date.getTime())
+    ? "Not provided"
+    : date.toLocaleString();
+}
+
+function formatDateOnly(value) {
   const dateValue = getDateInputValue(value);
 
   if (!dateValue) return "Not set";
@@ -72,6 +110,20 @@ function isOverdue(dueDate, status) {
   const deadline = new Date(year, month - 1, day);
 
   return deadline < today;
+}
+
+function DetailField({ label, value, multiline = false }) {
+  const displayValue =
+    value !== null && value !== undefined && value !== ""
+      ? value
+      : "Not provided";
+
+  return (
+    <div className={`manager-detail-field${multiline ? " manager-detail-field-wide" : ""}`}>
+      <span>{label}</span>
+      <p>{displayValue}</p>
+    </div>
+  );
 }
 
 function HorizontalBarChart({ title, data }) {
@@ -117,12 +169,293 @@ function HorizontalBarChart({ title, data }) {
   );
 }
 
+function RequestDetailsModal({ request, onClose, staffMembers }) {
+  useEffect(() => {
+    if (!request) return undefined;
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [request, onClose]);
+
+  if (!request) return null;
+
+  const id = getField(request, "id", "request_id");
+  const title = getField(request, "title", "request_title", "subject");
+  const assignedStaffId = getField(
+    request,
+    "assignedStaffId",
+    "assigned_staff_id"
+  );
+
+  const staffMember = staffMembers.find(
+    (member) => String(member.id) === String(assignedStaffId)
+  );
+
+  const assignedName =
+    staffMember?.fullName ||
+    getField(
+      request,
+      "staffName",
+      "staff_name",
+      "assigned",
+      "assigned_to",
+      "assigned_name"
+    ) ||
+    "Unassigned";
+
+  return (
+    <div
+      className="manager-modal-backdrop"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <section
+        className="manager-details-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="manager-details-title"
+      >
+        <header className="manager-modal-header">
+          <div>
+            <p className="manager-modal-reference">
+              REQUEST #{id ?? "—"}
+            </p>
+
+            <h2 id="manager-details-title">
+              {title || `Request #${id}`}
+            </h2>
+
+            <div className="manager-modal-status">
+              <StatusBadge status={request.status || "Pending"} />
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="manager-modal-close"
+            onClick={onClose}
+            aria-label="Close request details"
+          >
+            &times;
+          </button>
+        </header>
+
+        <div className="manager-modal-body">
+          <section className="manager-detail-section">
+            <h3>Request Information</h3>
+
+            <div className="manager-detail-grid">
+              <DetailField
+                label="Reference number"
+                value={id != null ? `#${id}` : null}
+              />
+
+              <DetailField
+                label="Category"
+                value={getField(request, "category")}
+              />
+
+              <DetailField
+                label="Status"
+                value={getField(request, "status")}
+              />
+
+              <DetailField
+                label="Assigned staff"
+                value={assignedName}
+              />
+
+              <DetailField
+                label="Submitted"
+                value={formatDate(
+                  getField(
+                    request,
+                    "submittedAt",
+                    "submitted",
+                    "submitted_at",
+                    "createdAt",
+                    "created_at"
+                  )
+                )}
+              />
+
+              <DetailField
+                label="Last updated"
+                value={formatDate(
+                  getField(
+                    request,
+                    "updatedAt",
+                    "updated",
+                    "updated_at"
+                  )
+                )}
+              />
+
+              <DetailField
+                label="Due date"
+                value={formatDateOnly(
+                  getField(request, "dueDate", "due_date")
+                )}
+              />
+            </div>
+          </section>
+
+          <section className="manager-detail-section">
+            <h3>Requester Information</h3>
+
+            <div className="manager-detail-grid">
+              <DetailField
+                label="Requester name"
+                value={getField(
+                  request,
+                  "requesterName",
+                  "requester_name",
+                  "request_name"
+                )}
+              />
+
+              <DetailField
+                label="Requester email"
+                value={getField(
+                  request,
+                  "requesterEmail",
+                  "requester_email",
+                  "request_email"
+                )}
+              />
+            </div>
+          </section>
+
+          <section className="manager-detail-section">
+            <h3>Request Description</h3>
+
+            <DetailField
+              label="Full description"
+              value={getField(
+                request,
+                "description",
+                "request_description",
+                "requestDescription",
+                "details"
+              )}
+              multiline
+            />
+          </section>
+
+          <section className="manager-detail-section">
+            <h3>Technical Details</h3>
+
+            <div className="manager-detail-grid">
+              <DetailField
+                label="Issue type"
+                value={getField(request, "issueType", "issue_type")}
+              />
+
+              <DetailField
+                label="Device type"
+                value={getField(request, "deviceType", "device_type")}
+              />
+
+              <DetailField
+                label="Device name"
+                value={getField(request, "deviceName", "device_name")}
+              />
+
+              <DetailField
+                label="Manufacturer"
+                value={getField(request, "manufacturer")}
+              />
+
+              <DetailField
+                label="Model"
+                value={getField(request, "model")}
+              />
+
+              <DetailField
+                label="Software name"
+                value={getField(request, "softwareName", "software_name")}
+              />
+
+              <DetailField
+                label="Software version"
+                value={getField(
+                  request,
+                  "softwareVersion",
+                  "software_version"
+                )}
+              />
+
+              <DetailField
+                label="Operating system"
+                value={getField(
+                  request,
+                  "operatingSystem",
+                  "operating_system"
+                )}
+              />
+
+              <DetailField
+                label="Location"
+                value={getField(request, "location")}
+              />
+
+              <DetailField
+                label="Date issue started"
+                value={formatDate(
+                  getField(request, "dateStarted", "date_started")
+                )}
+              />
+
+              <DetailField
+                label="Impact"
+                value={getField(request, "impact")}
+              />
+
+              <DetailField
+                label="Urgency"
+                value={getField(request, "urgency")}
+              />
+
+              <DetailField
+                label="Error message"
+                value={getField(request, "errorMessage", "error_message")}
+                multiline
+              />
+
+              <DetailField
+                label="Troubleshooting already attempted"
+                value={getField(request, "troubleshooting")}
+                multiline
+              />
+            </div>
+          </section>
+        </div>
+
+        <footer className="manager-modal-footer">
+          <button type="button" onClick={onClose}>
+            Close Details
+          </button>
+        </footer>
+      </section>
+    </div>
+  );
+}
+
 function ManagementDashboard() {
   const [requests, setRequests] = useState([]);
   const [staffMembers, setStaffMembers] = useState([]);
   const [selectedStaff, setSelectedStaff] = useState({});
   const [selectedDueDates, setSelectedDueDates] = useState({});
   const [assigningId, setAssigningId] = useState(null);
+  const [viewingRequest, setViewingRequest] = useState(null);
 
   const [selectedStatuses, setSelectedStatuses] = useState({});
   const [savingStatusIds, setSavingStatusIds] = useState([]);
@@ -207,7 +540,7 @@ function ManagementDashboard() {
             "Unassigned",
 
           dueDate,
-          due: formatDate(dueDate),
+          due: formatDateOnly(dueDate),
           overdue: isOverdue(dueDate, requestStatus),
         };
       });
@@ -218,9 +551,7 @@ function ManagementDashboard() {
         const next = { ...previous };
 
         normalized.forEach((request) => {
-          if (!(request.id in next)) {
-            next[request.id] = request.status;
-          }
+          next[request.id] ??= request.status;
         });
 
         return next;
@@ -230,9 +561,7 @@ function ManagementDashboard() {
         const next = { ...previous };
 
         normalized.forEach((request) => {
-          if (!(request.id in next)) {
-            next[request.id] = request.assignedStaffId;
-          }
+          next[request.id] ??= request.assignedStaffId;
         });
 
         return next;
@@ -242,9 +571,7 @@ function ManagementDashboard() {
         const next = { ...previous };
 
         normalized.forEach((request) => {
-          if (!(request.id in next)) {
-            next[request.id] = request.dueDate;
-          }
+          next[request.id] ??= request.dueDate;
         });
 
         return next;
@@ -353,7 +680,7 @@ function ManagementDashboard() {
                 assignedStaffId: String(staffId),
                 assigned: chosenStaff?.fullName ?? "Assigned",
                 dueDate,
-                due: formatDate(dueDate),
+                due: formatDateOnly(dueDate),
                 status: savedStatus,
                 overdue: isOverdue(dueDate, savedStatus),
               }
@@ -372,7 +699,6 @@ function ManagementDashboard() {
       );
     } catch (err) {
       console.error("Assignment failed:", err);
-
       setAssignmentError(
         err.message || "Could not assign this request."
       );
@@ -437,7 +763,6 @@ function ManagementDashboard() {
       );
     } catch (err) {
       console.error("Status update failed:", err);
-
       setStatusError(
         err.message || "Could not update the request status."
       );
@@ -673,7 +998,7 @@ function ManagementDashboard() {
             <table className="staff-table management-table">
               <thead>
                 <tr>
-                  <th>Ref</th>
+                  <th>Reference</th>
                   <th>Title</th>
                   <th>Requester</th>
                   <th>Category</th>
@@ -682,6 +1007,7 @@ function ManagementDashboard() {
                   <th>Assigned Staff</th>
                   <th>Due Date</th>
                   <th>Overdue</th>
+                  <th>Details</th>
                   <th>Assign / Reassign</th>
                 </tr>
               </thead>
@@ -689,7 +1015,7 @@ function ManagementDashboard() {
               <tbody>
                 {filteredRequests.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="empty-table">
+                    <td colSpan={11} className="empty-table">
                       No requests match your filters.
                     </td>
                   </tr>
@@ -708,13 +1034,11 @@ function ManagementDashboard() {
                         <td>
                           <div className="requester-cell">
                             <strong>
-                              {request.requesterName ||
-                                "Unknown requester"}
+                              {request.requesterName || "Unknown requester"}
                             </strong>
 
                             <small>
-                              {request.requesterEmail ||
-                                "No email available"}
+                              {request.requesterEmail || "No email available"}
                             </small>
                           </div>
                         </td>
@@ -758,8 +1082,7 @@ function ManagementDashboard() {
                               disabled={
                                 isSaving ||
                                 !selectedStatuses[request.id] ||
-                                selectedStatuses[request.id] ===
-                                  request.status
+                                selectedStatuses[request.id] === request.status
                               }
                             >
                               {isSaving ? "Saving..." : "Save"}
@@ -771,12 +1094,18 @@ function ManagementDashboard() {
 
                         <td>{request.due}</td>
 
-                        <td
-                          className={
-                            request.overdue ? "overdue-text" : ""
-                          }
-                        >
+                        <td className={request.overdue ? "overdue-text" : ""}>
                           {request.overdue ? "Yes" : "No"}
+                        </td>
+
+                        <td>
+                          <button
+                            type="button"
+                            className="manager-view-details-button"
+                            onClick={() => setViewingRequest(request)}
+                          >
+                            View Details
+                          </button>
                         </td>
 
                         <td>
@@ -844,6 +1173,12 @@ function ManagementDashboard() {
           </div>
         )}
       </main>
+
+      <RequestDetailsModal
+        request={viewingRequest}
+        staffMembers={staffMembers}
+        onClose={() => setViewingRequest(null)}
+      />
     </div>
   );
 }

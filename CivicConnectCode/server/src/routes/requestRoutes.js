@@ -9,6 +9,11 @@ const {
   getAllRequestsForManager,
   assignRequest,
   getStaffMembers,
+  getAssignedRequestDetails,
+  getRequestComments,
+  createRequestComment,
+  getRequesterRequestComments,
+  createRequesterRequestComment
 } = require("../controllers/requestController");
 
 const {
@@ -58,6 +63,29 @@ router.get(
   getAssignedRequests
 );
 
+router.get(
+  "/assigned/:id",
+  authenticateToken,
+  requireRole("staff"),
+  getAssignedRequestDetails
+);
+
+// Staff: view comments
+router.get(
+  "/:id/comments",
+  authenticateToken,
+  requireRole("staff"),
+  getRequestComments
+);
+
+// Staff: add a comment
+router.post(
+  "/:id/comments",
+  authenticateToken,
+  requireRole("staff"),
+  createRequestComment
+);
+
 // Requester routes
 router.get(
   "/mine",
@@ -78,6 +106,20 @@ router.post(
   authenticateToken,
   requireRole("requester"),
   createMyRequest
+);
+
+router.get(
+  "/mine/:id/comments",
+  authenticateToken,
+  requireRole("requester"),
+  getRequesterRequestComments
+);
+
+router.post(
+  "/mine/:id/comments",
+  authenticateToken,
+  requireRole("requester"),
+  createRequesterRequestComment
 );
 
 

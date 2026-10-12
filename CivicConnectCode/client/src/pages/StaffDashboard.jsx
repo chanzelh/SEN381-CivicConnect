@@ -1,6 +1,5 @@
-
 import { useEffect, useMemo, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import BrandHeader from "../components/Header";
 import Navbar from "../components/Navbar";
 import SectionHeading from "../components/SectionHeading";
@@ -21,7 +20,7 @@ function StaffDashboard() {
   const [savingIds, setSavingIds] = useState([]);
   const [selectedStatuses, setSelectedStatuses] = useState({});
   const [message, setMessage] = useState("");
-
+  const navigate = useNavigate();
   async function loadRequests(signal) {
     setLoading(true);
     setError("");
@@ -360,7 +359,23 @@ function StaffDashboard() {
                       );
 
                       return (
-                        <tr key={request.id}>
+                        <tr key={request.id} className="staff-clickable-row" tabIndex={0} onClick={(event) => {
+                          if (event.target.closest("button, select, input, a, textarea")) {
+                          return;
+                          }
+
+                          navigate(`/staff/requests/${request.id}`);
+                          }}
+                          onKeyDown={(event) => {
+                          if (
+                            (event.key === "Enter" || event.key === " ") &&
+                            event.target === event.currentTarget
+                            ) {
+                            event.preventDefault();
+                            navigate(`/staff/requests/${request.id}`);
+                            }
+                          }}
+                          >
                           <td>#{request.id}</td>
                           <td>{request.title}</td>
                           <td>{request.category}</td>

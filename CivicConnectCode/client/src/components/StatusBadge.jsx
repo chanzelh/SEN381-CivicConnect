@@ -1,11 +1,14 @@
 function StatusBadge({ status }) {
-  const className = status
+  const safeStatus = status || "Pending";
+
+  const normalizedStatus = safeStatus
+    .toString()
     .toLowerCase()
-    .replace(" ", "-");
+    .replace(/\s+/g, "-");
 
   return (
-    <span className={`status-badge status-${className}`}>
-      {status}
+    <span className={`status-badge status-${normalizedStatus}`}>
+      {safeStatus}
     </span>
   );
 }

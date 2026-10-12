@@ -8,8 +8,9 @@ import Account from "./pages/Account";
 import RequesterDashboard from "./pages/RequesterDashboard";
 import NewRequest from "./pages/NewRequest";
 import RequestDetails from "./pages/RequestDetails";
-
+import RequesterRequestDetails from "./pages/RequesterRequestDetails";
 import StaffDashboard from "./pages/StaffDashboard";
+import StaffRequestDetails from "./pages/StaffRequestDetails";
 import ManagementDashboard from "./pages/ManagementDashboard";
 
 function getStoredUser() {
@@ -86,14 +87,6 @@ function App() {
         }
       />
 
-      <Route
-        path="/requester/requests/:id"
-        element={
-          <RequireAuth allowedRoles={["requester"]}>
-            <RequestDetails />
-          </RequireAuth>
-        }
-      />
 
       <Route
         path="/staff"
@@ -103,6 +96,10 @@ function App() {
           </RequireAuth>
         }
       />
+      <Route
+  path="/staff/requests/:id"
+  element={<StaffRequestDetails />}
+  />
 
       <Route
         path="/management"
@@ -112,6 +109,16 @@ function App() {
           </RequireAuth>
         }
       />
+     
+<Route
+  path="/requester/requests/:id"
+  element={
+    <RequireAuth allowedRoles={["requester"]}>
+      <RequesterRequestDetails />
+    </RequireAuth>
+  }
+/>
+
 
       <Route
         path="*"
