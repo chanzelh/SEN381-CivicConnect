@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -33,25 +34,39 @@ function RequestDetails() {
       setRequest(null);
 
       try {
+        const token = sessionStorage.getItem("token");
+
+        if (!token) {
+          navigate("/login", { replace: true });
+          return;
+        }
+
         const response = await fetch(
-          `http://localhost:5000/api/requests/mine/${encodeURIComponent(id)}`
+          `http://localhost:5000/api/requests/mine/${encodeURIComponent(id)}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         const data = await response.json();
 
         if (!response.ok) {
           throw new Error(
-            data.message || "Could not load request details."
+            data.message ||
+              "Could not load request details."
           );
         }
 
         if (active) {
-          setRequest(data);
+          setRequest(data.request ?? data);
         }
       } catch (err) {
         if (active) {
           setError(
-            err.message || "Unable to connect to the server."
+            err.message ||
+              "Unable to connect to the server."
           );
         }
       } finally {
@@ -66,7 +81,7 @@ function RequestDetails() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <div className="page requester-page">
@@ -110,7 +125,7 @@ function RequestDetails() {
             <div className="request-details-header">
               <div>
                 <p className="request-reference">
-                  Reference #{request.id}
+                  Reference #{request.id ?? request.request_id}
                 </p>
 
                 <h2>{request.title}</h2>
@@ -122,22 +137,30 @@ function RequestDetails() {
             <div className="request-details-grid">
               <div className="request-detail-item">
                 <span>Category</span>
-                <strong>{request.category}</strong>
+                <strong>{request.category || "—"}</strong>
               </div>
 
               <div className="request-detail-item">
                 <span>Current Status</span>
-                <strong>{request.status}</strong>
+                <strong>{request.status || "—"}</strong>
               </div>
 
               <div className="request-detail-item">
                 <span>Date Submitted</span>
-                <strong>{formatDate(request.submitted)}</strong>
+                <strong>
+                  {formatDate(
+                    request.submitted ?? request.created_at
+                  )}
+                </strong>
               </div>
 
               <div className="request-detail-item">
                 <span>Last Updated</span>
-                <strong>{formatDate(request.updated)}</strong>
+                <strong>
+                  {formatDate(
+                    request.updated ?? request.updated_at
+                  )}
+                </strong>
               </div>
             </div>
 
@@ -145,13 +168,15 @@ function RequestDetails() {
               <h3>Description</h3>
 
               <p>
-                {request.description || "No description provided."}
+                {request.description ||
+                  "No description provided."}
               </p>
             </div>
 
             <div className="request-details-footer">
               <p>
-                You can refer to request #{request.id} when
+                You can refer to request #
+                {request.id ?? request.request_id} when
                 contacting the CivicConnect support team.
               </p>
 

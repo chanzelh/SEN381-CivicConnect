@@ -24,6 +24,13 @@ function NewRequest() {
       return;
     }
 
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -33,6 +40,7 @@ function NewRequest() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             title: title.trim(),
@@ -45,6 +53,13 @@ function NewRequest() {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 401) {
+          setError(
+            "Your login session is invalid or expired. Please log in again."
+          );
+          return;
+        }
+
         throw new Error(
           data.message || "Could not submit your request."
         );

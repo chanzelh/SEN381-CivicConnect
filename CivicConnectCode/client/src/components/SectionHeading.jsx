@@ -1,11 +1,18 @@
+
 function SectionHeading({ title, action }) {
   return (
     <div className="section-heading">
-      <h3>{title}</h3>
+      <div className="section-heading-row">
+        <h3>{title}</h3>
 
-      <div className="heading-line"></div>
+        {action && (
+          <div className="section-heading-action">
+            {action}
+          </div>
+        )}
+      </div>
 
-      {action && action}
+      <div className="heading-line" />
     </div>
   );
 }

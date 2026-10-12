@@ -10,18 +10,53 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    if (!email || !password) {
-      setError("Please enter your email and password.");
+  if (!email.trim() || !password) {
+    setError("Please enter your email and password.");
+    return;
+  }
+
+  setError("");
+
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.message || "Login failed.");
       return;
     }
 
-    setError("");
+    sessionStorage.setItem("token", data.token);
+    sessionStorage.setItem("user", JSON.stringify(data.user));
 
-    navigate("/requester");
-  };
+    if (data.user.role === "management") {
+      navigate("/management");
+    } else {
+      navigate("/requester");
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    setError("Cannot connect to the server. Please try again.");
+  }
+};
+
 
   return (
     <div className="auth-page">
