@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,29 +16,35 @@ function Signup() {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setForm({
-      ...form,
+    setForm((previous) => ({
+      ...previous,
       [name]: value,
-    });
+    }));
 
     setError("");
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     if (
-      !form.firstName ||
-      !form.lastName ||
-      !form.email ||
+      !form.firstName.trim() ||
+      !form.lastName.trim() ||
+      !form.email.trim() ||
       !form.password ||
       !form.confirmPassword
     ) {
       setError("Please complete all fields.");
+      return;
+    }
+
+    if (form.password.length < 12) {
+      setError("Password must contain at least 12 characters.");
       return;
     }
 
@@ -46,26 +53,53 @@ function Signup() {
       return;
     }
 
-    if (form.password.length < 8) {
-      setError(
-        "Password must contain at least 8 characters."
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/auth/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            full_name: `${form.firstName.trim()} ${form.lastName.trim()}`,
+            email: form.email.trim().toLowerCase(),
+            password: form.password,
+          }),
+        }
       );
-      return;
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Unable to create your account.");
+        return;
+      }
+
+      navigate("/login", {
+        state: {
+          message: "Account created successfully! Please log in.",
+          email: form.email.trim().toLowerCase(),
+        },
+      });
+    } catch (err) {
+      console.error("Signup error:", err);
+      setError(
+        "Cannot connect to the server. Please check that the backend is running."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    // Temporary frontend-only signup
-    alert("Account created successfully!");
-
-    navigate("/login");
   };
 
   return (
     <div className="auth-page">
-
       <BrandHeader title="SIGN UP" />
 
       <main className="auth-container signup-container">
-
         <div className="auth-heading">
           <h3>Create Account</h3>
           <div className="heading-line"></div>
@@ -75,13 +109,9 @@ function Signup() {
           className="auth-card signup-card"
           onSubmit={handleSignup}
         >
-
           <div className="auth-two-column">
-
             <div className="auth-field">
-              <label htmlFor="firstName">
-                First Name
-              </label>
+              <label htmlFor="firstName">First Name</label>
 
               <input
                 id="firstName"
@@ -90,13 +120,13 @@ function Signup() {
                 placeholder="First name"
                 value={form.firstName}
                 onChange={handleChange}
+                autoComplete="given-name"
+                required
               />
             </div>
 
             <div className="auth-field">
-              <label htmlFor="lastName">
-                Last Name
-              </label>
+              <label htmlFor="lastName">Last Name</label>
 
               <input
                 id="lastName"
@@ -105,15 +135,14 @@ function Signup() {
                 placeholder="Last name"
                 value={form.lastName}
                 onChange={handleChange}
+                autoComplete="family-name"
+                required
               />
             </div>
-
           </div>
 
           <div className="auth-field">
-            <label htmlFor="signupEmail">
-              Email
-            </label>
+            <label htmlFor="signupEmail">Email</label>
 
             <input
               id="signupEmail"
@@ -122,21 +151,24 @@ function Signup() {
               placeholder="Enter your email"
               value={form.email}
               onChange={handleChange}
+              autoComplete="email"
+              required
             />
           </div>
 
           <div className="auth-field">
-            <label htmlFor="signupPassword">
-              Password
-            </label>
+            <label htmlFor="signupPassword">Password</label>
 
             <input
               id="signupPassword"
               name="password"
               type="password"
-              placeholder="At least 8 characters"
+              placeholder="At least 12 characters"
               value={form.password}
               onChange={handleChange}
+              autoComplete="new-password"
+              minLength={12}
+              required
             />
           </div>
 
@@ -152,11 +184,14 @@ function Signup() {
               placeholder="Re-enter your password"
               value={form.confirmPassword}
               onChange={handleChange}
+              autoComplete="new-password"
+              minLength={12}
+              required
             />
           </div>
 
           {error && (
-            <p className="auth-error">
+            <p className="auth-error" role="alert">
               {error}
             </p>
           )}
@@ -164,8 +199,9 @@ function Signup() {
           <button
             type="submit"
             className="primary-button auth-submit"
+            disabled={loading}
           >
-            CREATE ACCOUNT
+            {loading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
           </button>
 
           <div className="auth-divider">
@@ -178,11 +214,8 @@ function Signup() {
           >
             LOGIN
           </Link>
-
         </form>
-
       </main>
-
     </div>
   );
 }

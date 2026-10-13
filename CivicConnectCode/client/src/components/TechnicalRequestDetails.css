@@ -1,0 +1,62 @@
+
+.technical-details {
+  margin-top: 24px;
+  padding: 24px;
+  background: #f6ece5;
+  border: 1px solid #9eb0c0;
+  border-radius: 14px;
+  color: #1b3b52;
+}
+
+.technical-details h3 {
+  margin: 0 0 20px;
+  color: #1b3b52;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.technical-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.technical-detail-item {
+  min-width: 0;
+  padding: 14px;
+  background: #fdfafb;
+  border: 1px solid #9eb0c0;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
+.technical-detail-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #765e60;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.technical-detail-value {
+  margin: 0;
+  color: #1b3b52;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.technical-details-empty {
+  margin: 0;
+  color: #765e60;
+}
+
+@media (max-width: 640px) {
+  .technical-details {
+    padding: 16px;
+  }
+
+  .technical-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
