@@ -137,17 +137,28 @@ async function assignRequest(req, res) {
       });
     }
 
-    const request = await requestModel.assignRequestToStaff(
+       const managerId = Number(req.user?.user_id);
+
+    const result = await requestModel.assignRequestToStaff(
       requestId,
       staffId,
-      dueDate
+      dueDate,
+      managerId
     );
 
-    if (!request) {
+    if (result.error === "NOT_FOUND") {
       return res.status(404).json({
         message: "Request not found or staff account is invalid.",
       });
     }
+
+    if (result.error === "INVALID_TRANSITION") {
+      return res.status(409).json({
+        message: `This request cannot be assigned while it is ${result.currentStatus}.`,
+      });
+    }
+
+    const request = result.request;
 
     // Notify the assigned staff member and the requester.
     const requestInfo =
@@ -465,6 +476,7 @@ async function updateRequestStatus(req, res) {
     const requestId = Number(req.params.id);
     const { status } = req.body;
     const userRole = req.user?.role;
+    const userId = Number(req.user?.user_id);
 
     if (!Number.isInteger(requestId) || requestId < 1) {
       return res.status(400).json({
@@ -474,14 +486,7 @@ async function updateRequestStatus(req, res) {
 
     const allowedStatuses =
       userRole === "management"
-        ? [
-            "Pending",
-            "Assigned",
-            "In Progress",
-            "On Hold",
-            "Resolved",
-            "Closed",
-          ]
+        ? ["Pending", "Assigned", "In Progress", "On Hold", "Resolved", "Closed"]
         : ["In Progress", "On Hold", "Resolved"];
 
     if (!allowedStatuses.includes(status)) {
@@ -492,14 +497,14 @@ async function updateRequestStatus(req, res) {
 
     const isManagement = userRole === "management";
 
-    const request = await requestModel.updateRequestStatus(
+    const result = await requestModel.updateRequestStatus(
       requestId,
       status,
-      req.user.user_id,
+      userId,
       isManagement
     );
 
-    if (!request) {
+    if (result.error === "NOT_FOUND") {
       return res.status(404).json({
         message: isManagement
           ? "Request not found."
@@ -507,9 +512,16 @@ async function updateRequestStatus(req, res) {
       });
     }
 
-    // Notify the requester about the status change.
-    const requestInfo =
-      await getRequestNotificationInfo(requestId);
+    if (result.error === "INVALID_TRANSITION") {
+      return res.status(409).json({
+        message: `Cannot change status from ${result.currentStatus} to ${status}.`,
+      });
+    }
+
+    const request = result.request;
+
+    // Notify the requester about the status change (after the change is saved).
+    const requestInfo = await getRequestNotificationInfo(requestId);
 
     if (requestInfo) {
       await sendNotificationSafely({

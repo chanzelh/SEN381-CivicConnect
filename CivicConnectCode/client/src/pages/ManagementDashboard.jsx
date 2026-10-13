@@ -5,6 +5,7 @@ import BrandHeader from "../components/Header";
 import Navbar from "../components/Navbar";
 import SectionHeading from "../components/SectionHeading";
 import StatusBadge from "../components/StatusBadge";
+import { getDateInputValue, isOverdue } from "../utils/overdue";
 
 const API_URL = "http://localhost:5000/api/requests";
 
@@ -68,14 +69,6 @@ function getField(object, ...keys) {
   return null;
 }
 
-function getDateInputValue(value) {
-  if (!value) return "";
-
-  const match = String(value).match(/^\d{4}-\d{2}-\d{2}/);
-
-  return match ? match[0] : "";
-}
-
 function formatDate(value) {
   if (!value) return "Not provided";
 
@@ -94,22 +87,6 @@ function formatDateOnly(value) {
   const [year, month, day] = dateValue.split("-").map(Number);
 
   return new Date(year, month - 1, day).toLocaleDateString();
-}
-
-function isOverdue(dueDate, status) {
-  const dateValue = getDateInputValue(dueDate);
-
-  if (!dateValue || ["Resolved", "Closed"].includes(status)) {
-    return false;
-  }
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const [year, month, day] = dateValue.split("-").map(Number);
-  const deadline = new Date(year, month - 1, day);
-
-  return deadline < today;
 }
 
 function DetailField({ label, value, multiline = false }) {

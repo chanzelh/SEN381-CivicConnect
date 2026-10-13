@@ -4,17 +4,18 @@
 | Version | Date | Change |
 |---|---|---|
 | One - Milestone Three | 2026/10/12 | Initial risk-based test plan |
+| 1.1 |	2026/10/13 | Corrected test IDs and typos; overdue rule aligned with implementation (due date vs today); TC-U04 refocused; CI gate live (#74) |
 
 ## 1. Purpose 
-This plan will determine what is being tested for CivicConnect, how and why, before all the tests are written. Testing effort will be prioritised by the risk such as requirements with a Must priority receive stronger testing than the lower-risk items. Lower-risk items are covered by end-to-end journets or determined as limitations instead of testing separately.
+This plan will determine what is being tested for CivicConnect, how and why, before all the tests are written. Testing effort will be prioritised by the risk such as requirements with a Must priority receive stronger testing than the lower-risk items. Lower-risk items are covered by end-to-end journeys or determined as limitations instead of testing separately.
 
 ## 2. Approach
 | Item | Decision |
 |---|---|
 | Tools | Jest  (coverage and units), Supertest (API), Playwright (E2E), k6 or autocannon (performance) |
 | Test Levels | Performance, Unit, API/Integration, end-to-end (E2E) |
-| Black-boc techniques | Boundary value analysis (BVA), state transition, equivalence partitioning (EP) |
-| Test Database | PostgreSQL service container in CI, seperate local test database |
+| Black-box techniques | Boundary value analysis (BVA), state transition, equivalence partitioning (EP) |
+| Test Database | PostgreSQL service container in CI, separate local test database |
 | Naming | Test files will start with the requirement ID to prevent confusion: tests/unit/FR-010.transitions.test.js |
 | Evidence | Every test will be recorded in the test-evidence.md with a link to the CI run |
 | AI-generated tests | In the case of missing cases or wrongful assumptions before a merge. Recorded in the AI usage register |
@@ -38,25 +39,31 @@ Priority is determined by the requirement priority based off of the Risk Registe
 ## 4. Planned Tests
 | Test ID | Title | Basis |
 |---|---|---|
-| TC-U01 | Transition rule will allow only valid  status changes | FR-010 |
-| TC-U03 | Overdue calculation before, at and after the 3 day threshold | FR-014, RISK-011 |
+| TC-U01 | Transition rule allows only valid status changes | FR-010 |
+| TC-U02 | Overdue rule: due date before, on and after today; Resolved/Closed never overdue | FR-014, RISK-011 |
 | TC-U03 | Permission check returns the correct result per role | NFR-002, RISK-002 |
-| TC-U04 | Request reference is uniqe | FR-001 |
-| TC-U05 | Notification failure doesn't undo the status update | FR-005, RISK-010 |
+| TC-U04 | Assignment due-date validation: format and real calendar date (e.g. 2027-02-29 invalid) | FR-009, NFR-011 |
+| TC-U05 | Notification failure does not undo the status update | FR-005, RISK-010 |
+|---|---|---|
 | TC-B01 | Valid submission accepted | FR-001, FR-002 |
 | TC-B02 | Unknown or missing category rejected | FR-002, NFR-011 |
-| TC-B03 | Valid workflow path from the submission to closure | FR-010 |
-| TC-B06 | Invalid transitions get blocked, which includes closing an unresolved request | FR-010, FR-012 |
-| TC-I01| Protected route without a token returns 401 and the body contains no internal details | NFR-001, NFR-003 |
-| TC-I02 | Requester that  is calling a staff route will return 403 and the body contains no internal details | NFR-002, NFR-003, RISK-002 |
-| TC-I03 | Submitted request is stored with all the fields that are required and retrievable | NFR-007 |
-| TC-I04 | Assignment will write a history entry with user, the action as well as a timestamp | FR-009, NFR-009 |
-| TC-I05 | Status change will roll back if the history write fails | NFR-009, RISK-008 |
-| TC-I07 | A second stale update is rejected | FR-009, RISK-009 |
-| TC-I08 | Dashboard counts by status, overdue and category match seededdata | FR-013, FR-014, FR-015, RISK-011 |
+| TC-B03 | Field boundaries: missing, min, max, max+1 | NFR-011 |
+| TC-B05 | Valid workflow path from submission to closure | FR-010 |
+| TC-B06 | Invalid transitions are blocked, including closing an unresolved request | FR-010, FR-012 |
+|---|---|---|
+| TC-I01 | Protected route without a token returns 401 and the body contains no internal details | NFR-001, NFR-003 |
+| TC-I02 | Requester calling a staff route returns 403 and the body contains no internal details | NFR-002, NFR-003, RISK-002 |
+| TC-I03 | Submitted request is stored with all required fields and is retrievable; two submissions receive different IDs | NFR-007, FR-001 |
+| TC-I04 | Assignment writes a history entry with user, action and timestamp | FR-009, NFR-009 |
+| TC-I05 | Status change rolls back if the history write fails | NFR-009, RISK-008 |
+| TC-I07 | A second stale update is rejected (conditional, not counted) | FR-009, RISK-009 |
+| TC-I08 | Dashboard counts by status, overdue and category match seeded data | FR-013, FR-014, FR-015, RISK-011 |
+|---|---|---|
 | TC-E01 | Requester submits a request and sees its status and history | FR-001, FR-003, FR-004 |
-| TC=E02 | Staff finds a request whilst using the search/filter, views, assigns, comments on and resolves it, requester then receives the update their side | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 |
-| TC-P01 | 50 concurrent users and 95& succeeds under or equal to 2  seconds on one normal operation | NFR-005, NFR-013 |
+| TC-E02 | Staff finds a request using search/filter, views, assigns, comments on and resolves it; the requester then sees the update | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 |
+| TC-P01 | 50 concurrent users; 95% of one normal operation succeeds in 2 seconds or less | NFR-005, NFR-013 |
+
+TC-B04, TC-I06 and TC-E03 were removed or merged to keep scope manageable.
 
 ## 5. Covered by the End-to-End Journeys only
 The FR-003, FR-004, FR-007, FR-008 and FR-011 are classified as the lower-risk desplay, recording and search features. They are verified by TC-E01 and TC-E02 (as mentioned above) rather than seperate specified tests. FR-013 and FR-015 are also verified at the API level through TC-I08, which aligns with cost constraint since this is cheaper and more precise as well than a third browser journey.
