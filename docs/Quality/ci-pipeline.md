@@ -39,3 +39,4 @@
 
 ## Gate Evidence
 A deliberate throwaway failing test was opened against the `main`. The CI failed and the blocking was blocked to the main branch. The PR was closed unmerged under the name "DO NOT MERGE - CI gate evidence (#74)".
+First real catch: run Rename of Files Pull Request failed because seed.sql referenced the local "postgres" role, which does not exist in CI. It worked locally but was not portable. Fixed in the Pull Request called "#74 Fix failed CI".
