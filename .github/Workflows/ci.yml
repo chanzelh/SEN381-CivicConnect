@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: civic
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: civicconnect_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U civic"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    # Disposable CI-only values for a throwaway container. Not real secrets (NFR-004).
+    env:
+      NODE_ENV: test
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: civicconnect_test
+      DB_USER: civic
+      DB_PASSWORD: ci_only_password
+      JWT_SECRET: ci-only-not-a-real-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            CivicConnectCode/server/package-lock.json
+            CivicConnectCode/client/package-lock.json
+
+      - name: Install server dependencies
+        working-directory: CivicConnectCode/server
+        run: npm ci
+
+      - name: Install client dependencies
+        working-directory: CivicConnectCode/client
+        run: npm ci
+
+      - name: Build client
+        working-directory: CivicConnectCode/client
+        run: npm run build
+
+      - name: Create schema and seed test data
+        env:
+          PGPASSWORD: ci_only_password
+        run: |
+          psql -h localhost -U civic -d civicconnect_test -v ON_ERROR_STOP=1 -f CivicConnectCode/server/db/schema.sql
+          psql -h localhost -U civic -d civicconnect_test -v ON_ERROR_STOP=1 -f CivicConnectCode/server/db/seed.sql
+
+      - name: Run server tests with coverage
+        working-directory: CivicConnectCode/server
+        run: npm test -- --ci --coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: CivicConnectCode/server/coverage
