@@ -36,3 +36,6 @@
 
 ## CI smoke test
 `server/tests/ci/ci.smoke.test.js` checks that the DB is reachable, the schema is applied and the app loads. It verifies the pipeline itself and is **not** counted in the M3 test baseline.
+
+## Gate Evidence
+A deliberate throwaway failing test was opened against the `main`. The CI failed and the blocking was blocked to the main branch. The PR was closed unmerged under the name "DO NOT MERGE - CI gate evidence (#74)".
