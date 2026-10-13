@@ -10,5 +10,7 @@ spreadsheet-based process.
 Group L: Chanzél, Alyssa, Kaylee
 
 ## Status
-Milestone 1: Engineering Foundation & Requirements Baseline  
-Milestone 2: Ongoing  
+Milestone 1: Engineering Foundation & Requirements Baseline -Complete  
+Milestone 2: Architecture, Technology & Initial Design Baseline -Complete
+Milestone 3: Controlled Construction, Integration, Quality & Release Readiness -Ongoing
+Milestone 4: Finalize, Consolidate & Conclude -Not started
