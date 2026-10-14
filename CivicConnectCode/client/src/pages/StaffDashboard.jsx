@@ -86,6 +86,7 @@ function StaffDashboard() {
     }
   }
 
+    /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
   useEffect(() => {
     const controller = new AbortController();
 
@@ -93,6 +94,7 @@ function StaffDashboard() {
 
     return () => controller.abort();
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleStatusUpdate(request) {
     const newStatus = selectedStatuses[request.id];

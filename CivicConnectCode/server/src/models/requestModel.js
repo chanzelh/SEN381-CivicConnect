@@ -1,24 +1,6 @@
 const pool = require("../config/database");
 const { isValidTransition, canAssign } = require("../utils/statusRules");
 
-const technicalRequestFields = `
-  issue_type AS "issueType",
-  device_type AS "deviceType",
-  device_name AS "deviceName",
-  manufacturer,
-  model,
-  software_name AS "softwareName",
-  software_version AS "softwareVersion",
-  operating_system AS "operatingSystem",
-  error_message AS "errorMessage",
-  location,
-  date_started AS "dateStarted",
-  impact,
-  urgency,
-  troubleshooting
-`;
-
-
 async function getAllRequests() {
   const result = await pool.query(`
     SELECT

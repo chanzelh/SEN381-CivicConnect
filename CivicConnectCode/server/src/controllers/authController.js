@@ -1,7 +1,6 @@
-
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const pool = require("../config/database");
+const userModel = require("../models/userModel");
 
 const login = async (req, res) => {
   try {
@@ -13,20 +12,13 @@ const login = async (req, res) => {
       });
     }
 
-    const result = await pool.query(
-      `SELECT user_id, full_name, email, password_hash, role
-       FROM users
-       WHERE email = $1`,
-      [email.trim().toLowerCase()]
-    );
+    const user = await userModel.findUserByEmail(email.trim().toLowerCase());
 
-    if (result.rows.length === 0) {
+    if (!user) {
       return res.status(401).json({
         message: "Invalid email or password.",
       });
     }
-
-    const user = result.rows[0];
 
     const passwordMatches = await bcrypt.compare(
       password,
@@ -85,12 +77,7 @@ const signup = async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    const existingUser = await pool.query(
-      "SELECT user_id FROM users WHERE LOWER(email) = $1",
-      [normalizedEmail]
-    );
-
-    if (existingUser.rows.length > 0) {
+    if (await userModel.emailExists(normalizedEmail)) {
       return res.status(409).json({
         message: "An account with this email already exists.",
       });
@@ -98,22 +85,15 @@ const signup = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 12);
 
-    const result = await pool.query(
-      `INSERT INTO users
-        (full_name, email, password_hash, role, created_at)
-       VALUES ($1, $2, $3, $4, NOW())
-       RETURNING user_id, full_name, email, role`,
-      [
-        full_name.trim(),
-        normalizedEmail,
-        passwordHash,
-        "requester",
-      ]
-    );
+    const user = await userModel.createRequester({
+      fullName: full_name.trim(),
+      email: normalizedEmail,
+      passwordHash,
+    });
 
     return res.status(201).json({
       message: "Account created successfully. You can now log in.",
-      user: result.rows[0],
+      user,
     });
   } catch (error) {
     console.error("Signup error:", error.message);

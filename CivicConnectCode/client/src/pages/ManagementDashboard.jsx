@@ -31,7 +31,7 @@ async function apiRequest(url, options = {}) {
   });
 
   const responseText = await response.text();
-  let data = {};
+  let data;
 
   try {
     data = responseText ? JSON.parse(responseText) : {};
@@ -592,10 +592,12 @@ function ManagementDashboard() {
     }
   }
 
+    /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
   useEffect(() => {
     loadRequests();
     loadStaffMembers();
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleAssign(request) {
     const staffId = selectedStaff[request.id];

@@ -119,9 +119,11 @@ function RequesterRequestDetails() {
     }
   }
 
+     /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
   useEffect(() => {
     loadDetails();
   }, [id]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleReply(event) {
     event.preventDefault();
@@ -384,13 +386,6 @@ function RequesterRequestDetails() {
                     "comment_text",
                     "message",
                     "content"
-                  );
-
-                  const createdAt = getField(
-                    comment,
-                    "createdAt",
-                    "created_at",
-                    "timestamp"
                   );
 
                   return (
