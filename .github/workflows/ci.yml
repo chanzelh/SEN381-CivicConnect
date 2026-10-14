@@ -24,7 +24,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-    # Disposable CI-only values for a throwaway container. Not real secrets (NFR-004).
+    # Disposable CI-only values below
     env:
       NODE_ENV: test
       DB_HOST: localhost
