@@ -1,4 +1,5 @@
 const pool = require("../config/database");
+const { isValidTransition, canAssign } = require("../utils/statusRules");
 
 const technicalRequestFields = `
   issue_type AS "issueType",
@@ -66,29 +67,68 @@ async function getAllRequests() {
 }
 
 
-async function assignRequestToStaff(requestId, staffId, dueDate) {
-  const result = await pool.query(
-    `UPDATE service_requests AS sr
-     SET assigned_staff_id = $2,
-         due_date = $3,
-         status = 'Assigned',
-         updated_at = NOW()
-     WHERE sr.request_id = $1
-       AND EXISTS (
-         SELECT 1
-         FROM users
-         WHERE user_id = $2
-           AND role = 'staff'
-       )
-     RETURNING
-       sr.request_id AS id,
-       sr.assigned_staff_id AS "assignedStaffId",
-       sr.due_date AS "dueDate",
-       sr.status`,
-    [requestId, staffId, dueDate],
-  );
+// Assigns staff + due date AND writes the history row in ONE transaction.
+async function assignRequestToStaff(requestId, staffId, dueDate, changedBy) {
+  const client = await pool.connect();
 
-  return result.rows[0] || null;
+  try {
+    await client.query("BEGIN");
+
+    const current = await client.query(
+      `SELECT status
+       FROM service_requests
+       WHERE request_id = $1
+       FOR UPDATE`,
+      [requestId],
+    );
+
+    const staff = await client.query(
+      `SELECT 1 FROM users WHERE user_id = $1 AND role = 'staff'`,
+      [staffId],
+    );
+
+    if (!current.rows[0] || !staff.rows[0]) {
+      await client.query("ROLLBACK");
+      return { error: "NOT_FOUND" };
+    }
+
+    const oldStatus = current.rows[0].status;
+
+    if (!canAssign(oldStatus)) {
+      await client.query("ROLLBACK");
+      return { error: "INVALID_TRANSITION", currentStatus: oldStatus };
+    }
+
+    const updated = await client.query(
+      `UPDATE service_requests
+       SET assigned_staff_id = $2,
+           due_date = $3,
+           status = 'Assigned',
+           updated_at = NOW()
+       WHERE request_id = $1
+       RETURNING
+         request_id AS id,
+         assigned_staff_id AS "assignedStaffId",
+         due_date AS "dueDate",
+         status`,
+      [requestId, staffId, dueDate],
+    );
+
+    await client.query(
+      `INSERT INTO request_status_history
+         (request_id, changed_by, old_status, new_status, change_note)
+       VALUES ($1, $2, $3, 'Assigned', $4)`,
+      [requestId, changedBy, oldStatus, `Assigned to staff ${staffId}, due ${dueDate}`],
+    );
+
+    await client.query("COMMIT");
+    return { request: updated.rows[0] };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 }
 
 async function getRequestsByStaff(staffId) {
@@ -316,24 +356,63 @@ async function createRequest({
   return result.rows[0];
 }
 
+// Changes status AND writes the history row in ONE transaction (NFR-009, RISK-008).
+// Returns { request } on success, or { error, currentStatus } when nothing was changed.
+async function updateRequestStatus(requestId, status, userId, isManagement, note = null) {
+  const client = await pool.connect();
 
-async function updateRequestStatus(requestId, status, staffId, isManagement) {
-  const result = await pool.query(
-    `UPDATE service_requests
-     SET status = $2,
-         updated_at = NOW()
-     WHERE request_id = $1
-       AND ($4::boolean = TRUE OR assigned_staff_id = $3)
-     RETURNING
-       request_id AS id,
-       status,
-       updated_at AS updated`,
-    [requestId, status, staffId, isManagement],
-  );
+  try {
+    await client.query("BEGIN");
 
-  return result.rows[0] || null;
+    // Lock the row so two people can't change it at the same time.
+    const current = await client.query(
+      `SELECT status, assigned_staff_id
+       FROM service_requests
+       WHERE request_id = $1
+       FOR UPDATE`,
+      [requestId],
+    );
+
+    const row = current.rows[0];
+
+    if (!row || (!isManagement && Number(row.assigned_staff_id) !== Number(userId))) {
+      await client.query("ROLLBACK");
+      return { error: "NOT_FOUND" };
+    }
+
+    if (!isValidTransition(row.status, status)) {
+      await client.query("ROLLBACK");
+      return { error: "INVALID_TRANSITION", currentStatus: row.status };
+    }
+
+    const updated = await client.query(
+      `UPDATE service_requests
+       SET status = $2,
+           updated_at = NOW()
+       WHERE request_id = $1
+       RETURNING
+         request_id AS id,
+         status,
+         updated_at AS updated`,
+      [requestId, status],
+    );
+
+    await client.query(
+      `INSERT INTO request_status_history
+         (request_id, changed_by, old_status, new_status, change_note)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [requestId, userId, row.status, status, note],
+    );
+
+    await client.query("COMMIT");
+    return { request: updated.rows[0] };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 }
-
 
 async function getAssignedRequestById(requestId, staffId) {
   const result = await pool.query(

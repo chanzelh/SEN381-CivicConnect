@@ -9,6 +9,8 @@
 3. Link the CI run, not a screenshot.
 4. If the test fails, log a defect in the defect register and link it here.
 
+**Execution environment:** every Evidence link points to a run of `.github/workflows/ci.yml` (job `build-and-test`). See `ci-pipeline.md` for what a CI run does and does not prove.
+
 ## Summary
 
 | Test ID | Title | Basis | Technique | Level | Status | Evidence |
