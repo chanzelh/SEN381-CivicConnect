@@ -12,7 +12,10 @@
 
 | Step | Purpose | Fails the gate if |
 |---|---|---|
+| Secret scan (full Git history) | gitleaks checks every commit for leaked secrets (NFR-004) | Any secret found |
 | `npm ci` (server, client) | Reproducible install from lockfiles | Lockfile/dependency mismatch |
+| Audit dependencies (production) | `npm audit --omit=dev` on server and client: shipped packages only | Any high/critical vulnerability |
+| Report dev dependency findings | `npm audit` on dev tools, for visibility; dispositions in `security-scanning.md` | Never (continue-on-error) |
 | Client build (`vite build`) | Frontend compiles | Build error |
 | PostgreSQL 16 service container | Isolated, disposable test database | DB not healthy |
 | Apply `CivicConnectCode/server/db/schema.sql` + `seed.sql` | Same schema in every run; files must stay valid and portable | SQL error |
@@ -29,6 +32,7 @@
 - Client behaviour: no client unit tests run; user journeys are covered by E2E in #23.
 - Performance: covered separately by TC-P01 (#34).
 - Production parity: single Node version (22); local development uses PostgreSQL 18 while CI uses 16, so version-specific behaviour could differ. The CI container is not staging (#30).
+- That no secret could ever slip through: pattern-based scanners can miss simple passwords (see `security-scanning.md`).
 
 ## Configuration and secrets
 - All values in `ci.yml` are disposable, CI-only values for a container that is destroyed after each run.

@@ -30,8 +30,8 @@ Some tests were deliberately removed during test planning to keep the tests more
 | TC-I05 | Status change rolls back if history write fails | NFR-009, RISK-008 | Fault injection | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 | TC-I08 | Dashboard counts match seeded data | FR-013, FR-014, FR-015, RISK-011 | Seeded data | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 |---|---|---|---|---|---|---|
-| TC-E01 | Requester submits and sees status and history | FR-001, FR-003, FR-004 | Journey | E2E | Not run | |
-| TC-E02 | Staff finds, assigns, comments, resolves; requester sees update | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 | Journey | E2E | Not run | |
+| TC-E01 | Requester submits and sees status and history | FR-001, FR-003, FR-004 | Journey | E2E | Pass- Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | ADD IN |
+| TC-E02 | Staff finds, assigns, comments, resolves; requester sees update | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 | Journey | E2E | Pass - Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | ADD IN |
 | TC-P01 | 50 concurrent users, p95 ≤ 2 s | NFR-005, NFR-013 | Load | Performance | Not run | |
 |---|---|---|---|---|---|---|
 | TC-I07 | Stale update rejected (conditional) | FR-009, RISK-009 | Concurrent update | API/integration | Not run | |
@@ -232,13 +232,26 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 & server/tests/api/TC-I08.FR-014.dashboard-data.test.js |
 | Defect Link | None |
 
+**TC-E01 : Requester Journey**
 | Field | Detail |
 |---|---|
-| Requirements related |  |
-| Technique and level |  |
-| Input |  |
-| Expected result |  |
-| Actual Result |  |
-| Status |  |
-| Evidence |  |
-| Defect Link |  |
+| Requirements related | 	FR-001 (Must), FR-002 (Must), FR-003 (Must), FR-004 (Should); NFR-012 |
+| Technique and level | E2E in 3 browsers |
+| Input | Requester logs in; New Request: unique title, category Maintenance, description, issue type Lighting, location |
+| Expected result | 	Redirect to My Requests; the new request appears in the list with category Maintenance and status Open; opening it shows the title, description and status Open |
+| Actual Result | 3/3 browsers passed |
+| Status | Pass |
+| Evidence | ADD IN & client/e2e/TC-E01.FR-001.requester-journey.e2e.js |
+| Defect Link | None |
+
+**TC-E02 : Staff & Management Journey**
+| Field | Detail |
+|---|---|
+| Requirements related | 	FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 (Must/Should); NFR-012 |
+| Technique and level | E2E in 3 browsers |
+| Input | Management: search the title, filter category, assign Test Staff with due date 2026-12-31. Staff: search + filter Assigned, open the request, add a comment, set In Progress then Resolved. Management: set Closed. Requester: open the list, notifications and the request |
+| Expected result | Assign confirmation, Current Status Assigned, staff name shown; staff see the request details including the requester; comment saved and shown; status updates confirmed; management close confirmed; requester sees status Closed, the notification Your request "<title>" now has the status "Closed". and the staff comment |
+| Actual Result | 3/3 passed browsers |
+| Status | Pass |
+| Evidence | ADD IN & client/e2e/TC-E02.FR-009.staff-journey.e2e.js |
+| Defect Link | None |
