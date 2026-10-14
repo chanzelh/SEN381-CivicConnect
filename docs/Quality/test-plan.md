@@ -16,7 +16,7 @@ This plan will determine what is being tested for CivicConnect, how and why, bef
 | Test Levels | Performance, Unit, API/Integration, end-to-end (E2E) |
 | Black-box techniques | Boundary value analysis (BVA), state transition, equivalence partitioning (EP) |
 | Test Database | PostgreSQL service container in CI, separate local test database |
-| Naming | Test files will start with the requirement ID to prevent confusion: tests/unit/FR-010.transitions.test.js |
+| Naming | Test files will start with the test name to prevent confusion: tests/unit/TC-U01.transitions.test.js |
 | Evidence | Every test will be recorded in the test-evidence.md with a link to the CI run |
 | AI-generated tests | In the case of missing cases or wrongful assumptions before a merge. Recorded in the AI usage register |
 
