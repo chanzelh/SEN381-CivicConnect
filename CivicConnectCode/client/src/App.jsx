@@ -7,7 +7,6 @@ import Account from "./pages/Account";
 
 import RequesterDashboard from "./pages/RequesterDashboard";
 import NewRequest from "./pages/NewRequest";
-import RequestDetails from "./pages/RequestDetails";
 import RequesterRequestDetails from "./pages/RequesterRequestDetails";
 import StaffDashboard from "./pages/StaffDashboard";
 import StaffRequestDetails from "./pages/StaffRequestDetails";

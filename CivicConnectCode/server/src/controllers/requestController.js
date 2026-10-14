@@ -343,38 +343,6 @@ async function createMyRequest(req, res) {
       }
     }
 
-    
-const isValidDateOnly = (value) => {
-  // Date is optional.
-  if (value == null || value === "") {
-    return true;
-  }
-
-  // Accept a date string such as 2026-10-12,
-  // including a date-time string starting with that date.
-  if (typeof value !== "string") {
-    return false;
-  }
-
-  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/);
-
-  if (!match) {
-    return false;
-  }
-
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
-
-  const date = new Date(Date.UTC(year, month - 1, day));
-
-  return (
-    date.getUTCFullYear() === year &&
-    date.getUTCMonth() === month - 1 &&
-    date.getUTCDate() === day
-  );
-};
-
     const request = await requestModel.createRequest({
       requesterId,
       title: title.trim(),

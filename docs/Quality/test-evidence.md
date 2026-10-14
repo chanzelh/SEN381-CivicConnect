@@ -24,11 +24,11 @@ Some tests were deliberately removed during test planning to keep the tests more
 | TC-B06 | Invalid transitions blocked | FR-010, FR-012 | State transition | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38548799316/job/115801397809?pr=104 |
 |---|---|---|---|---|---|---|
 | TC-I01 | No token returns 401; no internal details | NFR-001, NFR-003 | Negative | API/integration | Pass | |
-| TC-I02 | Requester on staff route returns 403; no internal details | NFR-002, NFR-003, RISK-002 | Negative | API/integration | Pass | |
-| TC-I03 | Submitted request stored and retrievable | NFR-007 | Positive + DB check | API/integration | Pass | |
-| TC-I04 | Assignment writes history entry | FR-009, NFR-009 | Positive + DB check | API/integration | Pass | |
-| TC-I05 | Status change rolls back if history write fails | NFR-009, RISK-008 | Fault injection | API/integration | Pass | |
-| TC-I08 | Dashboard counts match seeded data | FR-013, FR-014, FR-015, RISK-011 | Seeded data | API/integration | Pass | |
+| TC-I02 | Requester on staff route returns 403; no internal details | NFR-002, NFR-003, RISK-002 | Negative | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
+| TC-I03 | Submitted request stored and retrievable | NFR-007 | Positive + DB check | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
+| TC-I04 | Assignment writes history entry | FR-009, NFR-009 | Positive + DB check | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
+| TC-I05 | Status change rolls back if history write fails | NFR-009, RISK-008 | Fault injection | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
+| TC-I08 | Dashboard counts match seeded data | FR-013, FR-014, FR-015, RISK-011 | Seeded data | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 |---|---|---|---|---|---|---|
 | TC-E01 | Requester submits and sees status and history | FR-001, FR-003, FR-004 | Journey | E2E | Not run | |
 | TC-E02 | Staff finds, assigns, comments, resolves; requester sees update | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 | Journey | E2E | Not run | |
@@ -169,7 +169,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | 401 every time with the exact message ("Authentication required. Please log in." / "Invalid or expired token. Please log in again." / "Invalid authentication token."); body contains only message and no internal details; anonymous submission stores 0 rows |
 | Actual Result | 13/13 checks passed |
 | Status | Pass |
-| Evidence | ADD INNNN & server/tests/api/TC-I01.NFR-001.no-token.test.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 & server/tests/api/TC-I01.NFR-001.no-token.test.js |
 | Defect Link | None |
 
 **TC-I02: Wrong role will return 403**
@@ -181,7 +181,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | 	403 "You do not have permission to access this resource." in every case; no internal details; for change attempts the status is unchanged and no history row is written |
 | Actual Result | 8/8 checks passed |
 | Status | Pass |
-| Evidence | ADD INNN & server/tests/api/TC-I02.NFR-002.wrong-role.test.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 & server/tests/api/TC-I02.NFR-002.wrong-role.test.js |
 | Defect Link | None |
 
 **TC-I03 : stored and retrievable as well as unique IDs**
@@ -193,7 +193,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | 	Every field stored in the DB exactly as sent, status Open, owned by the requester; GET /mine/:id and GET /mine return it; the two IDs differ; the management list returns dueDate exactly "2026-12-31" |
 | Actual Result | 4/4 checks passed |
 | Status | Pass |
-| Evidence | ADD INNNN & server/tests/api/TC-I03.NFR-007.stored-retrievable.test.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 & server/tests/api/TC-I03.NFR-007.stored-retrievable.test.js |
 | Defect Link | DEF-005 |
 
 **TC-I04 : assignment writes history**
@@ -205,7 +205,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | 	Request shows the staff member and status Assigned; exactly one history row with changed_by = manager, Open → Assigned, note "Assigned to staff X, due 2026-12-31", changed_at within the test window; reassigning adds a second row and keeps the first |
 | Actual Result | 2/2 checks passed |
 | Status | Pass |
-| Evidence | ADD INNNNNN & server/tests/api/TC-I04.NFR-009.assignment-history.test.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 & server/tests/api/TC-I04.NFR-009.assignment-history.test.js |
 | Defect Link | DEF-004 |
 
 **TC-I05 : Rollback when the history write fails**
@@ -217,7 +217,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | 	Blocked: 500 with a plain message and no internal details; status, staff and due date unchanged; no history row. Control: 200, status In Progress, one history row |
 | Actual Result | 3/3 checks passed |
 | Status | Pass |
-| Evidence | ADD INNNN & server/tests/api/TC-I05.NFR-009.rollback.test.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 & server/tests/api/TC-I05.NFR-009.rollback.test.js |
 | Defect Link | DEF-004 |
 
 **TC-I08 : Dashboard data matches the seeded data**
@@ -229,7 +229,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | 	All 8 returned once with the correct status, category and due date; counts by status (Open 1, Pending 1, Assigned 1, In Progress 1, On Hold 1, Resolved 1, Closed 2); by category (Maintenance 3, IT Support 2, Security 2, Equipment 1); exactly 2 overdue (Assigned, On Hold) |
 | Actual Result | 4/4 checks passed |
 | Status | Pass |
-| Evidence | ADDDD INNN & server/tests/api/TC-I08.FR-014.dashboard-data.test.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 & server/tests/api/TC-I08.FR-014.dashboard-data.test.js |
 | Defect Link | None |
 
 | Field | Detail |

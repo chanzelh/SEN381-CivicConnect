@@ -8,7 +8,7 @@ import SectionHeading from "../components/SectionHeading";
 function Account() {
   const navigate = useNavigate();
 
-  let user = null;
+  let user;
 
   try {
     user = JSON.parse(sessionStorage.getItem("user") || "null");

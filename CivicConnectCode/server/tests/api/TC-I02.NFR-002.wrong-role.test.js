@@ -32,9 +32,8 @@ describe("NFR-002 / NFR-003 — TC-I02 wrong role → 403", () => {
       ["staff", "GET", "/api/requests", "all requests (management)"],
       ["management", "GET", "/api/requests/mine", "own requests (requester)"],
     ])("%s → %s %s (%s) → 403", async (role, method, path) => {
-      const res = await request(app)
-        [method.toLowerCase()](path)
-        .set("Authorization", `Bearer ${tokens[role]}`);
+      const call = request(app)[method.toLowerCase()](path);
+      const res = await call.set("Authorization", `Bearer ${tokens[role]}`);
 
       expect(res.status).toBe(403);
       expect(res.body).toEqual(FORBIDDEN);

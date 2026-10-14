@@ -1,0 +1,19 @@
+# CivicConnect Technical Debt Register
+# Milestone Three
+
+| Version | Date | Change |
+|---|---|---|
+| 1.0 | 2026/10/14 | Register created; debt identified during M3 construction and verification |
+
+**See also:** `defect-register.md` and the `decision-log.md` (for the decisions behind accepted debt).
+
+Technical debt: this is a compromise we knowingly accept to deliver M3 with a known future cost. The defects (wrong behavior) lives in  the defect register. This register will hold design and maintainability shortcuts.
+
+| ID | Debt | Why accepted | Consequence if left | Planned action | Related |
+|---|---|---|---|---|---|
+| TD-001 | Database schema kept as a hand-edited `server/db/schema.sql`; no versioned migrations | Deadline pressure; a migration tool (e.g. node-pg-migrate) added a learning curve | Schema changes must be applied by hand to every database; environments can drift apart | Keep for M3. Revisit only if the schema must change on a database that already holds data (e.g. staging/production in M4); then introduce versioned migrations | #12, DEF-001 |
+| TD-002 | Overdue is calculated in the client (`client/src/utils/overdue.js`); no server `isOverdue` or `/reports/summary` endpoint, contrary to the M2 API contract (3.7.4, 3.8) | Avoided changing the API under deadline; dashboard already worked client-side | Any other consumer must re-implement the rule; reports can't be produced server-side; rule depends on the browser's timezone | Move the rule to the backend and return `isOverdue`/`overdueCount` from the API | FR-014, RISK-011, TC-U02, TC-I08 |
+| TD-003 | 5 client pages load data with setState inside `useEffect` (`Navbar`, `ManagementDashboard`, `RequesterRequestDetails`, `StaffDashboard`, `StaffRequestDetails`); scoped ESLint exceptions in place; `pages/RequestDetails.jsx` is unreferenced | Refactoring 5 components without component tests under the M3 deadline risked regressions | Extra renders on page load; 5 lint exceptions and 3 `exhaustive-deps` warnings to maintain; dead page file | Refactor to a shared data-loading hook (or a library such as React Query), remove the exceptions, delete the unused page | SA-008, SA-009, SA-004 |
+| TD-004 | No version field or stale-update check; the M2 contract's `version` + `409 STALE_UPDATE` (3.9 step 5) was not built | Out of reach in the M3 timeframe | Two users can overwrite each other's changes ("last write wins"); `FOR UPDATE` only stops simultaneous writes interleaving | Add a `version` column and compare it on update | RISK-009, TC-I07 (not applicable) |
+| TD-005 | Notification retry and recovery not implemented; failures are only logged (M2 contract 3.10.4: up to 3 retries, failed notifications retryable) | Core request flow prioritised; failure is already tolerated safely (TC-U05) | A failed notification is lost; the requester may miss feedback | Store failed notifications with a status and add retry | FR-005, RISK-010, TC-U05 |
+| TD-006 | API deviates from the M2 contract format: base path `/api` instead of `/api/v1`, errors as `{ message }` instead of `{ error: { code, message } }`, no `Rejected` status | Implementation evolved before the contract was enforced | Clients can't rely on error codes; no versioning path for breaking changes; FR-005 reject feedback not possible | Record as controlled change in the decision log; align or update the contract after M3 | FR-005, DEC (status model) |

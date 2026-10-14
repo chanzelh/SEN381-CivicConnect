@@ -129,9 +129,11 @@ function StaffRequestDetails() {
     }
   }
 
+    /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
   useEffect(() => {
     loadDetails();
   }, [id]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function handleAddComment(event) {
     event.preventDefault();
