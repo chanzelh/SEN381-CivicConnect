@@ -15,11 +15,11 @@
 
 | Test ID | Title | Basis | Technique | Level | Status | Evidence |
 |---|---|---|---|---|---|---|
-| TC-U01 | Transition rule allows only valid status changes | FR-010 | White-box | Unit | Not run | |
-| TC-U02 | Overdue calculation around the threshold | FR-014, RISK-011 | BVA | Unit | Not run | |
-| TC-U03 | Permission check per role | NFR-002, RISK-002 | White-box | Unit | Not run | |
-| TC-U04 | Request reference is unique | FR-001 | White-box | Unit | Not run | |
-| TC-U05 | Notification failure does not undo the status update | FR-005, RISK-010 | Fault injection | Unit | Not run | |
+| TC-U01 | Transition rule allows only valid status changes | FR-010 | White-box | Unit | Pass | |
+| TC-U02 | Overdue calculation around the threshold | FR-014, RISK-011 | BVA | Unit | Pass | |
+| TC-U03 | Permission check per role | NFR-002, RISK-002 | White-box | Unit | Pass | |
+| TC-U04 | Request reference is unique | FR-001 | White-box | Unit | Pass | |
+| TC-U05 | Notification failure does not undo the status update | FR-005, RISK-010 | Fault injection | Unit | Pass | |
 | TC-B01 | Valid submission accepted | FR-001, FR-002 | EP | API | Not run | |
 | TC-B02 | Unknown or missing category rejected | FR-002, NFR-011 | EP | API | Not run | |
 | TC-B03 | Field boundaries (missing, min, max, max+1) | NFR-011 | BVA | API | Not run | |

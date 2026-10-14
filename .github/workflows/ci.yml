@@ -57,6 +57,10 @@ jobs:
         working-directory: CivicConnectCode/client
         run: npm run build
 
+      - name: Run client tests
+        working-directory: CivicConnectCode/client
+        run: npm test
+
       - name: Create schema and seed test data
         env:
           PGPASSWORD: ci_only_password
