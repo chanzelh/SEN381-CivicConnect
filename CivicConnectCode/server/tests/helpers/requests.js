@@ -1,16 +1,19 @@
 const { pool } = require("./db");
 const { getSeedUser } = require("./auth");
 
-async function createRequestInState(status, { assigned = false, dueDate = null } = {}) {
+async function createRequestInState(
+  status,
+  { assigned = false, dueDate = null, category = "Maintenance" } = {}
+) {
   const requester = await getSeedUser("requester");
   const staff = await getSeedUser("staff");
 
   const { rows } = await pool.query(
     `INSERT INTO service_requests
        (requester_id, assigned_staff_id, title, description, category, status, due_date)
-     VALUES ($1, $2, 'Broken hall light', 'The light outside room 12 flickers.', 'Maintenance', $3, $4)
+     VALUES ($1, $2, 'Broken hall light', 'The light outside room 12 flickers.', $5, $3, $4)
      RETURNING request_id`,
-    [requester.user_id, assigned ? staff.user_id : null, status, dueDate]
+    [requester.user_id, assigned ? staff.user_id : null, status, dueDate, category]
   );
   return rows[0].request_id;
 }
