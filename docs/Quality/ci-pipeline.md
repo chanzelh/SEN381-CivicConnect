@@ -35,6 +35,7 @@
 - Local development uses `server/.env` (gitignored); local tests use `server/.env.test` (gitignored), pointing at a separate `civicconnect_test` database.
 - `server/db/seed.sql` contains test-only accounts. Only a bcrypt hash of a documented test password is stored. No real credentials are in the repository (NFR-004, see #26).
 - The team's binary database export was deliberately not committed: it contained real account password hashes and used a PostgreSQL 18 format that CI cannot read.
+- Jest runs test files one at a time (maxWorkers: 1) because API tests share one database and reset it before each check.
 
 ## CI smoke test
 `server/tests/ci/ci.smoke.test.js` checks that the DB is reachable, the schema is applied and the app loads. It verifies the pipeline itself and is **not** counted in the M3 test baseline.
