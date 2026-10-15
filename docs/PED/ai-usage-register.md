@@ -1,7 +1,13 @@
 # AI Usage Register
-# Version One
+# Version Three
 
-**Last updated:** 2026/09/07
+## Version History
+
+| Version | Date | Changes |
+|---|---|---|
+| 1.0 | 08/09/2026 | Created AI Usage Register for Milestone 1. |
+| 2.0 | 30/09/2026 | Added AI usage records for Milestone 2. |
+| 3.0 | 15/10/2026 | Updated AI usage records for Milestone 3, including RTM and test evidence documentation. |
 
 ## Purpose
 The intent of this register is to make sure the team records all the AI-assisted material and contributions that was used by across the project. All entries must show independent verification.
@@ -22,3 +28,5 @@ The intent of this register is to make sure the team records all the AI-assisted
 | 30/09/2026 | Alyssa Vieira | ChatGPT | Milestone 2: RTM and Risk Register updates | Assisted with wording and formatting the RTM mappings and design risk entries. | Reviewed the entries against the CivicConnect requirements and design documents. | Modified | Adjusted wording to match the project and marked unfinished design details as pending. |
 | 12/10/2026 | Chanzél Hammond | Claude | Milestone 3 Test plan and evidence | Assisted with the identification and finalization of requirements and risks that need to be tested and verified the manner for each one as well | Reviewed by teammates and against Milestone 3 requirements | Modified | Adjusted the identified risks/requirements to fit the constraints of time and costs for the team since they were not feasible |
 | 15/10/2026 | Chanzél Hammond | Claude | For milestone 3 all the developed tests were done with AI-assistance to ensure that everything is covered. As well as where there were educational gaps, AI was used to study it to be able to implement these tests correctly and writing them correctly. The documentation's wording and layout for all the tests (most fall under Quality in the docs section) were also done with AI to ensure everything is well-rounded and covered in these documents | Formatted and worded documents for testing. Helped with the setup of tests during milestone 3 to ensure everything is covered | All other team members reviewed everything written throughout and it was also verified by running actual tests to ensure it works | Accepted | Some tests had defects in them when they were run but that was fixed |
+
+| 15/10/2026 | Alyssa Vieira | ChatGPT | Milestone 3 RTM and Test Evidence | Assisted with organising and updating requirement traceability, verification statuses and performance test evidence references. | Reviewed the changes against the existing requirements, test records and GitHub evidence. | Modified | Adjusted wording and removed unnecessary information to match the team's instructions. |
