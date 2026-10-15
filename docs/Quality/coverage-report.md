@@ -2,7 +2,7 @@
 # Milestone Three
 
 **Source:** On the server the following ran - npx jest --runInBand --coverage. The same report is uploaded automatically by the CI as the coverage artifact on every run
-CI Link  : ADD IN
+CI Link  : https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38700281059/job/116306536012?pr=116 
 
 ## 1. Results (server)
 | Module | % Lines | % Branches | Notes |

@@ -72,5 +72,11 @@ cd CivicConnectCode/client && npm run dev     # http://localhost:5173
 ```bash
 cd CivicConnectCode/server && npm test        # unit + API tests (needs civicconnect_test)
 cd CivicConnectCode/client && npm test        # client unit tests
+cd CivicConnectCode/client
+npx playwright install chromium firefox     # once; Edge uses the installed browser
+npx playwright test                          # E2E journeys (stop your own dev servers first)
+npx playwright test --project=msedge         # Edge only, if disk space is short
+```
+E2E starts the API and client itself, using `server/.env.test` (the test database).
 ```
 Server tests run one file at a time (`maxWorkers: 1`) because API tests share and reset the test database. CI runs the same tests automatically on every PR (see `docs/Quality/ci-pipeline.md`).
