@@ -89,7 +89,7 @@ jobs:
         working-directory: CivicConnectCode/client
         run: npm test
 
-            - name: Install Playwright browsers
+      - name: Install Playwright browsers
         working-directory: CivicConnectCode/client
         run: npx playwright install --with-deps chromium firefox msedge
 
@@ -101,8 +101,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: |
+          
+      - name: playwright-report
+        path: |
             CivicConnectCode/client/playwright-report
             CivicConnectCode/client/test-results
 
