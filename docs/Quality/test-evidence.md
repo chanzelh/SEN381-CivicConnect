@@ -260,17 +260,18 @@ Some tests were deliberately removed during test planning to keep the tests more
 
 **TC-P01 : Management Dashboard Load Test**
 
+
 | Field | Detail |
 |---|---|
 | Requirements related | NFR-005 (Must), NFR-013 (Could), RISK-011 |
 | Technique and level | Load testing using k6; performance |
 | Purpose | Check whether the management dashboard's request-list API can handle multiple users reading requests at the same time. |
 | Environment | Local MacBook, Node.js/Express backend on port 5001, PostgreSQL database `civicconnect_performance_test`. The load generator and server ran on the same machine. |
-| Test data | The isolated database contained 400 requests before execution. The script attempted to seed 200 more requests during setup. |
+| Test data | The isolated database contained 400 requests before execution. The script attempted to seed 200 additional requests during setup. |
 | Input | 50 virtual users repeatedly calling authenticated `GET /api/requests` for 1 minute. |
-| Expected result | 95th percentile response time below 2,000 ms and failed HTTP requests below 1%. |
+| Expected result | 95th percentile response time below 2,000 ms and failed dashboard HTTP requests below 1%. |
 | Actual result | Dashboard p95 = 52.92 ms; failed dashboard requests = 0.00%; 2,950 successful dashboard requests; approximately 48.16 dashboard requests per second. Both thresholds passed. |
 | Status | Pass |
-| Evidence | `CivicConnectCode/performance/tc-p01.k6.js` and `CivicConnectCode/performance/tc-p01-result.txt`; GitHub Issue #84 |
-| Limitations | This was a short local test, not a production test. It covered one API operation with 50 virtual users for 1 minute. The load generator shared the machine with the server, and the request-list endpoint was tested without pagination. |
+| Evidence | [k6 script](../../CivicConnectCode/performance/tc-p01.k6.js), [saved results](../../CivicConnectCode/performance/tc-p01-result.txt), [PR #120](https://github.com/chanzelh/SEN381-CivicConnect/pull/120), [PR #120 CI checks](https://github.com/chanzelh/SEN381-CivicConnect/pull/120/checks), [Issue #84](https://github.com/chanzelh/SEN381-CivicConnect/issues/84) |
+| Limitations | This was a short local test, not a production test. It covered one API operation with 50 virtual users for 1 minute. The load generator shared the machine with the server, and the request-list endpoint was tested without pagination. The CI checks verify the merged code, not execution of the local k6 test. |
 | Defect Link | None identified during this run |
