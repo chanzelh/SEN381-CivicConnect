@@ -1,5 +1,6 @@
+
 # Risk Register
-## Version Two — Milestone Two
+## Version Three — Milestone Three
 
 **Team:** Group L
 
@@ -9,6 +10,7 @@
 |---|---|---|
 | One — Milestone One | 2026/09/08 | Initial risk register (RISK-001–007). |
 | Two — Milestone Two | 2026/09/29 | Retained the original risks and added design risks RISK-008–012. |
+| Three — Milestone Three | 2026/10/15 | Reviewed existing risks and added Milestone 3 risks RISK-013–014. |
 
 ## Purpose
 
@@ -20,7 +22,7 @@ The risk register will be reviewed and updated throughout the project as new ris
 
 ## Risk Log
 
-RISK-001–007 continue from the Milestone One register. RISK-008–012 were identified while mapping M2 architecture, data and interface decisions. Ratings are provisional until team review.
+RISK-001–007 continue from Milestone One, and RISK-008–012 were identified during Milestone Two. RISK-013–014 were added during Milestone Three to record outstanding security testing and deployment risks. Ratings and statuses remain subject to team review.
 
 | Risk ID | Description | Cause | Probability | Impact | Priority | Mitigation | Contingency | Owner | Status |
 |---|---|---|---|---|---|---|---|---|---|
@@ -36,6 +38,8 @@ RISK-001–007 continue from the Milestone One register. RISK-008–012 were ide
 | RISK-010 | Requesters may miss important feedback after a request update. | The initial in-process notification interface has no final failure rule or delivery mechanism yet. | Med | Med | Med | Define the interface inputs, failure behavior and visible feedback before implementation; test notification failure separately from the request transaction. | Keep the request change traceable, show its current state in the requester UI and retry or manually communicate according to the agreed later notification process. | Team | Open |
 | RISK-011 | Management reports may become slow or show inconsistent overdue counts. | Reporting queries and overdue rules are not yet finalised and may read growing request/history data. | Med | Med | Med | Define one overdue rule; use consistent read queries, suitable indexes and representative data to check response times. | Correct the rule/query, flag affected reports and regenerate them from the stored request records. | Team | Open |
 | RISK-012 | Changes to one feature may unexpectedly affect another module. | A modular monolith can lose its intended boundaries if UI, request workflow, notification and reporting code access each other's data directly. | Med | Med | Med | Document responsibilities and interfaces; review PRs for cross-module dependencies and test affected request flows. | Refactor the dependency through the agreed interface and rerun the affected checks before merging. | Team | Open |
+| RISK-013 | Security issues may remain undetected in API endpoints that have not been fully tested. | Dedicated API tests are still missing for signup, comments, notifications and cross-user access. | Med | High | High | Add API-level tests for the outstanding endpoints and verify authentication, authorisation and access restrictions. Track the gaps under TD-007. | If a security issue is discovered, restrict the affected functionality, correct the issue and rerun the relevant security and regression tests. | Team | Open |
+| RISK-014 | The application may behave differently when deployed to staging or production. | Local development and testing do not fully represent a deployed environment, including HTTPS, configuration and infrastructure differences. | Med | High | High | Complete deployment verification, check HTTPS and environment configuration, and run the required smoke tests before release. | If deployment checks fail, delay release, correct the configuration or implementation and repeat the failed checks. | Team | Open |
 
 ## Risk Review
 
