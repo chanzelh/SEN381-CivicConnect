@@ -17,10 +17,13 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
-    
+    rules: {
+      // DEF-008 regression guard: no leftover debug logging.
+      'no-console': ['error', { allow: ['error', 'warn'] }],
+    },
   },
   {
-  files: ['e2e/**/*.js', 'playwright.config.js'],
-  languageOptions: { globals: globals.node },
-},
+    files: ['e2e/**/*.js', 'playwright.config.js'],
+    languageOptions: { globals: globals.node },
+  },
 ])

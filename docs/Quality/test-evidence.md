@@ -30,11 +30,11 @@ Some tests were deliberately removed during test planning to keep the tests more
 | TC-I05 | Status change rolls back if history write fails | NFR-009, RISK-008 | Fault injection | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 | TC-I08 | Dashboard counts match seeded data | FR-013, FR-014, FR-015, RISK-011 | Seeded data | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 |---|---|---|---|---|---|---|
-| TC-E01 | Requester submits and sees status and history | FR-001, FR-003, FR-004 | Journey | E2E | Pass- Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | ADD IN |
-| TC-E02 | Staff finds, assigns, comments, resolves; requester sees update | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 | Journey | E2E | Pass - Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | ADD IN |
+| TC-E01 | Requester submits and sees status and history | FR-001, FR-003, FR-004 | Journey | E2E | Pass- Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 |
+| TC-E02 | Staff finds, assigns, comments, resolves; requester sees update | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 | Journey | E2E | Pass - Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 |
 | TC-P01 | 50 concurrent users, p95 ≤ 2 s | NFR-005, NFR-013 | Load | Performance | Not run | |
 |---|---|---|---|---|---|---|
-| TC-I07 | Stale update rejected (conditional) | FR-009, RISK-009 | Concurrent update | API/integration | Not run | |
+| TC-I07 | Stale update rejected (conditional) | FR-009, RISK-009 | Concurrent update | API/integration | Not applicable anymore | |
 
 ## Individual Test Records
 **1.  Unit Tests**
@@ -241,7 +241,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | 	Redirect to My Requests; the new request appears in the list with category Maintenance and status Open; opening it shows the title, description and status Open |
 | Actual Result | 3/3 browsers passed |
 | Status | Pass |
-| Evidence | ADD IN & client/e2e/TC-E01.FR-001.requester-journey.e2e.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 & client/e2e/TC-E01.FR-001.requester-journey.e2e.js |
 | Defect Link | None |
 
 **TC-E02 : Staff & Management Journey**
@@ -253,5 +253,5 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Expected result | Assign confirmation, Current Status Assigned, staff name shown; staff see the request details including the requester; comment saved and shown; status updates confirmed; management close confirmed; requester sees status Closed, the notification Your request "<title>" now has the status "Closed". and the staff comment |
 | Actual Result | 3/3 passed browsers |
 | Status | Pass |
-| Evidence | ADD IN & client/e2e/TC-E02.FR-009.staff-journey.e2e.js |
+| Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 & client/e2e/TC-E02.FR-009.staff-journey.e2e.js |
 | Defect Link | None |
