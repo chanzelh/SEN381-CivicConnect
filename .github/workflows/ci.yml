@@ -60,7 +60,7 @@ jobs:
         working-directory: CivicConnectCode/client
         run: npm ci
 
-          - name: Audit server dependencies (production)
+      - name: Audit server dependencies (production)
         working-directory: CivicConnectCode/server
         run: npm audit --omit=dev --audit-level=high
 
