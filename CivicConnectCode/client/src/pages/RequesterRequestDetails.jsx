@@ -82,9 +82,6 @@ function RequesterRequestDetails() {
         requestData.data ??
         requestData;
 
-      console.log("FULL REQUEST API RESPONSE:", requestData);
-      console.log("REQUEST OBJECT:", requestObject);
-
       setRequest(requestObject);
 
       // 2. Load the conversation separately.
@@ -100,8 +97,6 @@ function RequesterRequestDetails() {
           commentsData.message || "Could not load the conversation."
         );
       }
-
-      console.log("COMMENTS API RESPONSE:", commentsData);
 
       const commentsList = Array.isArray(commentsData)
         ? commentsData

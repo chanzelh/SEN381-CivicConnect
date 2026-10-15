@@ -95,10 +95,14 @@ function App() {
           </RequireAuth>
         }
       />
-      <Route
-  path="/staff/requests/:id"
-  element={<StaffRequestDetails />}
-  />
+            <Route
+        path="/staff/requests/:id"
+        element={
+          <RequireAuth allowedRoles={["staff"]}>
+            <StaffRequestDetails />
+          </RequireAuth>
+        }
+      />
 
       <Route
         path="/management"

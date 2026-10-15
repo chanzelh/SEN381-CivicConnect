@@ -13,7 +13,7 @@ For NFR-004 (a Must) it indicates that there must be 0 secrets in the repository
 | Secret scanning and push protection | Github; public repo | Push protection will refuse pushes containing unknown secret types |
 
 ### 2. Findings
-CI run : ADDDDDD IN
+CI run : https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107
 | ID | Finding | Severity | Disposition |
 |---|---|---|---|
 | SEC-001 | braces via nodemon | High | Accepted. A dev tool only; no fixed version exists. The only 'fix' would be downgrading the nodemon to 1.14.10. Its monitored by dependabot |
