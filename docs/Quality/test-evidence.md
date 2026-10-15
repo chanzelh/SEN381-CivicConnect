@@ -32,7 +32,7 @@ Some tests were deliberately removed during test planning to keep the tests more
 |---|---|---|---|---|---|---|
 | TC-E01 | Requester submits and sees status and history | FR-001, FR-003, FR-004 | Journey | E2E | Pass- Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 |
 | TC-E02 | Staff finds, assigns, comments, resolves; requester sees update | FR-005, FR-007, FR-008, FR-009, FR-011, FR-012 | Journey | E2E | Pass - Also run locally in Microsoft Edge (2/2 passed) during development; Chromium and Firefox were run in CI only (local disk space). | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 |
-| TC-P01 | 50 concurrent users, p95 ≤ 2 s | NFR-005, NFR-013 | Load | Performance | Not run | |
+| TC-P01 | 50 concurrent users, p95 ≤ 2 s | NFR-005, NFR-013, RISK-011 | Load | Performance | Pass | `CivicConnectCode/performance/tc-p01-result.txt` (local k6 run, 15 Oct 2026) |
 |---|---|---|---|---|---|---|
 | TC-I07 | Stale update rejected (conditional) | FR-009, RISK-009 | Concurrent update | API/integration | Not applicable anymore | |
 
@@ -255,3 +255,22 @@ Some tests were deliberately removed during test planning to keep the tests more
 | Status | Pass |
 | Evidence | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 & client/e2e/TC-E02.FR-009.staff-journey.e2e.js |
 | Defect Link | None |
+
+**4. Performance Testing**
+
+**TC-P01 : Management Dashboard Load Test**
+
+| Field | Detail |
+|---|---|
+| Requirements related | NFR-005 (Must), NFR-013 (Could), RISK-011 |
+| Technique and level | Load testing using k6; performance |
+| Purpose | Check whether the management dashboard's request-list API can handle multiple users reading requests at the same time. |
+| Environment | Local MacBook, Node.js/Express backend on port 5001, PostgreSQL database `civicconnect_performance_test`. The load generator and server ran on the same machine. |
+| Test data | The isolated database contained 400 requests before execution. The script attempted to seed 200 more requests during setup. |
+| Input | 50 virtual users repeatedly calling authenticated `GET /api/requests` for 1 minute. |
+| Expected result | 95th percentile response time below 2,000 ms and failed HTTP requests below 1%. |
+| Actual result | Dashboard p95 = 52.92 ms; failed dashboard requests = 0.00%; 2,950 successful dashboard requests; approximately 48.16 dashboard requests per second. Both thresholds passed. |
+| Status | Pass |
+| Evidence | `CivicConnectCode/performance/tc-p01.k6.js` and `CivicConnectCode/performance/tc-p01-result.txt`; GitHub Issue #84 |
+| Limitations | This was a short local test, not a production test. It covered one API operation with 50 virtual users for 1 minute. The load generator shared the machine with the server, and the request-list endpoint was tested without pagination. |
+| Defect Link | None identified during this run |
