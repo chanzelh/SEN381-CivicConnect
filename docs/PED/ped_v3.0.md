@@ -277,17 +277,12 @@ This section will be finalised with concrete evidence in PED V3.
 | Wireframes Reviewd| YES - discussed and approved by all team members|
 | Api Contracts Agreed | YES |
 | Chosen Architecture and Tech Stack | YES - all decisions were discussed and appproved by all members |
-| Updated Risks | YES - Acceppted by team |
+| Updated Risks | YES - Accepted by team |
 | Outcome | ACCEPTED by entire team |
 
 ---
 
 # Milestone 3 — Implementation, Verification and Release Evidence
-
-> **Document status:** Working draft. The Milestone 1 and Milestone 2 sections above are retained as the approved historical design baseline, not as proof that all features are implemented. The evidence sections below must be completed and reviewed before PED Version 3 is approved. Do not treat a planned test as a passed test.
-
-
-
 ## 22. M2 Baseline Conformance and Controlled Changes
 
 | Area | M2 baseline | M3 evidence or difference | Interpretation |
