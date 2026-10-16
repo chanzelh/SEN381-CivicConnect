@@ -7,8 +7,8 @@
 **Status of each defect :** Open/In Progress/Fixed/Deferred/Won't fix. A won't fix and deferred needs a reason and feeds residual risk.
 
 ## Summary
-**Defects Logged :** 8
-**Fixed :**  7
+**Defects Logged :** 9
+**Fixed :**  8
 **Deferred :** 1
 **Open :** 0
 **Critical :**  0
