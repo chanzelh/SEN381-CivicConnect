@@ -32,8 +32,8 @@ One key threat per STRIDE category, chosen by impact on CivicConnect.
 
 | Risk ID | Risk | Probability | Impact | Mitigation now | Next action |
 |---|---|---|---|---|---|
-| RISK-013 | Brute-force password guessing on `/api/auth/login` (no rate limiting or lockout) | Medium | High | bcrypt cost 12; generic login error | Add rate limiting (e.g. `express-rate-limit`) on login before production |
-| RISK-014 | Session token theft or reuse: token in `sessionStorage` (XSS-readable) and not revoked on logout | Low | High | 2-hour expiry; React escaping; no debug logging | Consider httpOnly cookies and server-side token revocation |
+| RISK-015 | Brute-force password guessing on `/api/auth/login` (no rate limiting or lockout) | Medium | High | bcrypt cost 12; generic login error | Add rate limiting (e.g. `express-rate-limit`) on login before production |
+| RISK-016 | Session token theft or reuse: token in `sessionStorage` (XSS-readable) and not revoked on logout | Low | High | 2-hour expiry; React escaping; no debug logging | Consider httpOnly cookies and server-side token revocation |
 
 Existing risks updated by this review: **RISK-002** (unauthorised access) now has evidence T-01, T-16, T-17; **RISK-009** (concurrent overwrite) confirmed as residual (T-07); **RISK-008** (status without history) mitigated and evidenced (T-06).
 
