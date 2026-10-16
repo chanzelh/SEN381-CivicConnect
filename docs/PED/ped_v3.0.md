@@ -420,8 +420,8 @@ The project has meaningful construction and test evidence, but this document can
 |---|---|---|---|
 | RISK-009 | Concurrent edits may overwrite a newer update | Controlled workflow, transaction integrity | Implement optimistic locking / development team |
 | RISK-010 | Notification failures may not retry | Error handling and testing | Retry/recovery design / development team |
-| RISK-013 (threat review) | Login attempts may be brute-forced | Authentication checks | Rate limiting / development team |
-| RISK-014 (threat review) | Stolen token can remain usable until expiry | Token expiry and protected routes | Session revocation review / development team |
+| RISK-015 (threat review) | Login attempts may be brute-forced | Authentication checks | Rate limiting / development team |
+| RISK-016 (threat review) | Stolen token can remain usable until expiry | Token expiry and protected routes | Session revocation review / development team |
 
 **ID warning:** RISK-013/014 conflict with the separate Risk Register descriptions. Resolve the IDs and confirm named owners before final approval.
 
@@ -452,4 +452,87 @@ Evidence still to confirm: [staging/HTTPS #80](https://github.com/chanzelh/SEN38
 | Risks | [Risk Register](../Risk/risk-register.md) |
 | AI assistance | [AI Usage Register](ai-usage-register.md) |
 | Staging/release | Issues #80–83, #88–89; final staging evidence to confirm |
+
+## 30. Database Development and Application Integration — Milestone 3
+
+### 30.1 Database Development
+
+CivicConnect uses PostgreSQL to store application data. During Milestone 3, the database was integrated with the backend to support the main requester, staff and management workflows.
+
+The implemented database contains five main tables:
+
+| Table | Purpose |
+|---|---|
+| `users` | Stores registered user details, password hashes and user roles. |
+| `service_requests` | Stores submitted requests, their categories, statuses, requester details and staff assignments. |
+| `request_comments` | Stores comments associated with requests and the users who created them. |
+| `request_status_history` | Records request status and assignment activity to support auditability. |
+| `notifications` | Stores user notifications and their read status. |
+
+The database schema is maintained in `CivicConnectCode/server/db/schema.sql`.
+
+### 30.2 Database Relationships
+
+The database uses primary keys and foreign keys to connect related records.
+
+Each service request is linked to its requester and may also be assigned to a staff member. Comments and status-history entries are associated with the relevant request, while notifications are associated with their recipients.
+
+These relationships help maintain data integrity and avoid unnecessary duplication.
+
+### 30.3 Implemented Application Functionality
+
+The React frontend communicates with a Node.js and Express backend, which accesses the PostgreSQL database.
+
+The main functionality includes:
+
+- **Authentication:** Users can register and log in. Protected backend endpoints verify authentication tokens and apply role-based access restrictions.
+- **Requester functionality:** Requesters can submit service requests and view their existing requests and statuses.
+- **Staff functionality:** Authorised staff can access assigned requests, add comments and update request statuses according to the implemented workflow.
+- **Management functionality:** Management can view requests, assign staff members, set due dates and monitor request activity.
+- **Notifications:** The system stores notifications associated with relevant request activity and makes them available to users.
+
+### 30.4 Backend and Database Integration
+
+The backend separates responsibilities between routes, controllers, models and middleware.
+
+Routes define API endpoints. Controllers handle requests and validation. Models execute database operations, while middleware handles authentication and access control.
+
+For example, when a requester submits a service request, the frontend sends the request to `POST /api/requests`. The `createMyRequest` controller processes it and calls `createRequest` to save the information in PostgreSQL.
+
+This structure supports maintainability by separating application logic from database operations.
+
+### 30.5 Validation, Security and Data Integrity
+
+The implementation includes authentication checks, role-based access restrictions, parameterised database queries and password hashing.
+
+Controlled status transitions prevent invalid workflow changes. Status updates and their history records are also handled transactionally to avoid saving incomplete changes.
+
+Some limitations remain documented, including incomplete validation of optional date fields, missing stale-update protection and notification retry functionality. These are tracked in the defect and technical debt registers.
+
+### 30.6 Testing and Verification
+
+The team tested the database and application integration using automated unit, API/integration and end-to-end tests.
+
+| Test | Verified functionality |
+|---|---|
+| TC-I03 | Submitted requests are stored and can be retrieved. |
+| TC-I04 | Staff assignments create the required history records. |
+| TC-I05 | Database changes are rolled back when a history write fails. |
+| TC-E01 | Requester submission and request viewing workflow. |
+| TC-E02 | Staff and management assignment, comments, status changes and requester updates. |
+
+These tests provide evidence that the frontend, backend and database work together for the tested workflows.
+
+However, the automated test coverage is not complete. Dedicated API testing for signup, comments, notification endpoints and certain cross-user access scenarios remains outstanding.
+
+The complete testing evidence is recorded in `docs/Quality/test-evidence.md`, with outstanding gaps documented in `docs/Quality/coverage-report.md` and `docs/Quality/technical-debt-register.md`.
+
+### 30.7 Supporting Evidence
+
+- Database schema: `CivicConnectCode/server/db/schema.sql`
+- Requirements and RTM: `docs/Requirements/requirements.md`
+- Test evidence: `docs/Quality/test-evidence.md`
+- Coverage report: `docs/Quality/coverage-report.md`
+- Technical debt: `docs/Quality/technical-debt-register.md`
+- Decision log: `docs/Decisions/decision-log.md`
 
