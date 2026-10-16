@@ -15,19 +15,15 @@ Milestone 2: Architecture, Technology & Initial Design Baseline -Complete
 Milestone 3: Controlled Construction, Integration, Quality & Release Readiness -Ongoing
 Milestone 4: Finalize, Consolidate & Conclude -Not started
 
-## Setup Instructions:
-## 1. App Setup
-Insert Notes here @ Kaylee
-
-## 2. Local setup and running tests
+## Local setup and running tests
 
 ### Prerequisites
 - Node.js 22, PostgreSQL 16+ (pgAdmin 4 optional), Git
 
 ### 1. Install dependencies
 ```bash
-cd CivicConnectCode/server && npm install
-cd ../client && npm install
+cd CivicConnectCode/server && npm install 
+cd CivicConnectCode/client && npm install
 ```
 
 ### 2. Create two local databases

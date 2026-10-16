@@ -1,11 +1,5 @@
--- CivicConnect database schema (structure only, no data)
--- Source: team's local development database export, converted to plain SQL
--- so it can be reviewed in PRs and applied by CI (Postgres 16) and locally.
--- Apply to an EMPTY database:  psql -d <db_name> -f server/db/schema.sql
-
 SET client_encoding = 'UTF8';
 
--- ---------- Tables ----------
 
 CREATE TABLE public.users (
     user_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
