@@ -22,8 +22,8 @@ Milestone 4: Finalize, Consolidate & Conclude -Not started
 
 ### 1. Install dependencies
 ```bash
-cd CivicConnectCode/server && npm install
-cd ../client && npm install
+cd CivicConnectCode/server && npm install 
+cd CivicConnectCode/client && npm install
 ```
 
 ### 2. Create two local databases
