@@ -47,6 +47,6 @@ No defect was found by a user and all of them rather by a quality activity.
 |---|---|---|---|
 | DEF-001 – DEF-005 | Fixed and reverified | Regression checks pass in the final CI run: https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107 | None |
 | DEF-006 | **Deferred (final)** | — | An API client that bypasses the UI can trigger a 500 with an invalid optional date. Low impact; listed as future work. |
-| DEF-007 – DEF-009 | Fixed and reverified | Regression checks pass in the final CI run <link> | None |
+| DEF-007 – DEF-009 | Fixed and reverified |  https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/39028108910/job/117383002968| None |
 
 **Conclusion:** no open or critical defects remain in the final release. One minor defect (DEF-006) is deliberately deferred with a stated reason and feeds residual risk.
