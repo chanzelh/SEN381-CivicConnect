@@ -1,5 +1,5 @@
 # CivicConnect Dependency and Secret Scanning
-## Milestone 3
+## Milestone 4 - Final
 
 For NFR-004 (a Must) it indicates that there must be 0 secrets in the repository. This records what was scanned and how each finding was handled.
 
@@ -9,8 +9,8 @@ For NFR-004 (a Must) it indicates that there must be 0 secrets in the repository
 | Secret scan of the full Git history | gitleaks (CI step in build-and-test) |  Yes |
 | Audit of dev tools | npm audit --audit-level=high (CI, report only) | No: findings dispositioned below |
 |  Weekly dependency updates | Dependabot that is stored in .github | Updates will arrive as PRs through 2 approvals and CI |
-| Audi of shipped packages, server + client | npm audit --omit+dev --audit=level = high (CI) | Yes on any critical or high |
-| Secret scanning and push protection | Github; public repo | Push protection will refuse pushes containing unknown secret types |
+| Audi of shipped packages, server + client | npm audit --omit=dev --audit-level=high (CI) | Yes on any critical or high |
+| Secret scanning and push protection | Github; public repo | Push protection will refuse pushes containing known secret types |
 
 ### 2. Findings
 CI run : https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850/job/116270418002?pr=107
@@ -22,6 +22,7 @@ CI run : https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/3868903085
 | SEC-004 | Gitleaks full history scan | - | no leaks found |
 | SEC-005 | Github secret scanning | - | 0 alerts. Push protection enabled on 14 october |
 | SEC-006 | `createManagementUser.js` and `createStaffUser.js` was reviewd | Low | No hard coded secrets. The passwords are typed at runtime and hased with bcrypt |
+| SEC-007 | JWT login token committed in a k6 results file (commit 230d947) | Medium | Caught by the gitleaks CI gate; merges blocked. The commit was only on a feature branch, which was deleted, so the token never reached main (later runs: no leaks found). Test account only; token expired 2 h after creation. k6 script fixed to strip setup data before writing results. |
 
 ### 3. Values that could get mistaken for passwords
 - The ci-only_password and ci-only-not-a-real-secret in the ci.yml document. This only serves as unlocking a throwaway CI database container.

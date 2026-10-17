@@ -1,6 +1,5 @@
-
 # Risk Register
-## Version Three — Milestone Three
+## Milestone Four - Final Version
 
 **Team:** Group L
 
@@ -11,7 +10,7 @@
 | One — Milestone One | 2026/09/08 | Initial risk register (RISK-001–007). |
 | Two — Milestone Two | 2026/09/29 | Retained the original risks and added design risks RISK-008–012. |
 | Three — Milestone Three | 2026/10/16 | Reviewed existing risks and added Milestone 3 risks RISK-013–016, including outstanding security testing, deployment, login security and token management risks. |
-
+| Four — Milestone Four | 2026/10/17 | Final review: every risk given a final status (closed, mitigated or carried) with evidence. |
 
 ## Purpose
 
@@ -24,7 +23,6 @@ The risk register will be reviewed and updated throughout the project as new ris
 ## Risk Log
 
 RISK-001–007 continue from Milestone One, and RISK-008–012 were identified during Milestone Two. RISK-013–016 were added during Milestone Three to record outstanding security testing, deployment and authentication risks. Ratings and statuses remain subject to team review.
-
 
 | Risk ID | Description | Cause | Probability | Impact | Priority | Mitigation | Contingency | Owner | Status |
 |---|---|---|---|---|---|---|---|---|---|
@@ -46,7 +44,27 @@ RISK-001–007 continue from Milestone One, and RISK-008–012 were identified d
 | RISK-015 | Attackers may repeatedly attempt to guess user passwords. | The login endpoint does not currently have rate limiting or account lockout. | Med | High | High | Introduce login rate limiting. Continue using secure password hashing and generic login error messages. | Investigate suspicious login activity, restrict abusive requests and retest authentication controls. | Team | Open |
 | RISK-016 | A stolen authentication token may be reused to access the system. | Tokens are stored in sessionStorage and are not revoked when users log out. | Low | High | Med | Review more secure token storage and introduce token revocation or shorter sessions where appropriate. | Investigate suspected token theft, invalidate affected sessions where supported and strengthen authentication controls. | Team | Open |
 
+## Milestone Four: Final Risk Status
 
-## Risk Review
+Each risk's final status at project close. Closed = no longer active, with evidence. Mitigated = controls in place and evidenced. Carried = still open at release, with its consequence; these feed the go-live decision.
 
-Risks will be reviewed throughout each milestone. Their probability, impact, priority and status may be updated when new information or evidence becomes available. New risks will be added to the register when identified, and risks will only be closed when the team has sufficient evidence that they are no longer active or relevant.
+| Risk ID | Final status | Evidence | What remains / consequence |
+|---|---|---|---|
+| RISK-001 | Closed | Requirements traced through the final RTM; scope conclusion and Scope Completion % in PED v4.0 | — |
+| RISK-002 | Mitigated | TC-I01 (missing, forged, expired tokens), TC-I02 (8 role scenarios), TC-U03; DEF-007 fixed; `threat-review.md` | Residual login risks carried as RISK-015 and RISK-016 |
+| RISK-003 | Closed | PR workflow + required CI check on `main`; conflicting work (e.g. #97 on a merged branch) was caught and redone | — |
+| RISK-004 | Closed (occurred, controlled) | Phase 3 work ran late; tasks were prioritised and redistributed so M3/M4 deliverables were completed | — |
+| RISK-005 | Closed (occurred, controlled) | AI errors were caught by verification: wrong CI paths/env names (DEF-002), a k6 script that saved a token (SEC-007). Recorded in the AI Usage Register | — |
+| RISK-006 | Closed | Final RTM links every requirement to implementation, tests, evidence and status | — |
+| RISK-007 | Closed | Scope frozen in M4; no new features added | — |
+| RISK-008 | Closed (occurred, fixed) | Materialised as DEF-004; fixed with one transaction; TC-I05 proves rollback | — |
+| RISK-009 | **Carried** | No version check (TD-004); TC-I07 not applicable | Two staff can silently overwrite each other's change |
+| RISK-010 | **Carried (partly mitigated)** | TC-U05: a failed notification never undoes the update; no retry (TD-005) | A failed notification is lost |
+| RISK-011 | Closed | Overdue inconsistency fixed (DEF-005; TC-U02, TC-I08); TC-P01: 50 users, p95 = 52.92 ms, 0% failed (target < 2,000 ms) | Not tested at production scale or with very large data (no pagination on the request list) |
+| RISK-012 | Mitigated | ESLint boundary rules run on every PR; SA-001 caught and fixed (`static-analysis.md`) | — |
+| RISK-013 | **Carried** | Gaps listed in TD-007 and `coverage-report.md` | Signup, comments and notification APIs lack direct tests |
+| RISK-014 | <Partly mitigated / Carried> | Simulated staging verified (#80, #81: health check + E2E on staging) | HTTPS and real infrastructure untested; production behaviour may differ |
+| RISK-015 | **Carried** | `threat-review.md`; no rate limiting on login | Account takeover by password guessing; **go-live blocker** |
+| RISK-016 | **Carried** | `threat-review.md`; tokens in sessionStorage, not revoked on logout | A stolen token works for up to 2 hours; **go-live concern** |
+
+**Conclusion:** process risks (RISK-001, 003–007) are closed, and the two design risks that materialised (RISK-008 as DEF-004, RISK-005 as AI errors) were caught and controlled. The carried risks (RISK-009, 010, 013, 015, 016, and RISK-014 for production) are the evidence base for the go-live decision.

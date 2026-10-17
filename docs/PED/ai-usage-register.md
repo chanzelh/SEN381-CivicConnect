@@ -1,5 +1,5 @@
 # AI Usage Register
-# Version Three
+# Version Four - Final
 
 ## Version History
 
@@ -8,6 +8,7 @@
 | 1.0 | 08/09/2026 | Created AI Usage Register for Milestone 1. |
 | 2.0 | 30/09/2026 | Added AI usage records for Milestone 2. |
 | 3.0 | 15/10/2026 | Updated AI usage records for Milestone 3, including RTM and test evidence documentation. |
+| 4.0 | 17/10/2026 | Updated the AI usage records for Milestone 4  |
 
 ## Purpose
 The intent of this register is to make sure the team records all the AI-assisted material and contributions that was used by across the project. All entries must show independent verification.

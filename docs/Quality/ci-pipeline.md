@@ -51,13 +51,13 @@ A throwaway PR (#100, "DO NOT MERGE — CI gate evidence (#74)") added a deliber
 
 ## Setup history (what went wrong and how it was controlled)
 
-| PR | What happened | Outcome |
+| What happened | Outcome |
 |---|---|---|
-| #95 | Workflow, schema and seed added, but under `.github/Workflows` (capital W). GitHub only detects `.github/workflows`, so **no checks ran** and #95 merged without CI (DEF-002). | Merged; gap recorded |
-| #__ ("Rename of files") | Folder renamed so the workflow was detected. First CI run failed on the seed role reference (DEF-001). | CI caught a real defect |
-| #97 | Seed fix committed to the already-merged branch, which still had the old folder name, so no checks ran. | Closed unmerged |
-| #__ | Seed fix applied on the correct branch. | Merged |
-| #99 | Workflow path corrected; `build-and-test` passed. | Merged with 1 check passed + 2 approvals |
-|#100 | Deliberate failure to evidence the gate. | Closed unmerged |
+| Workflow, schema and seed added, but under `.github/Workflows` (capital W). GitHub only detects `.github/workflows`, so **no checks ran** and #95 merged without CI (DEF-002). | Merged; gap recorded |
+| Folder renamed so the workflow was detected. First CI run failed on the seed role reference (DEF-001). | CI caught a real defect |
+| Seed fix committed to the already-merged branch, which still had the old folder name, so no checks ran. | Closed unmerged |
+| Seed fix applied on the correct branch. | Merged |
+| Workflow path corrected; `build-and-test` passed. | Merged with 1 check passed + 2 approvals |
+| Deliberate failure to evidence the gate. | Closed unmerged |
 
 Interpretation: NFR-010 was not met for PR #95, because the merge happened before CI was detected. Since PR #99, `build-and-test` is a required check, so a missing or failing workflow now blocks every merge instead of passing silently.

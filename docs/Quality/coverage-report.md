@@ -1,5 +1,5 @@
 # CivicConnect Coverage Report Final
-# Milestone Three
+# Milestone Four - Final
 
 **Source:** On the server the following ran - npx jest --runInBand --coverage. The same report is uploaded automatically by the CI as the coverage artifact on every run
 CI Link  : https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38700281059/job/116306536012?pr=116 
@@ -45,5 +45,5 @@ The 100% then means that this file was loaded but not that these routes actually
 
 **Branches are lower than lines (35.6% vs 50.4%)** because many controller branches are error paths (`catch` → 500) that only run when the database fails. TC-I05 deliberately exercises one of these, the transaction failure; most others are untested.
 
-## 4. Conclusion
-All the highest-risk logic such as authantication, transactional history and status transitions were covered well and the tests caught real defects. The largest gap remaining is login and signup at API level which is shown to only be exercised through E2E. These are the first tests to add after M3 and are actively recroded as residual test gaps.
+## 5. Conclusion
+All the highest-risk logic such as authantication, transactional history and status transitions were covered well and the tests caught real defects. The largest gap remaining is login and signup at API level which is shown to only be exercised through E2E. These are the first tests to add after M3 and are actively recroded as residual test gaps. The API test gaps are tracked as TD-007 and RISK-013.
