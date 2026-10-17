@@ -37,7 +37,7 @@
 | Secrets and dependencies | `security-scanning.md` | 0 secrets in Git history; 0 vulnerabilities in shipped packages |
 | Performance | TC-P01 | 50 users: p95 52.92 ms (target < 2,000 ms), 0% failed |
 | Staging verification | `rollback-plan.md`, `staging-verification-output.txt`, `EvidenceOk.png` (#81) | `/health` ok (17 Oct 2026); 4/4 E2E checks passed on staging in Edge (both journeys + DEF-007 regression) |
-| Availability | `availability.md`, `availability-log.csv` (#89) | <__ checks, __% available over 60 min (target ≥ 99%)> |
+| Availability | `availability.md`, `availability-log.csv` (#89) | 120/120 checks up: 100% over 60 min on 17 Oct 2026 (target ≥ 99%) |
 | Backup & restore | `backup-restore.md` (#83) | Backup and restore worked and all 5 tables matched; but the request tables were empty, so restoring real service data is **not yet demonstrated** |
 | Usability | `usability-test.md` (#88) | 5/5 participants completed all key tasks unassisted (100%, target ≥ 80%) |
 | Rollback | `rollback-plan.md` | Rolled back to a previous commit and forward again; the API restarted both times. Only partly verified: the older commit had no `/health` endpoint to check |
