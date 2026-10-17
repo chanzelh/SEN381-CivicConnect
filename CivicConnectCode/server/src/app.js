@@ -11,6 +11,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use("/health", require("./routes/healthRoutes"));
 app.use("/api/auth", authRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/notifications", notificationRoutes);
