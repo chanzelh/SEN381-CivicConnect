@@ -1,5 +1,5 @@
 # CivicConnect Test Evidence
-# Milestone Three
+# Milestone Four - FInal
 
 **See Also:** The test plan for the team (test-plan.md) and defect register (defect-register.md)
 
@@ -14,16 +14,16 @@ Some tests were deliberately removed during test planning to keep the tests more
 | TC-U01 | Transition rule allows only valid status changes | FR-010 | White-box | Unit | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823/job/115749264354?pr=102 |
 | TC-U02 | Overdue calculation around the threshold | FR-014, RISK-011 | BVA | Unit | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823/job/115749264354?pr=102 |
 | TC-U03 | Permission check per role | NFR-002, RISK-002 | White-box | Unit | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823/job/115749264354?pr=102 |
-| TC-U04 | Request reference is unique | FR-001 | White-box | Unit | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823/job/115749264354?pr=102 |
+| TC-U04 | Assignment due-date validation | FR-009, NFR-011 | BVA | Unit | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823/job/115749264354?pr=102 |
 | TC-U05 | Notification failure does not undo the status update | FR-005, RISK-010 | Fault injection | Unit | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823/job/115749264354?pr=102 |
 |---|---|---|---|---|---|---|
 | TC-B01 | Valid submission accepted | FR-001, FR-002 | EP | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698/job/115772175394?pr=103 |
 | TC-B02 | Unknown or missing category rejected | FR-002, NFR-011 | EP | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698/job/115772175394?pr=103 |
 | TC-B03 | Field boundaries (missing, min, max, max+1) | NFR-011 | BVA | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698/job/115772175394?pr=103 |
-| TC-B05 | Valid workflow path Submitted → Closed | FR-010 | State transition | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38548799316/job/115801397809?pr=104 |
-| TC-B06 | Invalid transitions blocked | FR-010, FR-012 | State transition | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38548799316/job/115801397809?pr=104 |
+| TC-B05 | Valid workflow path to Closed | FR-010 | State transition | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698/job/115772175394?pr=103 |
+| TC-B06 | Invalid transitions blocked | FR-010, FR-012 | State transition | API | PASS | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698/job/115772175394?pr=103 |
 |---|---|---|---|---|---|---|
-| TC-I01 | No token returns 401; no internal details | NFR-001, NFR-003 | Negative | API/integration | Pass | |
+| TC-I01 | No token returns 401; no internal details | NFR-001, NFR-003 | Negative | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 | TC-I02 | Requester on staff route returns 403; no internal details | NFR-002, NFR-003, RISK-002 | Negative | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 | TC-I03 | Submitted request stored and retrievable | NFR-007 | Positive + DB check | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
 | TC-I04 | Assignment writes history entry | FR-009, NFR-009 | Positive + DB check | API/integration | Pass | https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092 |
