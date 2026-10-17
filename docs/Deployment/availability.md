@@ -11,7 +11,7 @@
 
 | Checks | Up | Down | Availability | Target | Result |
 |---|---|---|---|---|---|
-| <120> | <120> | <0> | <100.00%> | ≥ 99% | <MET> |
+| 120 | 120 | 0 | 100.00% | ≥ 99% | MET |
 
 **Evidence:** `docs/Deployment/availability-log.csv`
 
