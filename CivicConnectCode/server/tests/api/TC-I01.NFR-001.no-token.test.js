@@ -1,4 +1,4 @@
-// Short explanation of test: All 7 protected routes refuse no token, a forged token (even one claiming “management”), an expired token and a token with no role. The error never leaks internals
+// TC-I01 — Protected routes reject missing, forged, expired and role-less tokens without leaking internals.
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const app = require("../../src/app");

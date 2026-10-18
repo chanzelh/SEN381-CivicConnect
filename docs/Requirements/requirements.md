@@ -1,24 +1,24 @@
 # CivicConnect Requirements
-## Version Three — Milestone Three
+
+## Version Four — Milestone Four
 
 **Team:** Group L
 
 ## Version History
 
 | Version | Date | Change |
-|---|---|---|
+| --- | --- | --- |
 | One — Milestone One | 2026/09/08 | Initial Functional & Non-Functional Requirements |
 | Two — Milestone Two | 2026/09/29 | No changes made from Milestone One |
 | Three — Milestone Three | 2026/10/15 | Updated existing requirements with implementation traceability, test cases, evidence, defects and verification statuses |
+| Four — Milestone Four | 2026/10/18 | Reconciled final availability, recovery and deployment verification outcomes; baseline requirements and acceptance criteria unchanged. |
 
-**See also:** PED Section 5
+**See also:** PED Section 5, `Final_RTM.md` and `scope-completion.md`
 
-## Functional Requirements
-
-### 5.1 Functional Requirements
+## 5.1 Functional Requirements
 
 | ID | Requirement | Source/Stakeholder | Priority | Acceptance Criteria | Implementation | Test Case(s) | Evidence | Defect | Status |
-|:---:|:---|:---|:---:|:---|:---|:---|:---|:---|:---|
+| :---: | :--- | :--- | :---: | :--- | :--- | :--- | :--- | :--- | :--- |
 | FR-001 | The system shall allow a requester to submit a new service request. | Business Brief | Must | A requester can enter the required information and successfully submit a service request. The submitted request is stored and assigned a unique reference. | `POST /api/requests` → `createMyRequest` → `createRequest` | TC-B01, TC-I03, TC-E01 | [API](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698), [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092), [E2E](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850) | None | Verified |
 | FR-002 | The system shall allow a requester to categorize a service request using a controlled category mechanism. | Business Brief | Must | The requester can select a category from the available predefined categories, and the selected category is saved with the request. | Six-category allow-list in `createMyRequest` | TC-B01, TC-B02, TC-E01 | [API](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698), [E2E](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850) | None | Verified |
 | FR-003 | The system shall allow requesters to view the current status of their submitted requests. | Business Brief | Must | A requester can view their submitted request and see its current status. | Requester dashboard and request details page | TC-E01 | [E2E](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850) | None | Verified |
@@ -35,26 +35,24 @@
 | FR-014 | The system shall allow management to identify open, overdue, resolved and closed requests. | Business Brief | Must | Management can distinguish requests according to their current status and identify requests that are overdue based on the defined criteria. | `client/src/utils/overdue.js` | TC-U02, TC-I08 | [Unit](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823), [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | DEF-005 Fixed | Partially Verified — overdue rule and API data proven; on-screen counts not asserted |
 | FR-015 | The system shall provide request information by category, status or other justified dimensions. | Business Brief | Should | Management can view or filter service request information by category, status and any additional approved reporting dimensions. | `ManagementDashboard.jsx` | TC-I08 | [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | None | Partially Verified — API counts by status/category proven |
 
-## Non-Functional Requirements
-
-### 5.2 Non-Functional Requirements
+## 5.2 Non-Functional Requirements
 
 | ID | Requirement | Category | Measurable Target | Priority | Test Case(s) / Verification Method | Evidence | Defect | Status |
-|:---:|:---|:---|:---|:---:|:---|:---|:---|:---|
+| :---: | :--- | :--- | :--- | :---: | :--- | :--- | :--- | :--- |
 | NFR-001 | The system shall require users to authenticate before accessing protected functionality. | Security | 100% of protected pages/functions shall require successful authentication. Unauthenticated users attempting to access protected functionality shall be denied access. | Must | TC-I01 | [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | DEF-007 Fixed | Verified |
 | NFR-002 | Users shall only access functionality and information appropriate to their role. | Security | 100% of tested role-based access scenarios shall prevent unauthorized access. Requesters shall not be able to access staff or management functionality. | Must | TC-U03, TC-I02 | [Unit](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823), [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | None | Verified — tested scenarios |
-| NFR-003 | Sensitive information shall be protected from unauthorized disclosure. | Security | Sensitive data shall not be exposed in URLs, client-side logs or application error messages. All production communication shall use HTTPS. | Must | TC-I01, TC-I02, TC-I05 | [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | DEF-008 Fixed | Partially Verified — HTTPS to be checked on staging (#80) |
+| NFR-003 | Sensitive information shall be protected from unauthorized disclosure. | Security | Sensitive data shall not be exposed in URLs, client-side logs or application error messages. All production communication shall use HTTPS. | Must | TC-I01, TC-I02, TC-I05 | [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | DEF-008 Fixed | Partially Verified — local staging uses HTTP; production HTTPS is not configured |
 | NFR-004 | Credentials and secrets shall not be stored in source control. | Security | 0 passwords, API keys, credential-containing connection strings or other secrets shall be committed to the GitHub repository. | Must | Gitleaks full-history scan, GitHub secret scanning and push protection | `docs/Quality/security-scanning.md` | None | Verified |
 | NFR-005 | The system shall respond promptly to normal user actions. | Performance | At least 95% of normal user requests shall receive a response within 2 seconds under the defined test load. | Must | TC-P01 | [TC-P01 results](https://github.com/chanzelh/SEN381-CivicConnect/blob/main/CivicConnectCode/performance/tc-p01-result.txt), [PR #120](https://github.com/chanzelh/SEN381-CivicConnect/pull/120) | None | Verified for tested workload — 50 virtual users, p95 52.92 ms |
-| NFR-006 | Users shall be able to complete common tasks without unnecessary complexity. | Usability | At least 80% of representative test users shall successfully complete key tasks such as submitting and checking a request without assistance. | Should | Usability testing (#88) | docs/Deployment/usability-test.md  | None | Verified - all 5 test users were able to perform tasks assigned to them |
+| NFR-006 | Users shall be able to complete common tasks without unnecessary complexity. | Usability | At least 80% of representative test users shall successfully complete key tasks such as submitting and checking a request without assistance. | Should | Usability testing (#88) | `docs/Deployment/usability-test.md` | None | Verified - all 5 test users were able to perform tasks assigned to them |
 | NFR-007 | The system shall correctly maintain service request information. | Reliability | During functional testing, 100% of successfully submitted requests shall be stored with all required fields and remain retrievable after the transaction is completed. | Must | TC-I03 | [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | None | Verified |
-| NFR-008 | The deployed system shall be accessible during its intended operating period. | Availability | The system shall achieve at least 99% availability during the defined testing/deployment period, excluding planned maintenance. | Should | Availability monitoring (#89) | Pending | None | Pending Phase 3 |
+| NFR-008 | The deployed system shall be accessible during its intended operating period. | Availability | The system shall achieve at least 99% availability during the defined testing/deployment period, excluding planned maintenance. | Should | Availability monitoring (#89) | `docs/Deployment/availability.md`, `CivicConnectCode/operations/availability-log.csv` | None | Verified for the defined local staging period — 120/120 checks up, 100.00% over 60 minutes |
 | NFR-009 | Important request changes shall be traceable. | Auditability | 100% of tested status changes, assignments and resolution actions shall record the user, action and timestamp. | Must | TC-B05, TC-I04, TC-I05 | [API](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38548799316), [Integration](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38560811092) | DEF-004 Fixed | Verified |
-| NFR-010 | The system shall be structured so that changes can be made without unnecessarily affecting unrelated functionality. | Maintainability | 100% of merged changes shall pass the project's automated tests/checks before being merged into `main`, and implemented features shall follow the agreed architecture and coding standards. | Should | CI, branch rules, lint and static analysis | `docs/Quality/ci-pipeline.md`, `docs/Quality/static-analysis.md` | DEF-001, DEF-002, DEF-009 Fixed | Verified |
+| NFR-010 | The system shall be structured so that changes can be made without unnecessarily affecting unrelated functionality. | Maintainability | 100% of merged changes shall pass the project's automated tests/checks before being merged into `main`, and implemented features shall follow the agreed architecture and coding standards. | Should | CI, branch rules, lint and static analysis | `docs/Quality/ci-pipeline.md`, `docs/Quality/static-analysis.md` | DEF-001, DEF-002, DEF-009 Fixed | Verified for the enforced CI gate; early exception PR #95 is recorded in `docs/Quality/ci-pipeline.md` |
 | NFR-011 | The system shall prevent invalid or incomplete data from being stored. | Data Integrity | 100% of tested mandatory-field and validation rules shall reject invalid input and provide an appropriate error message. | Must | TC-U04, TC-B02, TC-B03 | [Unit](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38533058823), [API](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38540019698) | DEF-006 Deferred | Partially Verified — optional date fields not fully validated |
 | NFR-012 | The system shall work on commonly used modern browsers. | Compatibility | All core functionality shall successfully operate on the latest versions of Chrome, Edge and Firefox during compatibility testing. | Should | TC-E01, TC-E02 | [E2E](https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/38689030850) | None | Verified — Chromium, Firefox and Edge |
 | NFR-013 | The system should support the expected level of concurrent use without unacceptable degradation. | Scalability | The system shall support at least 50 concurrent users while maintaining the 2-second response target for 95% of normal requests. | Could | TC-P01 | [TC-P01 results](https://github.com/chanzelh/SEN381-CivicConnect/blob/main/CivicConnectCode/performance/tc-p01-result.txt), [PR #120](https://github.com/chanzelh/SEN381-CivicConnect/pull/120) | None | Verified for tested workload — 50 virtual users, p95 52.92 ms |
-| NFR-014 | The system shall allow service data to be recovered following a failure. | Recoverability | A database backup shall be created according to the agreed backup schedule, and a test restoration shall successfully recover 100% of the selected test backup data. | Should | Backup/restore drill (#83) | docs/Deployment/backup-restore.md  | None | Verified |
+| NFR-014 | The system shall allow service data to be recovered following a failure. | Recoverability | A database backup shall be created according to the agreed backup schedule, and a test restoration shall successfully recover 100% of the selected test backup data. | Should | Backup/restore drill (#83) | `docs/Deployment/backup-restore.md` | None | Partially Verified — restored table counts matched, but request tables were empty; recovery of actual request data was not demonstrated |
 
 ## Notes
 

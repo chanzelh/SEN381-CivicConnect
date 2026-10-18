@@ -1,4 +1,4 @@
-//Short Explanation: 8 known requests are seeded; the list returns them all, and the counts by status, by category and for overdue all match
+// TC-I08 — Eight seeded requests produce the expected status, category and overdue counts.
 const request = require("supertest");
 const app = require("../../src/app");
 const { resetData, closeDb } = require("../helpers/db");

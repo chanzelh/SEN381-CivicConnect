@@ -24,15 +24,15 @@ The **Strategy pattern** was considered for situations where CivicConnect may ne
 
 The alternatives were compared using criteria that are relevant to CivicConnect. Each criterion was given a weight according to its importance to the project, and each pattern was scored from 1 to 5, where 1 represents a poor fit and 5 represents a strong fit.
 
-|Criterion|Weight|MVC|Layered|Repository|Strategy|
-|---|---|---|---|---|---|
-|Fit with CivicConnect architecture|25%|5|5|4|2|
-|Maintainability|20% |5|4|5|4|
-|Separation of responsibilities|20%|5|5|4|3|
-|Testability|15%|5|4|5|4|
-|Fit with Node.js/Express|10%|5|4|5|4|
-|Simplicity for current team|10%|4|5|4|3|
-|**Weighted Score**|100%|4.80/5|4.45/5|4.50/5|3.10 / 5|
+| Criterion | Weight | MVC | Layered | Repository | Strategy |
+| --- | --- | --- | --- | --- | --- |
+| Fit with CivicConnect architecture | 25% | 5 | 5 | 4 | 2 |
+| Maintainability | 20% | 5 | 4 | 5 | 4 |
+| Separation of responsibilities | 20% | 5 | 5 | 4 | 3 |
+| Testability | 15% | 5 | 4 | 5 | 4 |
+| Fit with Node.js/Express | 10% | 5 | 4 | 5 | 4 |
+| Simplicity for current team | 10% | 4 | 5 | 4 | 3 |
+| **Weighted Score** | 100% | 4.80/5 | 4.45/5 | 4.50/5 | 3.10 / 5 |
 
 The results show that MVC has the strongest overall fit as the primary application design pattern. Repository also scores highly, but its purpose is more focused on persistence rather than the structure of the entire application. The Layered approach is also a strong fit, but it is more closely associated with the overall architecture of CivicConnect. Strategy scores lower because it is intended to solve a specific problem involving interchangeable behaviour rather than structure the whole system.
 
@@ -120,16 +120,16 @@ The team did not select patterns simply because they are commonly used. Each pat
 
 The design decisions can be linked back to the requirements and architecture established for CivicConnect.
 
-|CivicConnect Requirement or Decision|Design Response|
-|---|---|
-|Modular layered monolith|MVC provides internal structural separation within the application|
-|NFR-002 – Authorisation|Backend controllers and middleware provide controlled access to application functions|
-|NFR-009 – Auditability|Services provide controlled points for recording request changes and history|
-|NFR-010 – Maintainability|MVC and Repository separate responsibilities and reduce unnecessary coupling|
-|PostgreSQL persistence|Repository provides a boundary around database access|
-|REST API|Express routes and controllers provide the application boundary|
-|Testing|Services and repositories can be tested separately|
-|Future extensibility|Strategy can be introduced where genuinely interchangeable behaviour is required|
+| CivicConnect Requirement or Decision | Design Response |
+| --- | --- |
+| Modular layered monolith | MVC provides internal structural separation within the application |
+| NFR-002 – Authorisation | Backend controllers and middleware provide controlled access to application functions |
+| NFR-009 – Auditability | Services provide controlled points for recording request changes and history |
+| NFR-010 – Maintainability | MVC and Repository separate responsibilities and reduce unnecessary coupling |
+| PostgreSQL persistence | Repository provides a boundary around database access |
+| REST API | Express routes and controllers provide the application boundary |
+| Testing | Services and repositories can be tested separately |
+| Future extensibility | Strategy can be introduced where genuinely interchangeable behaviour is required |
 
 ## 2.12 Final Design Position
 

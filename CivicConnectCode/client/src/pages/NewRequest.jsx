@@ -18,7 +18,7 @@ function NewRequest() {
   const [urgency, setUrgency] = useState("Normal");
   const [dateStarted, setDateStarted] = useState("");
 
-  // Existing technical fields
+  // IT support fields
   const [issueType, setIssueType] = useState("");
   const [deviceType, setDeviceType] = useState("");
   const [deviceName, setDeviceName] = useState("");
@@ -30,7 +30,7 @@ function NewRequest() {
   const [errorMessage, setErrorMessage] = useState("");
   const [troubleshooting, setTroubleshooting] = useState("");
 
-  // New dynamic fields
+  // Category-specific fields
   const [maintenanceType, setMaintenanceType] = useState("");
   const [affectedArea, setAffectedArea] = useState("");
   const [damageDetails, setDamageDetails] = useState("");
@@ -160,7 +160,6 @@ function NewRequest() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            // Existing request fields
             title: title.trim(),
             category,
             description: description.trim(),
@@ -171,7 +170,7 @@ function NewRequest() {
             impact,
             urgency,
 
-            // Existing technical details
+            // IT support details
             issueType: isTechnicalRequest ? issueType : null,
             deviceType: isTechnicalRequest ? deviceType || null : null,
             deviceName: isTechnicalRequest ? deviceName.trim() : "",
@@ -264,7 +263,7 @@ function NewRequest() {
         </p>
 
         <form className="request-form" onSubmit={handleSubmit}>
-          {/* SECTION 1: BASIC INFORMATION */}
+          {/* Basic information */}
           <section className="request-form-section">
             <h3>1. Request Information</h3>
             <p className="form-section-description">
@@ -321,7 +320,7 @@ function NewRequest() {
             </div>
           </section>
 
-          {/* SECTION 2: IT SUPPORT */}
+          {/* IT support */}
           {isIT && (
             <section className="request-form-section">
               <h3>2. IT Support Details</h3>
@@ -515,7 +514,7 @@ function NewRequest() {
             </section>
           )}
 
-          {/* SECTION 3: FACILITIES / MAINTENANCE */}
+          {/* Facilities / maintenance */}
           {isMaintenance && (
             <section className="request-form-section">
               <h3>2. Facilities and Maintenance Details</h3>
@@ -567,7 +566,7 @@ function NewRequest() {
             </section>
           )}
 
-          {/* SECTION 4: DAMAGED EQUIPMENT */}
+          {/* Damaged equipment */}
           {isEquipment && (
             <section className="request-form-section">
               <h3>2. Damaged Equipment Details</h3>
@@ -638,7 +637,7 @@ function NewRequest() {
             </section>
           )}
 
-          {/* SECTION 5: SECURITY */}
+          {/* Security */}
           {isSecurity && (
             <section className="request-form-section">
               <h3>2. Security Incident Details</h3>
@@ -684,7 +683,7 @@ function NewRequest() {
             </section>
           )}
 
-          {/* SECTION 6: LOST PROPERTY */}
+          {/* Lost property */}
           {isLostProperty && (
             <section className="request-form-section">
               <h3>2. Lost Property Details</h3>
@@ -728,7 +727,7 @@ function NewRequest() {
             </section>
           )}
 
-          {/* SECTION 7: OTHER OPERATIONAL REQUEST */}
+          {/* Other operational requests */}
           {isOther && (
             <section className="request-form-section">
               <h3>2. Other Operational Request Details</h3>
@@ -761,7 +760,7 @@ function NewRequest() {
             </section>
           )}
 
-          {/* COMMON LOCATION AND PRIORITY */}
+          {/* Location and priority */}
           <section className="request-form-section">
             <h3>
               {isTechnicalRequest ||

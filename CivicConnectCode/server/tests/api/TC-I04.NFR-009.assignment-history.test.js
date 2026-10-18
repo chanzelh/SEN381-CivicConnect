@@ -1,4 +1,4 @@
-//short explanation: Assigning writes one history row: who, from/to, a note and the time. Reassigning adds a row and keeps the old one
+// TC-I04 — Assignment and reassignment append audit entries without replacing earlier history.
 const request = require("supertest");
 const app = require("../../src/app");
 const { resetData, pool, getRequestRow, closeDb } = require("../helpers/db");

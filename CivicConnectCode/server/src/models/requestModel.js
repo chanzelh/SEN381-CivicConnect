@@ -49,13 +49,14 @@ async function getAllRequests() {
 }
 
 
-// Assigns staff + due date AND writes the history row in ONE transaction.
+// Save the assignment and its audit entry together; either both commit or both roll back.
 async function assignRequestToStaff(requestId, staffId, dueDate, changedBy) {
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
+    // Hold the request lock until both the assignment and history write finish.
     const current = await client.query(
       `SELECT status
        FROM service_requests
@@ -192,7 +193,7 @@ async function createRequest({
   description,
   category,
 
-  // Existing IT support fields
+  // IT support fields
   issueType = null,
   deviceType = null,
   deviceName = null,
@@ -338,15 +339,16 @@ async function createRequest({
   return result.rows[0];
 }
 
-// Changes status AND writes the history row in ONE transaction (NFR-009, RISK-008).
-// Returns { request } on success, or { error, currentStatus } when nothing was changed.
+// Save the status and its audit entry in one transaction (NFR-009, RISK-008).
+// Rejected updates return an error; invalid transitions also include the current status.
 async function updateRequestStatus(requestId, status, userId, isManagement, note = null) {
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
-    // Lock the row so two people can't change it at the same time.
+    // Serialize updates while validating the stored status. This does not detect
+    // stale client edits; version checking remains deferred (TD-004).
     const current = await client.query(
       `SELECT status, assigned_staff_id
        FROM service_requests
@@ -461,6 +463,7 @@ async function listRequestComments(requestId) {
   return result.rows;
 }
 
+// Restrict comment insertion to requests assigned to this staff member.
 async function createRequestComment({ requestId, staffId, commentText }) {
   const result = await pool.query(
     `WITH inserted AS (

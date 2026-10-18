@@ -44,16 +44,16 @@ The disadvantage is that this would introduce additional infrastructure and proc
 
 The alternatives were evaluated against criteria relevant to CivicConnect. Each criterion is scored from 1 to 5, where 5 represents the strongest fit for the current project. The weights reflect the importance of each consideration to the current system.
 
-|Consideration|Weight|In-Process Interface|HTTP/REST|Asynchronous Messaging|
-|---|---|---|---|---|
-|Fit with modular monolith|25%|5|3|2|
-|Simplicity for current team|20%|5|3|2|
-|Failure handling|15%|5|3|2|
-|Testability|15%|5|4|3|
-|Future integration flexibility|10%|3|5|5|
-|Independent deployment|5%|1|5|5|
-|Infrastructure overhead|10%|5|3|1|
-|**Weighted Score**|**100%**|**4.60/5**|**3.40/5**|**2.65/5**|
+| Consideration | Weight | In-Process Interface | HTTP/REST | Asynchronous Messaging |
+| --- | --- | --- | --- | --- |
+| Fit with modular monolith | 25% | 5 | 3 | 2 |
+| Simplicity for current team | 20% | 5 | 3 | 2 |
+| Failure handling | 15% | 5 | 3 | 2 |
+| Testability | 15% | 5 | 4 | 3 |
+| Future integration flexibility | 10% | 3 | 5 | 5 |
+| Independent deployment | 5% | 1 | 5 | 5 |
+| Infrastructure overhead | 10% | 5 | 3 | 1 |
+| **Weighted Score** | **100%** | **4.60/5** | **3.40/5** | **2.65/5** |
 
 The in-process interface achieved the highest score because CivicConnect is currently being developed as a modular layered monolith by a three-person team. It provides clear separation through an interface without introducing network communication or additional infrastructure.
 
@@ -107,16 +107,16 @@ The REST API is a primary trust boundary between the presentation layer and back
 
 ### 3.7.2 General Conventions
 
-|Convention|Rule|Trace|
-|---|---|---|
-|Base path|`/api/v1`|—|
-|Format|JSON request and response bodies; timestamps use ISO-8601 UTC|—|
-|Authentication|Every endpoint except `POST /api/v1/auth/login` requires an authenticated user. Otherwise `401 UNAUTHENTICATED`.|NFR-001, ASR-1|
-|Authorisation|Role and request scope are checked on every call. Otherwise `403 FORBIDDEN`.|NFR-002, FR-006, ASR-1|
-|Validation|Invalid or missing fields return `400 VALIDATION_ERROR` with field details.|NFR-011|
-|Sensitive data|No personal data in URLs or query strings. Error responses do not contain stack traces, SQL or internal details. Unexpected errors return `500 INTERNAL_ERROR`.|NFR-003|
-|Pagination|`page` defaults to 1 and `pageSize` defaults to 20 with a maximum of 100.|NFR-005|
-|Versioning|Breaking changes require a Change Request and a new version path such as `/api/v2`.|Change Management|
+| Convention | Rule | Trace |
+| --- | --- | --- |
+| Base path | `/api/v1` | — |
+| Format | JSON request and response bodies; timestamps use ISO-8601 UTC | — |
+| Authentication | Every endpoint except `POST /api/v1/auth/login` requires an authenticated user. Otherwise `401 UNAUTHENTICATED`. | NFR-001, ASR-1 |
+| Authorisation | Role and request scope are checked on every call. Otherwise `403 FORBIDDEN`. | NFR-002, FR-006, ASR-1 |
+| Validation | Invalid or missing fields return `400 VALIDATION_ERROR` with field details. | NFR-011 |
+| Sensitive data | No personal data in URLs or query strings. Error responses do not contain stack traces, SQL or internal details. Unexpected errors return `500 INTERNAL_ERROR`. | NFR-003 |
+| Pagination | `page` defaults to 1 and `pageSize` defaults to 20 with a maximum of 100. | NFR-005 |
+| Versioning | Breaking changes require a Change Request and a new version path such as `/api/v2`. | Change Management |
 
 ### 3.7.3 Error Format
 
@@ -137,27 +137,27 @@ All endpoints will use a consistent error structure:
 }
 ```
 
-|Status|Code|Meaning|
-|---|---|---|
-|400|VALIDATION_ERROR|Missing or invalid input|
-|401|UNAUTHENTICATED / INVALID_CREDENTIALS| Not logged in, or login failed|
-|403|FORBIDDEN|Role or request scope does not permit the action|
-|404|NOT_FOUND|Resource does not exist|
-|409|INVALID_TRANSITION|Status change is not allowed from the current status|
-|409|STALE_UPDATE|Request was changed by another user since it was loaded|
-|500|INTERNAL_ERROR|Unexpected server error with no internal details returned|
+| Status | Code | Meaning |
+| --- | --- | --- |
+| 400 | VALIDATION_ERROR | Missing or invalid input |
+| 401 | UNAUTHENTICATED / INVALID_CREDENTIALS | Not logged in, or login failed |
+| 403 | FORBIDDEN | Role or request scope does not permit the action |
+| 404 | NOT_FOUND | Resource does not exist |
+| 409 | INVALID_TRANSITION | Status change is not allowed from the current status |
+| 409 | STALE_UPDATE | Request was changed by another user since it was loaded |
+| 500 | INTERNAL_ERROR | Unexpected server error with no internal details returned |
 
 ### 3.7.4 Request Status Model
 
 CivicConnect will use controlled status transitions rather than allowing arbitrary status changes.
 
-|From|To|Performed by|
-|---|---|---|
-|SUBMITTED|ACCEPTED|Staff; caller is assigned if nobody is assigned yet|
-|SUBMITTED|REJECTED|Staff; comment required |
-|ACCEPTED|IN_PROGRESS|Assigned staff|
-|IN_PROGRESS|RESOLVED|Assigned staff; comment required|
-|RESOLVED|CLOSED|Staff or Management|
+| From | To | Performed by |
+| --- | --- | --- |
+| SUBMITTED | ACCEPTED | Staff; caller is assigned if nobody is assigned yet |
+| SUBMITTED | REJECTED | Staff; comment required |
+| ACCEPTED | IN_PROGRESS | Assigned staff |
+| IN_PROGRESS | RESOLVED | Assigned staff; comment required |
+| RESOLVED | CLOSED | Staff or Management |
 
 `REJECTED` and `CLOSED` are final states.
 
@@ -217,20 +217,20 @@ These representations are intentionally separate from the underlying PostgreSQL 
 
 Unless otherwise stated, all endpoints use the `/api/v1` base path.
 
-|Method|Path|Roles / Scope|Input|Success|Errors| Trace|
-|---|---|---|---|---|---|---|
-|POST|`/auth/login`|Public|email, password|200 user|400, 401|NFR-001|
-|POST|`/auth/logout`|Authenticated|—| 204| 401 |NFR-001|
-|GET|`/auth/me`|Authenticated|—|200 user|401|NFR-001|
-|GET|`/categories`|Authenticated|—|200 category list|401|FR-002|
-|POST|`/requests`|Requester|categoryId, description|201 ServiceRequest|400, 401, 403|FR-001, FR-002, NFR-011|
-|GET|`/requests`|Requester: own; Staff: unassigned + assigned; Management: all|status, categoryId, overdue, search, sort, order, page, pageSize|200 `{ items, page, pageSize, total }`|400, 401|FR-003, FR-004, FR-006, FR-007, FR-014, FR-015|
-|GET|`/requests/{id}`|Within caller's scope|—|200 ServiceRequest|401, 403, 404|FR-003, FR-008|
-|GET|`/requests/{id}/history`|Within caller's scope|—|200 HistoryEntry list|401, 403, 404|FR-008, NFR-009|
-|PATCH|`/requests/{id}/status`|Staff / Management per status model newStatus, comment, version|200 ServiceRequest|400, 401, 403, 404, 409 | FR-010, FR-012, NFR-009, ASR-2|
-|PATCH|`/requests/{id}/assignment`|Staff (self) / Management (any staff)|staffId, version|200 ServiceRequest|400, 401, 403, 404, 409|FR-009, NFR-009, ASR-2|
-|POST|`/requests/{id}/comments`|Staff within scope|comment|201 HistoryEntry|400, 401, 403, 404|FR-011, NFR-009|
-|GET|`/reports/summary`|Management|from, to|200 `{ byStatus, byCategory, overdueCount }`| 400, 401, 403|FR-013, FR-014, FR-015|
+| Method | Path | Roles / Scope | Input | Success | Errors | Trace |
+| --- | --- | --- | --- | --- | --- | --- |
+| POST | `/auth/login` | Public | email, password | 200 user | 400, 401 | NFR-001 |
+| POST | `/auth/logout` | Authenticated | — | 204 | 401 | NFR-001 |
+| GET | `/auth/me` | Authenticated | — | 200 user | 401 | NFR-001 |
+| GET | `/categories` | Authenticated | — | 200 category list | 401 | FR-002 |
+| POST | `/requests` | Requester | categoryId, description | 201 ServiceRequest | 400, 401, 403 | FR-001, FR-002, NFR-011 |
+| GET | `/requests` | Requester: own; Staff: unassigned + assigned; Management: all | status, categoryId, overdue, search, sort, order, page, pageSize | 200 `{ items, page, pageSize, total }` | 400, 401 | FR-003, FR-004, FR-006, FR-007, FR-014, FR-015 |
+| GET | `/requests/{id}` | Within caller's scope | — | 200 ServiceRequest | 401, 403, 404 | FR-003, FR-008 |
+| GET | `/requests/{id}/history` | Within caller's scope | — | 200 HistoryEntry list | 401, 403, 404 | FR-008, NFR-009 |
+| PATCH | `/requests/{id}/status` | Staff / Management per status model | newStatus, comment, version | 200 ServiceRequest | 400, 401, 403, 404, 409 | FR-010, FR-012, NFR-009, ASR-2 |
+| PATCH | `/requests/{id}/assignment` | Staff (self) / Management (any staff) | staffId, version | 200 ServiceRequest | 400, 401, 403, 404, 409 | FR-009, NFR-009, ASR-2 |
+| POST | `/requests/{id}/comments` | Staff within scope | comment | 201 HistoryEntry | 400, 401, 403, 404 | FR-011, NFR-009 |
+| GET | `/reports/summary` | Management | from, to | 200 `{ byStatus, byCategory, overdueCount }` | 400, 401, 403 | FR-013, FR-014, FR-015 |
 
 ## 3.9 Detailed Specification: Change Request Status
 
@@ -337,25 +337,25 @@ The notification interface also supports the Strategy pattern where interchangea
 
 The API contract is linked to the CivicConnect requirements and architecture decisions through the following relationships:
 
-|Requirement / Decision|API Design Response|
-|---|---|
-|NFR-001 – Authentication|Protected endpoints require authentication|
-|NFR-002 – Authorisation|Backend checks role and request scope|
-|NFR-003 – Data Protection|Sensitive information is not exposed in URLs or errors|
-|NFR-005 – Performance|Pagination limits response size|
-|NFR-009 – Auditability|Status, assignment and comment operations create history records|
-|NFR-011 – Data Integrity|Input validation and controlled status transitions|
-|FR-006 – Staff Access|Request scope is enforced by the backend|
-|FR-009 – Assignment|Dedicated assignment endpoint|
-|FR-010 – Status Updates|Controlled status-transition endpoint|
-|FR-011 – Actions and Comments|History and comment endpoints|
-|FR-013–FR-015 – Management Reporting|Reporting endpoint with approved filtering dimensions|
-|ASR-1 – Security|Authentication and authorisation enforced at the backend boundary|
-|ASR-2 – Consistency|Version checking and transactional updates|
-|Modular Layered Monolith|REST at the application boundary and in-process interfaces internally|
-|MVC|Express routes/controllers provide backend request handling|
-|Repository Pattern|Persistence operations remain behind the repository boundary|
-|Strategy Pattern|Notification implementations can be substituted behind an interface|
+| Requirement / Decision | API Design Response |
+| --- | --- |
+| NFR-001 – Authentication | Protected endpoints require authentication |
+| NFR-002 – Authorisation | Backend checks role and request scope |
+| NFR-003 – Data Protection | Sensitive information is not exposed in URLs or errors |
+| NFR-005 – Performance | Pagination limits response size |
+| NFR-009 – Auditability | Status, assignment and comment operations create history records |
+| NFR-011 – Data Integrity | Input validation and controlled status transitions |
+| FR-006 – Staff Access | Request scope is enforced by the backend |
+| FR-009 – Assignment | Dedicated assignment endpoint |
+| FR-010 – Status Updates | Controlled status-transition endpoint |
+| FR-011 – Actions and Comments | History and comment endpoints |
+| FR-013–FR-015 – Management Reporting | Reporting endpoint with approved filtering dimensions |
+| ASR-1 – Security | Authentication and authorisation enforced at the backend boundary |
+| ASR-2 – Consistency | Version checking and transactional updates |
+| Modular Layered Monolith | REST at the application boundary and in-process interfaces internally |
+| MVC | Express routes/controllers provide backend request handling |
+| Repository Pattern | Persistence operations remain behind the repository boundary |
+| Strategy Pattern | Notification implementations can be substituted behind an interface |
 
 ## 3.13 Final API and Integration Position
 

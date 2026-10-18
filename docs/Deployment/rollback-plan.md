@@ -1,13 +1,13 @@
 
 # Staging Verification & Rollback Plan (#81)
 
-## Verification of v3.0-rc1 on staging (<date>)
+## Verification of v3.0-rc1 on staging (17 October 2026)
 
 | Check | Result | Evidence |
-|---|---|---|
+| --- | --- | --- |
 | Health check `/health` | ok | ![Staging Verification Evidence](EvidenceOk.png) |
-| E2E journeys (TC-E01, TC-E02) + DEF-007 regression on staging (Edge) | <4/4 passed> | `staging-verification-output.txt` |
-| Manual login: requester, staff, management | <all OK> | – |
+| E2E journeys (TC-E01, TC-E02) + DEF-007 regression on staging (Edge) | 4/4 passed | `staging-verification-output.txt` |
+| Manual login: requester, staff, management | All OK | – |
 
 ## When to roll back
 
@@ -34,6 +34,7 @@ The previous tagged release (e.g. `v3.0-rc1` → the tag before it). Tags make t
 - **Data created after the release** may be lost if a backup is restored; take a fresh backup first.
 
 ## Rollback drill
+
 - **Date:** 17 October 2026
 - **Previous commit tested:** `fdc7478`
 - **Rollback:** Successfully checked out the previous commit and started the staging API.

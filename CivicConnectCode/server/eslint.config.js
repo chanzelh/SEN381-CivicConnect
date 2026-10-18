@@ -24,7 +24,7 @@ module.exports = [
     languageOptions: { globals: { ...globals.node, ...globals.jest } },
   },
 
- //RISK-012
+  // Enforce the layered architecture to limit cross-module coupling (RISK-012).
   {
     files: ["src/routes/**/*.js"],
     rules: {

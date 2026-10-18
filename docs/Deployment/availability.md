@@ -10,7 +10,7 @@
 ## Result
 
 | Checks | Up | Down | Availability | Target | Result |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | 120 | 120 | 0 | 100.00% | ≥ 99% | MET |
 
 **Evidence:** `CivicConnectCode/operations/availability-log.csv`
