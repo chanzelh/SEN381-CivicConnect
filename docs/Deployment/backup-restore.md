@@ -13,7 +13,7 @@ Every selected table in the restored database should have the same row count as 
 ## Results
 
 | Table | Before (Staging) | After (Restored) | Match |
-|---|---:|---:|---|
+| --- | ---: | ---: | --- |
 | users | 3 | 3 | Yes |
 | service_requests | 0 | 0 | Yes |
 | request_status_history | 0 | 0 | Yes |

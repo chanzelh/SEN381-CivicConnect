@@ -62,7 +62,6 @@ function RequesterRequestDetails() {
         Authorization: `Bearer ${token}`,
       };
 
-      // 1. Load the actual request details.
       const requestResponse = await fetch(
         `${API_URL}/mine/${id}`,
         { headers }
@@ -84,7 +83,6 @@ function RequesterRequestDetails() {
 
       setRequest(requestObject);
 
-      // 2. Load the conversation separately.
       const commentsResponse = await fetch(
         `${API_URL}/mine/${id}/comments`,
         { headers }
@@ -114,7 +112,7 @@ function RequesterRequestDetails() {
     }
   }
 
-     /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
+  /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
   useEffect(() => {
     loadDetails();
   }, [id]);

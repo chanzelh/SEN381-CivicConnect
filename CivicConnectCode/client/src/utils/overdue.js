@@ -16,6 +16,8 @@ export function isOverdue(dueDate, status) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  // Compare local calendar dates: a request due today is not overdue.
+  // Parsing components avoids shifting a date-only value through UTC.
   const [year, month, day] = dateValue.split("-").map(Number);
   const deadline = new Date(year, month - 1, day);
 

@@ -1,4 +1,4 @@
-// Short Explanation: The database is forced to refuse history rows, and the whole change is undone. A control check proves the failure was caused by the injected fault
+// TC-I05 — Injected history-write failures roll back the entire change; a control confirms the fault caused it.
 const request = require("supertest");
 const app = require("../../src/app");
 const { resetData, pool, getRequestRow, closeDb } = require("../helpers/db");

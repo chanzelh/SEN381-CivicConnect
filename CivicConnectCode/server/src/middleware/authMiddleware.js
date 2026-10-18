@@ -31,6 +31,7 @@ function authenticateToken(req, res, next) {
       });
     }
 
+    // Normalize supported token ID fields for downstream ownership checks.
     const userId = decoded.user_id ?? decoded.id ?? decoded.userId;
 
     if (!userId || !decoded.role) {

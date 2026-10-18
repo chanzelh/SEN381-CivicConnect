@@ -1,12 +1,13 @@
 # Risk Register
-## Milestone Four - Final Version
+
+## Milestone Four — Final Version
 
 **Team:** Group L
 
 ## Version History
 
 | Version | Date | Change |
-|---|---|---|
+| --- | --- | --- |
 | One — Milestone One | 2026/09/08 | Initial risk register (RISK-001–007). |
 | Two — Milestone Two | 2026/09/29 | Retained the original risks and added design risks RISK-008–012. |
 | Three — Milestone Three | 2026/10/16 | Reviewed existing risks and added Milestone 3 risks RISK-013–016, including outstanding security testing, deployment, login security and token management risks. |
@@ -20,12 +21,12 @@ Each risk is assessed according to its probability and potential impact. Mitigat
 
 The risk register will be reviewed and updated throughout the project as new risks are identified or existing risks change.
 
-## Risk Log
+## Historical Risk Log
 
-RISK-001–007 continue from Milestone One, and RISK-008–012 were identified during Milestone Two. RISK-013–016 were added during Milestone Three to record outstanding security testing, deployment and authentication risks. Ratings and statuses remain subject to team review.
+RISK-001–007 continue from Milestone One, and RISK-008–012 were identified during Milestone Two. RISK-013–016 were added during Milestone Three to record outstanding security testing, deployment and authentication risks. The descriptions, ratings, planned controls and statuses below preserve the M1–M3 risk log. The Milestone Four table that follows records the final disposition and supersedes these historical statuses.
 
 | Risk ID | Description | Cause | Probability | Impact | Priority | Mitigation | Contingency | Owner | Status |
-|---|---|---|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | RISK-001 | Requirements may be misunderstood, incomplete or interpreted differently during development. | Stakeholder needs may be unclear or team members may have different understandings of what a requirement means. | Med | High | High | Requirements will use clear IDs and measurable acceptance criteria. The team will review important requirements together before implementation to make sure there is a shared understanding of what is expected. Unclear requirements and assumptions will be discussed and documented rather than guessed. | If a requirement is found to be unclear or incorrect, the team will review and update the requirement and its acceptance criteria. Related project documents and completed work will then be checked to determine whether they also need to be updated. | Team | Monitoring |
 | RISK-002 | Unauthorised users may gain access to restricted CivicConnect functions or information. | Authentication, role permissions or access-control rules may be designed or implemented incorrectly. | Med | High | High | Security requirements will clearly define which users are allowed to access protected information and functions. Authentication and role-based permissions will be considered during design and implementation. Security testing will verify that authorised users receive the correct access and that unauthorised users are denied access. Credentials and other secrets will also not be stored in the GitHub repository. | If an access-control problem is discovered, the affected functionality will be reviewed and corrected. The relevant security requirements will then be retested, and similar functionality will be checked to determine whether the same security problem exists elsewhere in the system. | Team | Open |
 | RISK-003 | Team members may work from outdated project files or create conflicting changes. | Multiple team members are working on shared documents and project files at the same time. | Med | Med | Med | Each assigned task will be completed on its own GitHub branch rather than directly on the main branch. Team members will fetch or pull the latest approved changes before beginning work. Changes will be committed with meaningful descriptions and submitted through pull requests. Pull requests will be reviewed by other team members before changes are merged into main. | If conflicting changes occur, the team will compare the affected versions and resolve the merge conflict. The final version will be reviewed before it is merged to make sure that important work has not been accidentally removed or overwritten. | Team | Monitoring |
@@ -40,7 +41,6 @@ RISK-001–007 continue from Milestone One, and RISK-008–012 were identified d
 | RISK-012 | Changes to one feature may unexpectedly affect another module. | A modular monolith can lose its intended boundaries if UI, request workflow, notification and reporting code access each other's data directly. | Med | Med | Med | Document responsibilities and interfaces; review PRs for cross-module dependencies and test affected request flows. | Refactor the dependency through the agreed interface and rerun the affected checks before merging. | Team | Open |
 | RISK-013 | Security issues may remain undetected in API endpoints that have not been fully tested. | Dedicated API tests are still missing for signup, comments, notifications and cross-user access. | Med | High | High | Add API-level tests for the outstanding endpoints and verify authentication, authorisation and access restrictions. Track the gaps under TD-007. | If a security issue is discovered, restrict the affected functionality, correct the issue and rerun the relevant security and regression tests. | Team | Open |
 | RISK-014 | The application may behave differently when deployed to staging or production. | Local development and testing do not fully represent a deployed environment, including HTTPS, configuration and infrastructure differences. | Med | High | High | Complete deployment verification, check HTTPS and environment configuration, and run the required smoke tests before release. | If deployment checks fail, delay release, correct the configuration or implementation and repeat the failed checks. | Team | Open |
-
 | RISK-015 | Attackers may repeatedly attempt to guess user passwords. | The login endpoint does not currently have rate limiting or account lockout. | Med | High | High | Introduce login rate limiting. Continue using secure password hashing and generic login error messages. | Investigate suspicious login activity, restrict abusive requests and retest authentication controls. | Team | Open |
 | RISK-016 | A stolen authentication token may be reused to access the system. | Tokens are stored in sessionStorage and are not revoked when users log out. | Low | High | Med | Review more secure token storage and introduce token revocation or shorter sessions where appropriate. | Investigate suspected token theft, invalidate affected sessions where supported and strengthen authentication controls. | Team | Open |
 
@@ -49,7 +49,7 @@ RISK-001–007 continue from Milestone One, and RISK-008–012 were identified d
 Each risk's final status at project close. Closed = no longer active, with evidence. Mitigated = controls in place and evidenced. Carried = still open at release, with its consequence; these feed the go-live decision.
 
 | Risk ID | Final status | Evidence | What remains / consequence |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | RISK-001 | Closed | Requirements traced through the final RTM; scope conclusion and Scope Completion % in PED v4.0 | — |
 | RISK-002 | Mitigated | TC-I01 (missing, forged, expired tokens), TC-I02 (8 role scenarios), TC-U03; DEF-007 fixed; `threat-review.md` | Residual login risks carried as RISK-015 and RISK-016 |
 | RISK-003 | Closed | PR workflow + required CI check on `main`; conflicting work (e.g. #97 on a merged branch) was caught and redone | — |
@@ -58,13 +58,13 @@ Each risk's final status at project close. Closed = no longer active, with evide
 | RISK-006 | Closed | Final RTM links every requirement to implementation, tests, evidence and status | — |
 | RISK-007 | Closed | Scope frozen in M4; no new features added | — |
 | RISK-008 | Closed (occurred, fixed) | Materialised as DEF-004; fixed with one transaction; TC-I05 proves rollback | — |
-| RISK-009 | **Carried** | No version check (TD-004); TC-I07 not applicable | Two staff can silently overwrite each other's change |
+| RISK-009 | **Carried** | No version check (TD-004); TC-I07 not implemented (conditional test excluded from the executed baseline) | Two staff can silently overwrite each other's change |
 | RISK-010 | **Carried (partly mitigated)** | TC-U05: a failed notification never undoes the update; no retry (TD-005) | A failed notification is lost |
 | RISK-011 | Closed | Overdue inconsistency fixed (DEF-005; TC-U02, TC-I08); TC-P01: 50 users, p95 = 52.92 ms, 0% failed (target < 2,000 ms) | Not tested at production scale or with very large data (no pagination on the request list) |
 | RISK-012 | Mitigated | ESLint boundary rules run on every PR; SA-001 caught and fixed (`static-analysis.md`) | — |
 | RISK-013 | **Carried** | Gaps listed in TD-007 and `coverage-report.md` | Signup, comments and notification APIs lack direct tests |
-| RISK-014 | <Partly mitigated / Carried> | Simulated staging verified (#80, #81: health check + E2E on staging) | HTTPS and real infrastructure untested; production behaviour may differ |
+| RISK-014 | Carried (partly mitigated) | Simulated staging verified (#80, #81: health check + E2E on staging) | HTTPS and real infrastructure untested; production behaviour may differ |
 | RISK-015 | **Carried** | `threat-review.md`; no rate limiting on login | Account takeover by password guessing; **go-live blocker** |
-| RISK-016 | **Carried** | `threat-review.md`; tokens in sessionStorage, not revoked on logout | A stolen token works for up to 2 hours; **go-live concern** |
+| RISK-016 | **Carried** | `threat-review.md`; tokens in sessionStorage, not revoked on logout | A stolen token works for up to 2 hours; **go-live blocker** |
 
-**Conclusion:** process risks (RISK-001, 003–007) are closed, and the two design risks that materialised (RISK-008 as DEF-004, RISK-005 as AI errors) were caught and controlled. The carried risks (RISK-009, 010, 013, 015, 016, and RISK-014 for production) are the evidence base for the go-live decision.
+**Conclusion:** process risks (RISK-001, 003–007) are closed, and the data-integrity risk RISK-008 materialised as DEF-004 and was fixed. The AI-related process risk RISK-005 also occurred and was controlled through review. The carried risks (RISK-009, 010, 013, 015, 016, and RISK-014 for production) are the evidence base for the go-live decision.

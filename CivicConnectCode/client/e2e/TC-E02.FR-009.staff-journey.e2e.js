@@ -25,7 +25,7 @@ test("TC-E02 request is assigned, worked, resolved and closed; requester sees th
   await expect(assignedStaff).toHaveText(USERS.staff.name);
   await logout(page);
 
-  // ---- 2. Staff find it (FR-007), view it (FR-008), comment (FR-011) ----
+  // Staff search, inspect and comment on their assigned request (FR-007, FR-008, FR-011).
   await login(page, "staff");
   await page.getByPlaceholder("Search requests...").fill(title);
   await page.getByLabel("Filter by status").selectOption("Assigned");
@@ -43,7 +43,7 @@ test("TC-E02 request is assigned, worked, resolved and closed; requester sees th
   await expect(page.getByText("Your comment was added successfully.")).toBeVisible();
   await expect(page.getByText(comment)).toBeVisible();
 
-  // ---- 3. Staff progress and resolve it (FR-010, FR-012) ----
+  // Staff resolve the request before management closes it (FR-010, FR-012).
   await page.getByRole("link", { name: /Back to My Assigned Requests/ }).click();
   await page.getByPlaceholder("Search requests...").fill(title);
 

@@ -127,7 +127,7 @@ function Navbar({ role }) {
     }
   }
 
-     /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
+  /* eslint-disable react-hooks/set-state-in-effect -- loads data on mount; refactor deferred (TD-003) */
   useEffect(() => {
     loadNotifications();
   }, []);

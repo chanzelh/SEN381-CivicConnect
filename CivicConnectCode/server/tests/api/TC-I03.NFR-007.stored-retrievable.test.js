@@ -1,4 +1,4 @@
-//Short explantion: Every submitted field is stored, the requester can read it back, IDs are unique, and the due date comes back exact (DEF-005)
+// TC-I03 — Submitted fields round-trip, request IDs are unique and due dates retain their calendar date (DEF-005).
 
 const request = require("supertest");
 const app = require("../../src/app");

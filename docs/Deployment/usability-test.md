@@ -12,7 +12,7 @@
 ## Results
 
 | Participant | T1 Submit | T2 Check Status | T3 Progress Request | All Unassisted? | Notes |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | P1 | ✅ | ✅ | ✅ | Yes | Completed successfully without assistance |
 | P2 | ✅ | ✅ | ✅ | Yes | Completed successfully without assistance |
 | P3 | ✅ | ✅ | ✅ | Yes | Completed successfully without assistance |
@@ -26,7 +26,7 @@ All five participants successfully completed the three required tasks without as
 ## Usability Findings
 
 | Finding | How Many Participants | Severity | Action |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | No usability issues reported during testing | 0/5 | N/A | No immediate action required |
 
 ## Limitations

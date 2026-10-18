@@ -1,4 +1,4 @@
-//Short explanation of test: 8 wrong-role attempts → 403, and the ones that try to change data leave no trace
+// TC-I02 — Eight wrong-role attempts return 403; rejected writes leave data unchanged.
 const request = require("supertest");
 const app = require("../../src/app");
 const { resetData, closeDb } = require("../helpers/db");
