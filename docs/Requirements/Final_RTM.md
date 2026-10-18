@@ -18,14 +18,14 @@
 | NFR-001 | Authentication | Authentication/Identity component → protected server routes | #91 | TC-I01 | Met |
 | NFR-002 | Role-based authorisation | Central server-side Authorisation component for request and reporting operations | #91 | TC-U03, TC-I02 | Met |
 | NFR-003 | Sensitive data protection | API response handling, error handling and logging controls; HTTPS configuration for deployment | #91 | TC-I01, TC-I02, TC-I05 | Partially Met |
-| NFR-004 | Secrets management | Runtime/environment configuration and repository controls | #91 | TBD | Met |
+| NFR-004 | Secrets management | Runtime/environment configuration and repository controls | #91 | No Test Planned | Met |
 | NFR-005 | Response performance | Request Management and Reporting query services; database query and index design | #91 | TC-P01 | Baselined |
-| NFR-006 | Usability | Requester, staff and management UI flows with clear validation feedback | #91 | TBD | Baselined |
+| NFR-006 | Usability | Requester, staff and management UI flows with clear validation feedback | #91 | No Test Planned | Met |
 | NFR-007 | Reliability | Request Management service → PostgreSQL transactions → Service Request repository | #91 | TC-I03 | Met |
 | NFR-008 | Availability | Application and PostgreSQL hosting arrangement. Evidence: docs/Deployment/availability.md | #91 | TBD | Baselined |
 | NFR-009 | Auditability | Request Workflow and Assignment services → Request History saved in the same transaction as key changes | #91 | TC-B05, TC-I04, TC-I05 | Met |
-| NFR-010 | Maintainability | Presentation, application and persistence layers; separated identity, request, notification and reporting responsibilities | #91 | TBD | Met |
+| NFR-010 | Maintainability | Presentation, application and persistence layers; separated identity, request, notification and reporting responsibilities | #91 | No Test Planned | Met |
 | NFR-011 | Data integrity | UI validation, application business rules and PostgreSQL constraints and transactions | #91 | TC-U04, TC-B02, TC-B03 | Partially Met |
 | NFR-012 | Browser compatibility | Web UI across requester, staff and management views | #91 | TC-E01, TC-E02 | Met |
 | NFR-013 | Scalability | Application deployment and indexed request/report queries. Load testing remains pending. | #91 | TC-P01 | Baselined |
-| NFR-014 | Recoverability | PostgreSQL backup and restore process. Backup schedule and deployment environment remain to be finalised. | #91 | TBD | Baselined |
+| NFR-014 | Recoverability | PostgreSQL backup and restore process. Backup schedule and deployment environment remain to be finalised. | #91 | TBD | Partially Met |
