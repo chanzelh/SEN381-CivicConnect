@@ -5,7 +5,7 @@
 
 **Method:** `operations/availability-monitor.js` polled `GET /health` on staging (v3.0-rc1) every 30 seconds for 60 minutes. A check counts as **up** only if it returns HTTP 200 within 5 seconds (the health check also confirms the database answers).
 
-**Period:** <start time> to <end time>, <date>
+**Period:** 13:38 – 14:38 UTC (15:38 – 16:38 SAST), 17 October 2026
 
 ## Result
 
@@ -13,7 +13,7 @@
 |---|---|---|---|---|---|
 | 120 | 120 | 0 | 100.00% | ≥ 99% | MET |
 
-**Evidence:** `docs/Deployment/availability-log.csv`
+**Evidence:** `CivicConnectCode/operations/availability-log.csv`
 
 ## Limitations
 

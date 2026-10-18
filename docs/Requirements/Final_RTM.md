@@ -22,7 +22,7 @@
 | NFR-005 | Response performance | Request Management and Reporting query services; database query and index design | #91 | TC-P01 | Baselined |
 | NFR-006 | Usability | Requester, staff and management UI flows with clear validation feedback | #91 | No Test Planned | Met |
 | NFR-007 | Reliability | Request Management service → PostgreSQL transactions → Service Request repository | #91 | TC-I03 | Met |
-| NFR-008 | Availability | Application and PostgreSQL hosting arrangement. Deployment details remain to be finalised. | #91 | No Test Planned | Met |
+| NFR-008 | Availability | Application and PostgreSQL hosting arrangement. Evidence: docs/Deployment/availability.md | #91 | TBD | Baselined |
 | NFR-009 | Auditability | Request Workflow and Assignment services → Request History saved in the same transaction as key changes | #91 | TC-B05, TC-I04, TC-I05 | Met |
 | NFR-010 | Maintainability | Presentation, application and persistence layers; separated identity, request, notification and reporting responsibilities | #91 | No Test Planned | Met |
 | NFR-011 | Data integrity | UI validation, application business rules and PostgreSQL constraints and transactions | #91 | TC-U04, TC-B02, TC-B03 | Partially Met |

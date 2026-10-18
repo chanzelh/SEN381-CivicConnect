@@ -1,11 +1,10 @@
-# Scope Completion Report
 # CivicConnect M1 Scope → Final Delivery & Scope Completion
 # Milestone Four (Final)
 
 **Baseline:** the 29 approved M1 requirements and their acceptance criteria (`requirements.md`), one acceptance criterion each.
 **Scoring (M4 brief):** Met = 1.0 · Partially met = 0.5 · Not met = 0.0
 **Final status categories:** IMPLEMENTED · PARTIALLY IMPLEMENTED · NOT IMPLEMENTED · CHANGED THROUGH APPROVED CHANGE
-**Evidence:** `v3.0-rc1` (https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/39028108910/job/117383002968)
+**Evidence:** test IDs refer to `test-evidence.md`; every test runs in CI on the final baseline `v3.0-rc1` (https://github.com/chanzelh/SEN381-CivicConnect/actions/runs/39028108910/job/117383002968).
 
 ## 1. Functional requirements
 
@@ -39,25 +38,25 @@
 | NFR-005 Response time | Must | IMPLEMENTED | Met | 1 | TC-P01: p95 52.92 ms at 50 users | Met for the tested workload |
 | NFR-006 Usability | Should | IMPLEMENTED | Met | 1 | `usability-test.md` (#88): 5/5 participants completed all 3 key tasks unassisted (100%, target ≥ 80%) | Met. Limitation: small, non-municipal sample on local staging |
 | NFR-007 Data stored and retrievable | Must | IMPLEMENTED | Met | 1 | TC-I03 | Delivered as committed |
-| NFR-008 Availability ≥ 99% | Should | <IMPLEMENTED> | <Met / Not met> | <1 / 0> | `availability.md` + `availability-log.csv` (#89): <__ checks, __% up> | <Met over a 60-minute window on local staging / Not met: reason> |
+| NFR-008 Availability ≥ 99% | Should | IMPLEMENTED | Met | 1 | `availability.md` + `availability-log.csv` (#89): 120/120 checks up, 100% over 60 min (17 Oct 2026) | Met. Limitation: short window on local staging |
 | NFR-009 Auditability | Must | IMPLEMENTED | Met | 1 | TC-B05, TC-I04, TC-I05 | DEF-004 found and fixed |
 | NFR-010 Maintainability | Should | IMPLEMENTED | Met | 1 | CI required check, PR #100, `static-analysis.md` | Every merge passes automated checks |
 | NFR-011 Data integrity | Must | PARTIALLY IMPLEMENTED | Partially met | 0.5 | TC-U04, TC-B02, TC-B03 | Mandatory fields and validation rules verified; **optional date fields not validated** (DEF-006, deferred) |
 | NFR-012 Browser compatibility | Should | IMPLEMENTED | Met | 1 | TC-E01, TC-E02 in Chromium, Firefox, Edge | Delivered as committed |
 | NFR-013 50 concurrent users | Could | IMPLEMENTED | Met | 1 | TC-P01 | Met for the tested workload |
 | NFR-014 Recoverability | Should | PARTIALLY IMPLEMENTED | Partially met | 0.5 | `backup-restore.md` (#83) | Backup created and restored; all 5 tables matched (100% of rows), **but the request tables were empty**, so recovery of actual service data wasn't demonstrated. <If the drill is repeated with request data: IMPLEMENTED, Met, 1> |
-| **Non-functional total** | | | | **<11.5 + NFR-008> / 14** | | |
+| **Non-functional total** | | | | **12.5 / 14** | | |
 
 ## 3. Scope Completion %
 
 | | Score |
 |---|---|
 | Functional | 12.5 |
-| Non-functional | <11.5 + NFR-008 (1 or 0)> |
-| **Total** | **<25.0 or 24.0> / 29** |
-| **Scope Completion %** | **<86.2% if NFR-008 met / 82.8% if not>** (= total ÷ 29 × 100) |
+| Non-functional | 12.5 |
+| **Total** | **25.0 / 29** |
+| **Scope Completion %** | **86.2%** (= 25.0 ÷ 29 × 100) |
 
-Both outcomes are above the 80% target. Repeating the backup drill with request data (NFR-014 → Met) would add 0.5 (87.9%).
+Above the 80% target. Repeating the backup drill with request data (NFR-014 → Met) would add 0.5 (87.9%).
 
 ## 4. Must-haves not fully met (justification)
 
@@ -75,4 +74,4 @@ Items placed outside the committed scope in M1 (PED scope baseline) are **not** 
 
 ## 6. Conclusion
 
-<__ %> of the approved M1 acceptance criteria are met, with every core requester, staff and management journey implemented and verified. The five partially met Must-haves are visible, explained and recorded; none is a hidden failure. The delivered scope is coherent and useful, but not yet released, for the security reasons in `go-live-decision.md`.
+86.2% of the approved M1 acceptance criteria are met, with every core requester, staff and management journey implemented and verified. The five partially met Must-haves are visible, explained and recorded; none is a hidden failure. The delivered scope is coherent and useful, but not yet released, for the security reasons in `go-live-decision.md`.
